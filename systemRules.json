@@ -5,21 +5,21 @@
     {
         "Traits":
         [
-        {
-            "Type":"Positive",
-            "BuildPointCost":30
-        },
-        {
-            "Type":"Negative",
-            "BuildPointCost":-15
-        },
-        {   "Type":"Balanced",
-            "BuildPointCost":15
-        },      
-        {
-            "Type":"Balanced/Mutable",
-            "BuildPointCost":15
-        }  
-       ]
+            {
+                "Type":"Positive",
+                "BuildPointCost":30
+            },
+            {
+                "Type":"Negative",
+                "BuildPointCost":-15
+            },
+            {   "Type":"Balanced",
+                "BuildPointCost":15
+            },      
+            {
+                "Type":"Balanced/Mutable",
+                "BuildPointCost":15
+            }  
+        ]
     }
 ]
