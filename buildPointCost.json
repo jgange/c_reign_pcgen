@@ -1,32 +1,37 @@
-[
-    {
-        "Attribute":
-        [
-            {
-                "currentValue":2,
-                "description":"Average",
-                "buildPointCostToRaiseByOne":10   
-            },
-            {
-                "currentValue":3,
-                "description":"Above Average",
-                "buildPointCostToRaiseByOne":20
-            },
-            {
-                "currentValue":4,
-                "description":"Good",
-                "buildPointCostToRaiseByOne":50
-            },
-            {
-                "currentValue":5,
-                "description":"Great",
-                "buildPointCostToRaiseByOne":90
-            },
-            {
-                "currentValue":6,
-                "description":"Peak",
-                "buildPointCostToRaiseByOne":150
-            }
-        ]
-    }
-]
+{
+    "Traits":
+    [
+        {
+            "Positive":30
+        },
+        {
+            "Negative":-15
+        },
+        {
+            "Balanced":15
+        },      
+        {
+            "Balanced/Mutable":15
+        }  
+    ],
+    "Skill":15,
+    "Contact":
+    [
+        {
+        "Rank One":20,
+        "Rank Two":40,
+        "Rank Three":60
+        }
+    ],
+    "Rare Item":60,
+    "Racial Ability":
+    [
+        {
+            "Tier One":30,
+            "Tier Two":60,
+            "Tier Three":120,
+            "Tier Four":240
+        }
+    ],
+    "Minor Boon":60
+}
