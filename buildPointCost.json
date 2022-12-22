@@ -1,0 +1,32 @@
+[
+    {
+        "Attribute":
+        [
+            {
+                "currentValue":2,
+                "description":"Average",
+                "buildPointCostToRaiseByOne":10   
+            },
+            {
+                "currentValue":3,
+                "description":"Above Average",
+                "buildPointCostToRaiseByOne":20
+            },
+            {
+                "currentValue":4,
+                "description":"Good",
+                "buildPointCostToRaiseByOne":50
+            },
+            {
+                "currentValue":5,
+                "description":"Great",
+                "buildPointCostToRaiseByOne":90
+            },
+            {
+                "currentValue":6,
+                "description":"Peak",
+                "buildPointCostToRaiseByOne":150
+            }
+        ]
+    }
+]

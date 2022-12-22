@@ -1,0 +1,38 @@
+[
+{
+	"RaceName":"Human",
+	"RaceType":"Standard",
+	"BaseAttributes":[
+		{
+			"Strength" : 2,
+        	"Agility"  : 2,
+        	"Constitution" : 2,
+        	"Size" : 2,
+        	"Intellect" : 2,
+        	"Power" : 2
+		}
+	],
+	"RacialAbilities" :[],
+	"Skill Bonus points" : 0,
+	"Skills":[],
+    "BuildPointCost"  : 0
+},
+{
+	"RaceName":"Draikosi",
+	"RaceType":"Tainted",
+	"BaseAttributes":[
+		{
+			"Strength" : 2,
+        	"Agility"  : 2,
+        	"Constitution" : 2,
+        	"Size" : 2,
+        	"Intellect" : 2,
+        	"Power" : 2
+		}
+	],
+	"RacialAbilities" :[],
+	"Skill Bonus points" : 0,
+	"Skills":[],
+    "BuildPointCost"  : 0
+}
+]

@@ -1,0 +1,23 @@
+[
+    {
+        "TraitName":"Affinity",
+        "TraitType":"Positive",
+        "TraitDescription":"The character has a mystical connection to one of the Prime Symbols.",
+        "TraitBenefit":"User has one level of difficulty removed when applying effects with that symbol. Also, checks to locate that symbol are also reduced by one level.",
+        "TraitDetriment":""
+    },
+    {   
+        "TraitName":"Alert",
+        "TraitType":"Positive",
+        "TraitDescription":"You are hard to surprise. In combat you often strike first.",
+        "TraitBenefit":"Add +2 to initiative roll. Reduce modifiers for notice by one level.",
+        "TraitDetriment":""
+    },
+    {
+        "TraitName":"Arrogant",
+        "TraitType":"Negative",
+        "TraitDescription":"The character is prone to exaggerating or disposed to exaggerate one's own worth or importance often by an overbearing manner.",
+        "TraitBenefit":"",
+        "TraitDetriment":"Add a modifier to artifice skill checks. Character starts at a sullen state for reaction level."
+    }
+]
