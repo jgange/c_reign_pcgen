@@ -1,0 +1,36 @@
+{
+    "PlayerName":"Joe",
+    "CharacterName":"Brak Ironsoul",
+    "Race":"Human",
+    "Backgrounds":["Warrior"],
+    "Prologue":"Brak was born in a war torn area of the borderlands. His parents were mercenaries who decided to build a homestead before the borderland wars began. Brak grew quickly into a hard-eyed youth with a quick temper and a quicker blade. His father secured him a place in his old company and Brak left home at age 15 to make a name for himself.",
+    "Skills":
+    [
+        {
+            "Size Up":30,
+            "Ranged Attack":30
+        }
+    ],
+    "Attributes":
+    [
+        {
+            "Strength":5,
+            "Constitution":4,
+            "Dexterity":4,
+            "Size":3,
+            "Intellect":2,
+            "Power":2
+        }
+    ],
+    "Traits":
+    ["Arrogant", "Brash"],
+    "RareItems":
+    [
+        {
+            "ItemName":"Long Sword",
+            "Description":"Brak's father gave him this heron Mark sword. It's balance is perfect, it's edge sharp enough to cut the wind.",
+            "Quality":"Excellent",
+            "Abilities":[""]
+        }
+    ]
+}

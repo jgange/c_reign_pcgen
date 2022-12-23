@@ -25,6 +25,7 @@ function returnRecordSet($records, $propertyName, $value)
 $buildType = "Heroic"
 $race      = "Draikosi"
 
+
 $raceTable       = populateData ($dataStoreLocation, $raceFile -join "\") 
 $characterBuilds = populateData ($dataStoreLocation, $buildsFile -join "\") 
 $traitTable      = populateData ($dataStoreLocation, $traitsFile -join "\")
