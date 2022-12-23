@@ -7,6 +7,7 @@ $traitsFile         = "traits.json"
 $systemRulesFile    = "systemRules.json"
 $buildCostsFile     = "buildPointCost.json"
 $attributeTableFile = "attributesTable.json"
+$characterBuild     = 'brak.json'
 
 #### METHODS ####
 
@@ -18,6 +19,14 @@ function populateData($filePath)
 function returnRecordSet($records, $propertyName, $value)
 {
     $records | Where-Object {$_.$propertyName -eq $value}
+}
+
+function calculateBuildCost($characterBuild)
+{
+    # Extract items that have a build cost
+
+    if ($characterBuild.Backgrounds)
+    {$characterBuild.Backgrounds}
 }
 
 #### MAIN PROGRAM ####
@@ -32,6 +41,7 @@ $traitTable      = populateData ($dataStoreLocation, $traitsFile -join "\")
 $systemRules     = populateData ($dataStoreLocation, $systemRulesFile -join "\")
 $buildPointCosts = populateData ($dataStoreLocation, $buildCostsFile -join "\")
 $attributeTable  = populateData ($dataStoreLocation, $attributeTableFile -join "\")
+$characterBuild  = populateData ($dataStoreLocation, $characterBuild -join "\")
 
 $raceInfo  = returnRecordSet $raceTable "RaceName" $race
 $buildInfo = returnRecordSet $characterBuilds "BuildType" $buildType
@@ -42,3 +52,6 @@ $traitTable
 $systemRules
 $buildPointCosts
 $attributeTable
+$characterBuild
+
+calculateBuildCost $characterBuild

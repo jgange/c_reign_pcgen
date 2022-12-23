@@ -1,0 +1,53 @@
+[
+    {
+        "Tier":
+        [
+            {
+                "Novice":
+                [
+                    {
+                        "Description":"An inexperienced practitioner of a profession.",
+                        "SkillRank":1,
+                        "BuildPointCost":30,
+                        "SkillPool":30,
+                        "ProfessionSkillTier":3
+                    }
+                ],
+                "Journeyman":
+                [
+                    {
+                        "Description":"A somewhat experienced practitioner of a profession.",
+                        "SkillRank":2,
+                        "BuildPointCost":60,
+                        "SkillPool":50,
+                        "ProfessionSkillTier":5
+                    }
+                ],
+                "Expert":
+                [
+                    {
+                        "Description":"An experienced practitioner of a profession.",
+                        "SkillRank":3,
+                        "BuildPointCost":90,
+                        "SkillPool":70,
+                        "ProfessionSkillTier":7
+                    }
+                ],
+                "Master":
+                [
+                    {
+                        "Description":"A master practitioner of a profession.",
+                        "SkillRank":4,
+                        "BuildPointCost":120,
+                        "SkillPool":90,
+                        "ProfessionSkillTier":9
+                    }
+                ]
+            }
+        ]
+
+        
+
+    }
+    
+]
