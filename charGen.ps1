@@ -8,7 +8,7 @@ $systemRulesFile     = "systemRules.json"
 $buildCostsFile      = "buildPointCost.json"
 $attributeTableFile  = "attributesTable.json"
 $professionTiersFile = "professionTiers.json"
-$characterBuild      = "brak.json"
+$characterBuildFile      = "brak.json"
 
 #### METHODS ####
 
@@ -22,12 +22,20 @@ function returnRecordSet($records, $propertyName, $value)
     $records | Where-Object {$_.$propertyName -eq $value}
 }
 
+function writeDescription([string] $key, [string] $value)
+{
+    Write-Output "$key = $value"
+}
+
 function calculateBuildCost($characterBuild)
 {
     # Extract items that have a build cost
 
     if ($characterBuild.Backgrounds)
-    {$characterBuild.Backgrounds}
+    {
+        $backgrounds = ($characterBuild.Backgrounds | Get-Member -MemberType NoteProperty).Name
+        $backgrounds
+    }
 }
 
 #### MAIN PROGRAM ####
@@ -35,26 +43,25 @@ function calculateBuildCost($characterBuild)
 $buildType = "Heroic"
 $race      = "Draikosi"
 
-
 $raceTable       = populateData ($dataStoreLocation, $raceFile -join "\") 
-$characterBuilds = populateData ($dataStoreLocation, $buildsFile -join "\") 
+$characterBuild = populateData ($dataStoreLocation, $buildsFile -join "\") 
 $traitTable      = populateData ($dataStoreLocation, $traitsFile -join "\")
 $systemRules     = populateData ($dataStoreLocation, $systemRulesFile -join "\")
 $buildPointCosts = populateData ($dataStoreLocation, $buildCostsFile -join "\")
 $attributeTable  = populateData ($dataStoreLocation, $attributeTableFile -join "\")
 $professionTiers = populateData ($dataStoreLocation, $professionTiersFile -join "\")
-$characterBuild  = populateData ($dataStoreLocation, $characterBuild -join "\")
+$characterBuild  = populateData ($dataStoreLocation, $characterBuildFile -join "\")
 
 $raceInfo  = returnRecordSet $raceTable "RaceName" $race
-$buildInfo = returnRecordSet $characterBuilds "BuildType" $buildType
+$buildInfo = returnRecordSet $characterBuild "BuildType" $buildType
 
-$raceInfo
-$buildInfo
-$traitTable
-$systemRules
-$buildPointCosts
-$attributeTable
-$characterBuild
-$professionTiers
+#$raceInfo
+#$buildInfo
+#$traitTable
+#$systemRules
+#$buildPointCosts
+#$attributeTable
+#$characterBuild
+#$professionTiers
 
 calculateBuildCost $characterBuild
