@@ -46,13 +46,20 @@ function computeBackgroundCost($characterBuild, $professionTiers)
     return [int] $bp
 }
 
-function 
+function computeSkillsCost($characterBuild, $buildPointCosts)
+{
+    $skillList = ($characterBuild.Skills | Get-Member -MemberType NoteProperty).Name
+    $skillCost = $buildPointCosts.Skill
 
-function calculateBuildCost($characterBuild, $professionTiers)
+    $skillList | ForEach-Object { $bps+= $skillCost}
+    $bps
+}
+function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts)
 {
     # Extract items that have a build cost
     [int] $bp = computeBackgroundCost $characterBuild $professionTiers
     $bp
+    computeSkillsCost $characterBuild $buildPointCosts
 }
 
 #### MAIN PROGRAM ####
@@ -81,4 +88,4 @@ $buildInfo = returnRecordSet $characterBuild "BuildType" $buildType
 #$characterBuild
 #$professionTiers
 
-calculateBuildCost $characterBuild $professionTiers
+calculateBuildCost $characterBuild $professionTiers $buildPointCosts
