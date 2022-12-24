@@ -27,12 +27,10 @@ function writeDescription([string] $key, [string] $value)
     Write-Output "$key = $value"
 }
 
-function calculateBuildCost($characterBuild, $professionTiers)
+function computeBackgroundCost($characterBuild, $professionTiers)
 {
-    # Extract items that have a build cost
-
+    [int] $bp = 0
     $Tiers = ($professionTiers.Tier | Get-Member -MemberType NoteProperty).Name | ForEach-Object { $professionTiers.Tier.$_  }
-    # $Tiers | ForEach-Object { $_.SkillRank }
 
     if ($characterBuild.Backgrounds)
     {
@@ -40,12 +38,21 @@ function calculateBuildCost($characterBuild, $professionTiers)
         {
             $background = ($characterBuild.Backgrounds[$i] | Get-Member -MemberType NoteProperty).Name
             $backgroundTier = [int] $characterBuild.Backgrounds[$i].$background
-            $backgroundTier
             $Tiers | ForEach-Object {
-                if ($backgroundTier -eq $_.SkillRank) {$_.buildPointCost}
+                if ($backgroundTier -eq $_.SkillRank) {$bp += [int]$_.buildPointCost}
             }  
         }
     }
+    return [int] $bp
+}
+
+function 
+
+function calculateBuildCost($characterBuild, $professionTiers)
+{
+    # Extract items that have a build cost
+    [int] $bp = computeBackgroundCost $characterBuild $professionTiers
+    $bp
 }
 
 #### MAIN PROGRAM ####
