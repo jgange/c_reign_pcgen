@@ -23,8 +23,8 @@
         "Rank Three":60
         }
     ],
-    "Rare Item":60,
-    "Racial Ability":
+    "RareItem":60,
+    "RacialAbility":
     [
         {
             "Tier One":30,
@@ -33,5 +33,5 @@
             "Tier Four":240
         }
     ],
-    "Minor Boon":60
+    "MinorBoon":60
 }

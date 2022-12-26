@@ -105,8 +105,13 @@ function computeTraitsCost($characterBuild, $traitTable, $buildPointCosts)
     return $bps
 }
 
-function stub()
-{}
+function computeRareItemsCost($characterBuild, $buildPointCosts)
+{
+    [int] $bps = 0
+    $characterBuild.RareItems | ForEach-Object { $bps += $buildPointCosts.RareItem }
+    return $bps
+}
+
 
 function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts, $attributeTable)
 {
@@ -118,6 +123,7 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
         Skills       = computeSkillsCost     $characterBuild $buildPointCosts
         Attributes   = computeAttributesCost $characterBuild $raceTable        $attributeTable
         Traits       = computeTraitsCost     $characterBuild $traitTable       $buildPointCosts
+        RareItems    = computeRareItemsCost  $characterBuild $buildPointCosts
     }
 
     ($buildCosts | Get-Member -MemberType NoteProperty).Name | ForEach-Object { 
