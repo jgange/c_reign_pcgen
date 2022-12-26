@@ -57,11 +57,36 @@ function computeSkillsCost($characterBuild, $buildPointCosts)
 function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts)
 {
     # Extract items that have a build cost
-    [int] $bp = computeBackgroundCost $characterBuild $professionTiers
-    $bp
+    computeBackgroundCost $characterBuild $professionTiers
     computeSkillsCost $characterBuild $buildPointCosts
+    computeAttributesCost $characterBuild $raceTable
+
 }
 
+function computeAttributesCost($characterBuild, $raceTable)
+{
+    $characterRace = $characterBuild.Race
+    $attributes = $characterBuild.Attributes
+    $attributes
+    for($i=0;$i -lt $raceTable.Count; $i++)
+    {
+        if ($raceTable.RaceName[$i] -eq [string]$characterRace)
+        {
+            $attributeList = ($raceTable[$i].BaseAttributes | Get-Member -MemberType NoteProperty).Name
+            $attributeList | ForEach-Object {         
+                writeDescription "Base racial attribute value" $raceTable[$i].BaseAttributes.$_
+                writeDescription "Actual attribute value" $characterBuild.Attributes.$_
+                if ($characterBuild.Attributes.$_ -gt $raceTable[$i].BaseAttributes.$_)
+                {
+                    Write-Output "Spent points to raise attribute."
+                }
+            }
+            
+                
+        }
+    }
+
+}
 #### MAIN PROGRAM ####
 
 $buildType = "Heroic"
