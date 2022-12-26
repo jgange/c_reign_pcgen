@@ -45,7 +45,6 @@ function computeBackgroundCost($characterBuild, $professionTiers)
     }
     return [int] $bp
 }
-
 function computeSkillsCost($characterBuild, $buildPointCosts)
 {
     [int] $bps = 0

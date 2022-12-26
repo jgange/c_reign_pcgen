@@ -8,6 +8,12 @@
                 "Warrior":2
             }
         ],
+    "BackgroundSkills":[
+        {
+            "Parry":6,
+            "Strike":5
+        }
+    ],
     "Prologue":"Brak was born in a war torn area of the borderlands. His parents were mercenaries who decided to build a homestead before the borderland wars began. Brak grew quickly into a hard-eyed youth with a quick temper and a quicker blade. His father secured him a place in his old company and Brak left home at age 15 to make a name for himself.",
     "Skills":
     [
