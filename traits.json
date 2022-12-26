@@ -19,5 +19,27 @@
         "TraitDescription":"The character is prone to exaggerating or disposed to exaggerate one's own worth or importance often by an overbearing manner.",
         "TraitBenefit":"",
         "TraitDetriment":"Add a modifier to artifice skill checks. Character starts at a sullen state for reaction level."
+    },
+    {
+        "TraitName":"Awakened",
+        "TraitType":"Positive",
+        "TraitDescription":"You are a natural wielder of magic.",
+        "TraitBenefit":"You are one of the Unshackled, able to draw upon the primal powers of the universe. You gain the Tesselate skill at base, or add 20 points if already possessed. Also, you can use invocations as well but do not gain the skill unless purchased separately.",
+        "TraitDetriment":""
+    },
+    {
+        "TraitName":"Bland",
+        "TraitType":"Balanced",
+        "TraitDescription":"You have a completely unremarkable appearance.",
+        "TraitBenefit":"Add a modifier to an opponent’s recall and notice roll.",
+        "TraitDetriment":"Add a modifier to artifice rolls."
+    },
+    {
+        "TraitName":"Brash",
+        "TraitType":"Balanced/Mutable",
+        "PositiveVersion":"Bold",
+        "TraitDescription":"The character rarely backs down from a fight (any of kind).",
+        "TraitBenefit":"No hesitation checks have to be made.",
+        "TraitDetriment":"Add one modifier to social and notice checks when under stress. Character must make a difficult power check to back down from a fight."
     }
 ]
