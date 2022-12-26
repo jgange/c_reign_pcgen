@@ -74,8 +74,8 @@ function computeAttributesCost($characterBuild, $raceTable)
         {
             $attributeList = ($raceTable[$i].BaseAttributes | Get-Member -MemberType NoteProperty).Name
             $attributeList | ForEach-Object {         
-                writeDescription "Base racial attribute value" $raceTable[$i].BaseAttributes.$_
-                writeDescription "Actual attribute value" $characterBuild.Attributes.$_
+                #$raceTable[$i].BaseAttributes.$_
+                $characterBuild.Attributes.$_
                 if ($characterBuild.Attributes.$_ -gt $raceTable[$i].BaseAttributes.$_)
                 {
                     Write-Output "Spent points to raise attribute."

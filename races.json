@@ -5,8 +5,8 @@
 	"BaseAttributes":[
 		{
 			"Strength" : 2,
-        	"Agility"  : 2,
         	"Constitution" : 2,
+			"Dexterity"  : 2,
         	"Size" : 2,
         	"Intellect" : 2,
         	"Power" : 2
@@ -23,8 +23,8 @@
 	"BaseAttributes":[
 		{
 			"Strength" : 2,
-        	"Agility"  : 2,
         	"Constitution" : 2,
+			"Dexterity"  : 2,
         	"Size" : 2,
         	"Intellect" : 2,
         	"Power" : 2
