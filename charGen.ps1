@@ -54,31 +54,31 @@ function computeSkillsCost($characterBuild, $buildPointCosts)
     $skillList | ForEach-Object { $bps+= $skillCost}
     $bps
 }
-function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts)
+function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts, $attributeTable)
 {
     # Extract items that have a build cost
     computeBackgroundCost $characterBuild $professionTiers
     computeSkillsCost $characterBuild $buildPointCosts
-    computeAttributesCost $characterBuild $raceTable
+    computeAttributesCost $characterBuild $raceTable $attributeTable
 
 }
 
-function computeAttributesCost($characterBuild, $raceTable)
+function computeAttributesCost($characterBuild, $raceTable, $attributeTable)
 {
-    $characterRace = $characterBuild.Race
-    $attributes = $characterBuild.Attributes
-    $attributes
     for($i=0;$i -lt $raceTable.Count; $i++)
     {
-        if ($raceTable.RaceName[$i] -eq [string]$characterRace)
+        if ($raceTable.RaceName[$i] -eq [string]$characterBuild.Race)
         {
+            $attributeCosts = $attributeTable.AttributeBase.[string]$raceTable[$i].AttributeBase
             $attributeList = ($raceTable[$i].BaseAttributes | Get-Member -MemberType NoteProperty).Name
             $attributeList | ForEach-Object {         
-                #$raceTable[$i].BaseAttributes.$_
-                $characterBuild.Attributes.$_
                 if ($characterBuild.Attributes.$_ -gt $raceTable[$i].BaseAttributes.$_)
                 {
-                    Write-Output "Spent points to raise attribute."
+                    Write-Output "Raised attribute from $($raceTable[$i].BaseAttributes.$_) to $($characterBuild.Attributes.$_)"
+                    $attributeValue = $characterBuild.Attributes.$_
+                    $attributeCosts | ForEach-Object {
+                        if ($_.Tier -eq $attributeValue) { $_.buildPointCost}
+                    }
                 }
             }
             
@@ -113,4 +113,4 @@ $buildInfo = returnRecordSet $characterBuild "BuildType" $buildType
 #$characterBuild
 #$professionTiers
 
-calculateBuildCost $characterBuild $professionTiers $buildPointCosts
+calculateBuildCost $characterBuild $professionTiers $buildPointCosts $attributeTable

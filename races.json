@@ -2,6 +2,7 @@
 {
 	"RaceName":"Human",
 	"RaceType":"Standard",
+	"AttributeBase":2,
 	"BaseAttributes":[
 		{
 			"Strength" : 2,
@@ -20,6 +21,7 @@
 {
 	"RaceName":"Draikosi",
 	"RaceType":"Tainted",
+	"AttributeBase":2,
 	"BaseAttributes":[
 		{
 			"Strength" : 2,

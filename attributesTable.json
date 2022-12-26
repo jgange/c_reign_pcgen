@@ -1,145 +1,145 @@
 {"AttributeBase":
     [
         {
-            "10":
+            "1":
             [
                 {
-                    "Score":10,
+                    "Tier":1,
                     "BuildPointCost":0,
                     "Description":"Poor"
                 },
                 {
-                    "Score":20,
+                    "Tier":2,
                     "BuildPointCost":5,
                     "Description":"Average"
                 },
                 {
-                    "Score":30,
+                    "Tier":3,
                     "BuildPointCost":10,
                     "Description":"Above Average"
                 },
                 {
-                    "Score":40,
+                    "Tier":4,
                     "BuildPointCost":20,
                     "Description":"Good"
                 },
                 {
-                    "Score":50,
+                    "Tier":5,
                     "BuildPointCost":50,
                     "Description":"Great"
                 },
                 {
-                    "Score":60,
+                    "Tier":6,
                     "BuildPointCost":90,
                     "Description":"Peak"
                 }
             ]
         },
         {
-            "20":
+            "2":
             [
                 {
-                    "Score":10,
+                    "Tier":1,
                     "BuildPointCost":-10,
                     "Description":"Poor"
                 },
                 {
-                    "Score":20,
+                    "Tier":2,
                     "BuildPointCost":0,
                     "Description":"Average"
                 },
                 {
-                    "Score":30,
+                    "Tier":3,
                     "BuildPointCost":10,
                     "Description":"Above Average"
                 },
                 {
-                    "Score":40,
+                    "Tier":4,
                     "BuildPointCost":20,
                     "Description":"Good"
                 },
                 {
-                    "Score":50,
+                    "Tier":5,
                     "BuildPointCost":50,
                     "Description":"Great"
                 },
                 {
-                    "Score":60,
+                    "Tier":6,
                     "BuildPointCost":90,
                     "Description":"Peak"
                 }
             ]
         },
         {
-            "30":
+            "3":
             [
                 {
-                    "Score":20,
+                    "Tier":2,
                     "BuildPointCost":-10,
                     "Description":"Average"
                 },
                 {
-                    "Score":30,
+                    "Tier":3,
                     "BuildPointCost":10,
                     "Description":"Above Average"
                 },
                 {
-                    "Score":40,
+                    "Tier":4,
                     "BuildPointCost":20,
                     "Description":"Good"
                 },
                 {
-                    "Score":50,
+                    "Tier":5,
                     "BuildPointCost":50,
                     "Description":"Great"
                 },
                 {
-                    "Score":60,
+                    "Tier":6,
                     "BuildPointCost":90,
                     "Description":"Peak"
                 }
             ]
         },
         {
-            "40":
+            "4":
             [
                 {
-                    "Score":30,
+                    "Tier":3,
                     "BuildPointCost":-10,
                     "Description":"Above Average"
                 },
                 {
-                    "Score":40,
+                    "Tier":4,
                     "BuildPointCost":20,
                     "Description":"Good"
                 },
                 {
-                    "Score":50,
+                    "Tier":5,
                     "BuildPointCost":50,
                     "Description":"Great"
                 },
                 {
-                    "Score":60,
+                    "Tier":6,
                     "BuildPointCost":90,
                     "Description":"Peak"
                 }
             ]
         },
         {
-            "50":
+            "5":
             [
                 {
-                    "Score":40,
+                    "Tier":4,
                     "BuildPointCost":-10,
                     "Description":"Good"
                 },
                 {
-                    "Score":50,
+                    "Tier":5,
                     "BuildPointCost":50,
                     "Description":"Great"
                 },
                 {
-                    "Score":60,
+                    "Tier":6,
                     "BuildPointCost":90,
                     "Description":"Peak"
                 }
