@@ -8,7 +8,9 @@ $systemRulesFile     = "systemRules.json"
 $buildCostsFile      = "buildPointCost.json"
 $attributeTableFile  = "attributesTable.json"
 $professionTiersFile = "professionTiers.json"
-$characterBuildFile      = "brak.json"
+$characterBuildFile  = "brak.json"
+
+$buildCosts
 
 #### METHODS ####
 
@@ -111,13 +113,12 @@ function computeRareItemsCost($characterBuild, $buildPointCosts)
     return $bps
 }
 
-
 function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts, $attributeTable)
 {
     # Extract items that have a build cost
     [int] $totalBuildCost = 0
 
-    $buildCosts = [PSCustomObject]@{
+    $Global:buildCosts = [PSCustomObject]@{
         Backgrounds  = computeBackgroundCost $characterBuild $professionTiers
         Skills       = computeSkillsCost     $characterBuild $buildPointCosts
         Attributes   = computeAttributesCost $characterBuild $raceTable        $attributeTable
@@ -157,4 +158,5 @@ $characterBuild.BuildType
 $raceInfo.RaceName
 
 [int]$buildPointCost = calculateBuildCost $characterBuild $professionTiers $buildPointCosts $attributeTable
+$buildCosts
 write-output "$($characterBuild.CharacterName) is a $buildPointCost build point character."
