@@ -80,15 +80,51 @@ function computeAttributesCost($characterBuild, $raceTable, $attributeTable)
     return $buildCost
 }
 
+function computeTraitsCost($characterBuild, $traitTable, $buildPointCosts)
+{
+    # Compute cost of the selected traits
+    [int] $bps = 0
+
+    $characterBuild.Traits | ForEach-Object {
+        $characterTrait = $_
+        $traitTable | ForEach-Object {
+            if ($characterTrait -eq $_.TraitName)
+            { 
+                for($i=0; $i -lt $buildPointCosts.Traits.Count; $i++)
+                {    
+                    $trait = ($buildPointCosts.Traits[$i] | Get-Member -MemberType NoteProperty).Name
+                    if ($trait-eq $_.TraitType)
+                    {
+                        $bps += [int]$buildPointCosts.Traits[$i].$Trait
+                    }
+                }
+            }
+        }
+    }
+
+    return $bps
+}
+
+function stub()
+{}
+
 function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts, $attributeTable)
 {
     # Extract items that have a build cost
     [int] $totalBuildCost = 0
-    $totalBuildCost += computeBackgroundCost $characterBuild $professionTiers
-    $totalBuildCost += computeSkillsCost $characterBuild $buildPointCosts
-    $totalBuildCost += computeAttributesCost $characterBuild $raceTable $attributeTable
-    $totalBuildCost
 
+    $buildCosts = [PSCustomObject]@{
+        Backgrounds  = computeBackgroundCost $characterBuild $professionTiers
+        Skills       = computeSkillsCost     $characterBuild $buildPointCosts
+        Attributes   = computeAttributesCost $characterBuild $raceTable        $attributeTable
+        Traits       = computeTraitsCost     $characterBuild $traitTable       $buildPointCosts
+    }
+
+    ($buildCosts | Get-Member -MemberType NoteProperty).Name | ForEach-Object { 
+        $totalBuildCost += $buildCosts.$_
+    }
+
+    return $totalBuildCost
 }
 
 #### MAIN PROGRAM ####
