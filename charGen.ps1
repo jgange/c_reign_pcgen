@@ -153,7 +153,8 @@ $raceInfo  = returnRecordSet $raceTable "RaceName" $characterBuild.Race
 #$characterBuild
 #$professionTiers
 
-$buildInfo.BuildType
+$characterBuild.BuildType
 $raceInfo.RaceName
 
-calculateBuildCost $characterBuild $professionTiers $buildPointCosts $attributeTable
+[int]$buildPointCost = calculateBuildCost $characterBuild $professionTiers $buildPointCosts $attributeTable
+write-output "$($characterBuild.CharacterName) is a $buildPointCost build point character."
