@@ -113,13 +113,26 @@ function computeRareItemsCost($characterBuild, $buildPointCosts)
 
 function computeSkillRaiseCost($characterBuild)
 {
-    $characterBuild.SkillIncreases | ForEach-Object {
-        $skillName = ($_ | Get-Member -MemberType NoteProperty).Name
-        $increase  = $characterBuild.SkillIncreases.$skillName
-        $increase
+    [int] $bps = 0
+    
+    $increases = [System.Collections.ArrayList]@()
+    $characterBuild.Skills | Get-Member -membertype noteproperty | ForEach-Object name | ForEach-Object { $increases.Add($characterBuild.Skills.$_) | Out-Null }
+    $characterBuild.SkillIncreases | Get-Member -membertype noteproperty | ForEach-Object name | ForEach-Object { $increases.Add($characterBuild.SkillIncreases.$_) | Out-Null }
+    
+    for($i=0; $i -lt ($increases.Count/2); $i++)
+    {
+        #Write-Output "i = $i"
+        $score = $increases[$i]
+        for ($k = 0; $k -lt $increases[$i+2]; $k++)
+        {
+            #Write-Output "k = $k"
+            $bps = $bps + [int][math]::Floor($score/10)
+            $score++
+            #$bps,$score -join " - "
+        }
     }
+    return $bps
 }
-
 function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts, $attributeTable)
 {
     # Extract items that have a build cost
@@ -131,6 +144,7 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
         Attributes   = computeAttributesCost $characterBuild $raceTable        $attributeTable
         Traits       = computeTraitsCost     $characterBuild $traitTable       $buildPointCosts
         RareItems    = computeRareItemsCost  $characterBuild $buildPointCosts
+        SkillRaises  = computeSkillRaiseCost $characterBuild
     }
 
     ($buildCosts | Get-Member -MemberType NoteProperty).Name | ForEach-Object { 
@@ -160,10 +174,6 @@ $raceInfo  = returnRecordSet $raceTable "RaceName" $characterBuild.Race
 #$attributeTable
 #$characterBuild
 #$professionTiers
-
-computeSkillRaiseCost $characterBuild
-
-exit 0
 
 $characterBuild.BuildType
 $raceInfo.RaceName
