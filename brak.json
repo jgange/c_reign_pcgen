@@ -61,5 +61,7 @@
             "Quality":"Excellent",
             "Abilities":[""]
         }
-    ]
+    ],
+    "Boons":[],
+    "Taint":5
 }

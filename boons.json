@@ -1,0 +1,22 @@
+[
+    {
+        "Divine Blessing":
+        [
+            {
+                "Description":"A protective blessing",
+                "Type":"Minor",
+                "Cost":30,
+                "Effect":"Add 3 to armor value."
+            }
+        ],
+        "Truthsayer":
+        [
+            {
+                "Description":"An orison which compels those in the character's presence to tell the truth.",
+                "Type":"Minor",
+                "Cost":30,
+                "Effect":"Target must make an opposed power save or answer any questions truthfully."   
+            }
+        ]
+    }
+]

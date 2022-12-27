@@ -8,7 +8,9 @@ $systemRulesFile     = "systemRules.json"
 $buildCostsFile      = "buildPointCost.json"
 $attributeTableFile  = "attributesTable.json"
 $professionTiersFile = "professionTiers.json"
+$boonsFile           = "boons.json"
 $characterBuildFile  = "brak.json"
+
 
 #### METHODS ####
 
@@ -20,6 +22,18 @@ function populateData($filePath)
 function returnRecordSet($records, $propertyName, $value)
 {
     $records | Where-Object {$_.$propertyName -eq $value}
+}
+
+function returnProperties($object, $parentProperty)
+{
+    if ($parentProperty)
+    {
+        return ($object.$parentProperty | Get-Member -membertype noteproperty | ForEach-Object name)
+    }
+    else
+    {
+        return ($object | Get-Member -membertype noteproperty | ForEach-Object name)
+    }
 }
 
 function writeDescription([string] $key, [string] $value)
@@ -134,26 +148,47 @@ function computeSkillRaiseCost($characterBuild)
 function computeSpellCost($characterBuild)
 {
     # based on quintessence cost of spell - requires the spell list to be seeded
+    [int] $bps = 0
+    return $bps
 }
 
 function computeRacialAbilities($characterBuild)
 {
     # make sure races seed file includes tiered abilities with costs
+    [int] $bps = 0
+    return $bps
 }
 
 function computeContactsCost($characterBuild)
 {
     # needs a seed file also
+    [int] $bps = 0
+    return $bps
 }
 
-function computerMinorBoonCost($characterBuild)
+function computeBoonCost($characterBuild, $boonsTable)
 {
     #  needs a seed file
+    [int] $bps = 0
+
+    $characterBuild.Boons | ForEach-Object {
+        # Outerloop which compare each boon on the character sheet against the list to get the cost
+        $boon = $_
+        returnProperties $boonsTable | ForEach-Object {
+            if ($boon -eq $_)
+            {
+                $bps += $boonsTable.$_.Cost
+            }
+        }
+    }
+
+    return $bps
 }
 
 function computeTaintCost($characterBuild)
 {
     # this one is just a rule, no seed file required
+    return -([int]$characterBuild.Taint * 5)
 }
 function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts, $attributeTable)
 {
@@ -161,17 +196,17 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
     [int] $totalBuildCost = 0
 
     $Global:buildCosts = [PSCustomObject]@{
-        Backgrounds     = computeBackgroundCost $characterBuild $professionTiers
-        Skills          = computeSkillsCost     $characterBuild $buildPointCosts
-        Attributes      = computeAttributesCost $characterBuild $raceTable        $attributeTable
-        Traits          = computeTraitsCost     $characterBuild $traitTable       $buildPointCosts
-        RareItems       = computeRareItemsCost  $characterBuild $buildPointCosts
-        SkillRaises     = computeSkillRaiseCost $characterBuild
-        Spells          = 0
-        Contacts        = 0
-        RacialAbilities = 0
-        MinorBoon       = 0
-        Taint           = 0
+        Backgrounds     = computeBackgroundCost  $characterBuild $professionTiers
+        Skills          = computeSkillsCost      $characterBuild $buildPointCosts
+        Attributes      = computeAttributesCost  $characterBuild $raceTable        $attributeTable
+        Traits          = computeTraitsCost      $characterBuild $traitTable       $buildPointCosts
+        RareItems       = computeRareItemsCost   $characterBuild $buildPointCosts
+        SkillRaises     = computeSkillRaiseCost  $characterBuild
+        Spells          = computeSpellCost       $characterBuild
+        Contacts        = computeContactsCost    $characterBuild
+        RacialAbilities = computeRacialAbilities $characterBuild
+        Boons           = computeBoonCost        $characterBuild $boonsTable
+        Taint           = computeTaintCost       $characterBuild
     }
 
     ($buildCosts | Get-Member -MemberType NoteProperty).Name | ForEach-Object { 
@@ -191,6 +226,7 @@ $buildPointCosts = populateData ($dataStoreLocation, $buildCostsFile -join "\")
 $attributeTable  = populateData ($dataStoreLocation, $attributeTableFile -join "\")
 $professionTiers = populateData ($dataStoreLocation, $professionTiersFile -join "\")
 $characterBuild  = populateData ($dataStoreLocation, $characterBuildFile -join "\")
+$boonsTable      = populateData ($dataStoreLocation, $boonsFile -join "\")
 
 $buildInfo = returnRecordSet $characterBuild "BuildType" $buildType
 $raceInfo  = returnRecordSet $raceTable "RaceName" $characterBuild.Race
