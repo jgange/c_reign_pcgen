@@ -10,6 +10,7 @@ $attributeTableFile  = "attributesTable.json"
 $professionTiersFile = "professionTiers.json"
 $boonsFile           = "boons.json"
 $contactsFile        = "contacts.json"
+$spellsFile          = "spells.json"
 $characterBuildFile  = "brak.json"
 
 
@@ -146,10 +147,26 @@ function computeSkillRaiseCost($characterBuild)
     return $bps
 }
 
-function computeSpellCost($characterBuild)
+function computeSpellCost($characterBuild, $spellsTable)
 {
     # based on quintessence cost of spell - requires the spell list to be seeded
     [int] $bps = 0
+
+    $characterBuild.Spells | ForEach-Object {
+        $spell = $_
+        returnProperties $spellsTable | ForEach-Object {
+            if ($spell -eq $_)
+            {
+                $bps += ($spellsTable.$_."Cost in Quintessence Points" *2)
+            }
+        }
+    }
+
+    if ($characterBuild.Traits -match "Eldritch Heritage")
+    {
+        $bps =[int][math]::Floor($bps / 2)
+    }
+
     return $bps
 }
 
@@ -214,7 +231,7 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
         Traits          = computeTraitsCost      $characterBuild $traitTable       $buildPointCosts
         RareItems       = computeRareItemsCost   $characterBuild $buildPointCosts
         SkillRaises     = computeSkillRaiseCost  $characterBuild
-        Spells          = computeSpellCost       $characterBuild
+        Spells          = computeSpellCost       $characterBuild $spellsTable
         Contacts        = computeContactsCost    $characterBuild $contactsTable
         RacialAbilities = computeRacialAbilities $characterBuild
         Boons           = computeBoonCost        $characterBuild $boonsTable
@@ -240,6 +257,7 @@ $professionTiers = populateData ($dataStoreLocation, $professionTiersFile -join 
 $characterBuild  = populateData ($dataStoreLocation, $characterBuildFile -join "\")
 $boonsTable      = populateData ($dataStoreLocation, $boonsFile -join "\")
 $contactsTable   = populateData ($dataStoreLocation, $contactsFile -join "\")
+$spellsTable     = populateData ($dataStoreLocation, $spellsFile -join "\")
 
 $buildInfo = returnRecordSet $characterBuild "BuildType" $buildType
 $raceInfo  = returnRecordSet $raceTable "RaceName" $characterBuild.Race

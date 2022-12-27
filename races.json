@@ -32,7 +32,55 @@
         	"Power" : 2
 		}
 	],
-	"RacialAbilities" :[],
+	"RacialAbilities" :
+	[
+		{
+			"Sense Taint":
+			[
+				{
+					"Description":"",
+					"Tier":1,
+					"Effect":""
+				},
+				{
+
+				}
+			],
+			"Mesmerism":
+			[
+				{
+					"Description":"",
+					"Tier":1,
+					"Effect":""
+				},
+				{
+
+				}
+			],
+			"Command Thrall":
+			[
+				{
+					"Description":"",
+					"Tier":2,
+					"Effect":""
+				},
+				{
+
+				}
+			],
+			"Fearsome Aspect":
+			[
+				{
+					"Description":"",
+					"Tier":2,
+					"Effect":""
+				},
+				{
+
+				}
+			]
+		}
+	],
 	"Skill Bonus points" : 0,
 	"Skills":[],
     "BuildPointCost"  : 0

@@ -1,0 +1,52 @@
+[
+    {
+        "Wisp of Direction":
+        [
+            {
+                "Description":"",
+                "Cost in Quintessence Points":15,
+                "Range":30,
+                "Affinity":"Air",
+                "Workings":[""],
+                "Duration":"",
+                "Effect":""
+            }
+        ],
+        "Binding of Stone":
+        [
+            {
+                "Description":"",
+                "Cost in Quintessence Points":15,
+                "Range":30,
+                "Affinity":"Air",
+                "Workings":[""],
+                "Duration":"",
+                "Effect":""
+            }
+        ],
+        "Breath of Fire":
+        [
+            {
+                "Description":"",
+                "Cost in Quintessence Points":15,
+                "Range":30,
+                "Affinity":"Air",
+                "Workings":[""],
+                "Duration":"",
+                "Effect":""
+            }
+        ],
+        "Small Changing":
+        [
+            {
+                "Description":"",
+                "Cost in Quintessence Points":5,
+                "Range":30,
+                "Affinity":"Air",
+                "Workings":[""],
+                "Duration":"",
+                "Effect":""
+            }
+        ]
+    }
+]
