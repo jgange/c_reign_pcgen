@@ -1,0 +1,28 @@
+[
+    {
+        "1":
+        [
+            {
+                "Benefit":"Provides commonly known information and/or will do minor favors.",
+                "Limitation":"If the character has a bad reputation, the contact will have to be persuaded to help. Either way, they will not help more than twice weekly and at their convenience.",
+                "Cost":20
+            }
+        ],
+        "2":
+        [
+            {
+                "Benefit":"Provides inside information and/or do moderate level favors.",
+                "Limitation":"The contact will meet with the character if they are available. They will not risk their personal safety or professional reputation to help the character.",
+                "Cost":40
+            }
+        ],
+        "3":
+        [
+            {
+                "Benefit":"Provide a hideout or safe house for the player. Provide confidential information. Provide valuable resources (e.g. access to a healer).",
+                "Limitation":"If the character is wanted by the local magistrate, or otherwise being sought after by powerful enemies, they will require persuasion to help.",
+                "Cost":60
+            }
+        ]
+    }
+]

@@ -9,6 +9,7 @@ $buildCostsFile      = "buildPointCost.json"
 $attributeTableFile  = "attributesTable.json"
 $professionTiersFile = "professionTiers.json"
 $boonsFile           = "boons.json"
+$contactsFile        = "contacts.json"
 $characterBuildFile  = "brak.json"
 
 
@@ -159,10 +160,21 @@ function computeRacialAbilities($characterBuild)
     return $bps
 }
 
-function computeContactsCost($characterBuild)
+function computeContactsCost($characterBuild, $contactsTable)
 {
     # needs a seed file also
     [int] $bps = 0
+
+    $characterBuild.Contacts | ForEach-Object {
+        $contact = $_
+        returnProperties $contactsTable | ForEach-Object {
+            if ($contact -eq $_)
+            {
+                $bps += $contactsTable.$_.Cost
+            }
+        }
+    }
+
     return $bps
 }
 
@@ -203,7 +215,7 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
         RareItems       = computeRareItemsCost   $characterBuild $buildPointCosts
         SkillRaises     = computeSkillRaiseCost  $characterBuild
         Spells          = computeSpellCost       $characterBuild
-        Contacts        = computeContactsCost    $characterBuild
+        Contacts        = computeContactsCost    $characterBuild $contactsTable
         RacialAbilities = computeRacialAbilities $characterBuild
         Boons           = computeBoonCost        $characterBuild $boonsTable
         Taint           = computeTaintCost       $characterBuild
@@ -227,6 +239,7 @@ $attributeTable  = populateData ($dataStoreLocation, $attributeTableFile -join "
 $professionTiers = populateData ($dataStoreLocation, $professionTiersFile -join "\")
 $characterBuild  = populateData ($dataStoreLocation, $characterBuildFile -join "\")
 $boonsTable      = populateData ($dataStoreLocation, $boonsFile -join "\")
+$contactsTable   = populateData ($dataStoreLocation, $contactsFile -join "\")
 
 $buildInfo = returnRecordSet $characterBuild "BuildType" $buildType
 $raceInfo  = returnRecordSet $raceTable "RaceName" $characterBuild.Race
