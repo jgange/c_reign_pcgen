@@ -161,12 +161,17 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
     [int] $totalBuildCost = 0
 
     $Global:buildCosts = [PSCustomObject]@{
-        Backgrounds  = computeBackgroundCost $characterBuild $professionTiers
-        Skills       = computeSkillsCost     $characterBuild $buildPointCosts
-        Attributes   = computeAttributesCost $characterBuild $raceTable        $attributeTable
-        Traits       = computeTraitsCost     $characterBuild $traitTable       $buildPointCosts
-        RareItems    = computeRareItemsCost  $characterBuild $buildPointCosts
-        SkillRaises  = computeSkillRaiseCost $characterBuild
+        Backgrounds     = computeBackgroundCost $characterBuild $professionTiers
+        Skills          = computeSkillsCost     $characterBuild $buildPointCosts
+        Attributes      = computeAttributesCost $characterBuild $raceTable        $attributeTable
+        Traits          = computeTraitsCost     $characterBuild $traitTable       $buildPointCosts
+        RareItems       = computeRareItemsCost  $characterBuild $buildPointCosts
+        SkillRaises     = computeSkillRaiseCost $characterBuild
+        Spells          = 0
+        Contacts        = 0
+        RacialAbilities = 0
+        MinorBoon       = 0
+        Taint           = 0
     }
 
     ($buildCosts | Get-Member -MemberType NoteProperty).Name | ForEach-Object { 
