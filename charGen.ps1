@@ -130,6 +130,31 @@ function computeSkillRaiseCost($characterBuild)
     }
     return $bps
 }
+
+function computeSpellCost($characterBuild)
+{
+    # based on quintessence cost of spell - requires the spell list to be seeded
+}
+
+function computeRacialAbilities($characterBuild)
+{
+    # make sure races seed file includes tiered abilities with costs
+}
+
+function computeContactsCost($characterBuild)
+{
+    # needs a seed file also
+}
+
+function computerMinorBoonCost($characterBuild)
+{
+    #  needs a seed file
+}
+
+function computeTaintCost($characterBuild)
+{
+    # this one is just a rule, no seed file required
+}
 function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts, $attributeTable)
 {
     # Extract items that have a build cost
