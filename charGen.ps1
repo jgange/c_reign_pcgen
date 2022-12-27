@@ -1,6 +1,6 @@
 #### INITIALIZATION ####
 
-$dataStoreLocation   = "C:\Users\joega\Projects\PowerShell\c_reign_pcgen"
+$dataStoreLocation   = "C:\Users\jgange\Projects\PowerShell\c_reign_pcgen"
 $raceFile            = "races.json"
 $buildsFile          = "builds.json"
 $traitsFile          = "traits.json"
@@ -9,8 +9,6 @@ $buildCostsFile      = "buildPointCost.json"
 $attributeTableFile  = "attributesTable.json"
 $professionTiersFile = "professionTiers.json"
 $characterBuildFile  = "brak.json"
-
-$buildCosts
 
 #### METHODS ####
 
@@ -113,6 +111,15 @@ function computeRareItemsCost($characterBuild, $buildPointCosts)
     return $bps
 }
 
+function computeSkillRaiseCost($characterBuild)
+{
+    $characterBuild.SkillIncreases | ForEach-Object {
+        $skillName = ($_ | Get-Member -MemberType NoteProperty).Name
+        $increase  = $characterBuild.SkillIncreases.$skillName
+        $increase
+    }
+}
+
 function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts, $attributeTable)
 {
     # Extract items that have a build cost
@@ -153,6 +160,10 @@ $raceInfo  = returnRecordSet $raceTable "RaceName" $characterBuild.Race
 #$attributeTable
 #$characterBuild
 #$professionTiers
+
+computeSkillRaiseCost $characterBuild
+
+exit 0
 
 $characterBuild.BuildType
 $raceInfo.RaceName

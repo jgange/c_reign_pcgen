@@ -22,6 +22,13 @@
             "Ranged Attack":30
         }
     ],
+    "SkillIncreases":
+    [
+        {
+            "Size Up":5,
+            "Ranged Attack":5
+        }
+    ],
     "Attributes":
     [
         {
@@ -31,6 +38,17 @@
             "Size":3,
             "Intellect":2,
             "Power":2
+        }
+    ],
+    "AttributeScores":
+    [
+        {
+            "Strength":50,
+            "Constitution":40,
+            "Dexterity":40,
+            "Size":30,
+            "Intellect":20,
+            "Power":20
         }
     ],
     "Traits":
