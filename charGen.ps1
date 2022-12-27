@@ -121,14 +121,11 @@ function computeSkillRaiseCost($characterBuild)
     
     for($i=0; $i -lt ($increases.Count/2); $i++)
     {
-        #Write-Output "i = $i"
         $score = $increases[$i]
         for ($k = 0; $k -lt $increases[$i+2]; $k++)
         {
-            #Write-Output "k = $k"
             $bps = $bps + [int][math]::Floor($score/10)
             $score++
-            #$bps,$score -join " - "
         }
     }
     return $bps
