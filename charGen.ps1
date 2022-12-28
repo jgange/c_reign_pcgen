@@ -108,7 +108,7 @@ function computeTraitsCost($characterBuild, $traitTable, $buildPointCosts)
                 for($i=0; $i -lt $buildPointCosts.Traits.Count; $i++)
                 {    
                     $trait = ($buildPointCosts.Traits[$i] | Get-Member -MemberType NoteProperty).Name
-                    if ($trait-eq $_.TraitType)
+                    if ($trait -eq $_.TraitType)
                     {
                         $bps += [int]$buildPointCosts.Traits[$i].$Trait
                     }
@@ -170,10 +170,23 @@ function computeSpellCost($characterBuild, $spellsTable)
     return $bps
 }
 
-function computeRacialAbilities($characterBuild)
+function computeRacialAbilities($characterBuild, $raceTable, $buildPointCosts)
 {
     # make sure races seed file includes tiered abilities with costs
     [int] $bps = 0
+
+    $characterBuild.RacialAbilities | ForEach-Object {
+        $racialAbility = $_
+        returnProperties $raceTable.RacialAbilities | ForEach-Object {
+            $ability = $_
+            if ($racialAbility -eq $ability)
+            {
+                $t = $raceTable.RacialAbilities.$ability.Tier | Out-String -NoNewline
+                $bps += ($buildPointCosts.RacialAbility.$t)
+            }
+        }
+    }
+
     return $bps
 }
 
@@ -233,7 +246,7 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
         SkillRaises     = computeSkillRaiseCost  $characterBuild
         Spells          = computeSpellCost       $characterBuild $spellsTable
         Contacts        = computeContactsCost    $characterBuild $contactsTable
-        RacialAbilities = computeRacialAbilities $characterBuild
+        RacialAbilities = computeRacialAbilities $characterBuild $raceTable $buildPointCosts
         Boons           = computeBoonCost        $characterBuild $boonsTable
         Taint           = computeTaintCost       $characterBuild
     }
@@ -248,7 +261,7 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
 #### MAIN PROGRAM ####
 
 $raceTable       = populateData ($dataStoreLocation, $raceFile -join "\") 
-$characterBuild = populateData ($dataStoreLocation, $buildsFile -join "\") 
+$characterBuild  = populateData ($dataStoreLocation, $buildsFile -join "\") 
 $traitTable      = populateData ($dataStoreLocation, $traitsFile -join "\")
 $systemRules     = populateData ($dataStoreLocation, $systemRulesFile -join "\")
 $buildPointCosts = populateData ($dataStoreLocation, $buildCostsFile -join "\")

@@ -2,7 +2,8 @@
     "PlayerName":"Joe",
     "CharacterName":"Brak Ironsoul",
     "BuildType":"Heroic",
-    "Race":"Human",
+    "Race":"Draikosi",
+    "RacialAbilities":["Mesmerism","Sense Taint"],
     "Backgrounds":[
             {
                 "Warrior":2

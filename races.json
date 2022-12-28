@@ -39,7 +39,7 @@
 			[
 				{
 					"Description":"",
-					"Tier":1,
+					"Tier":"1",
 					"Effect":""
 				},
 				{
@@ -50,7 +50,7 @@
 			[
 				{
 					"Description":"",
-					"Tier":1,
+					"Tier":"1",
 					"Effect":""
 				},
 				{
@@ -61,7 +61,7 @@
 			[
 				{
 					"Description":"",
-					"Tier":2,
+					"Tier":"2",
 					"Effect":""
 				},
 				{
@@ -72,7 +72,7 @@
 			[
 				{
 					"Description":"",
-					"Tier":2,
+					"Tier":"2",
 					"Effect":""
 				},
 				{
