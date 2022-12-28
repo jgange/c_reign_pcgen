@@ -1,18 +1,22 @@
 {
+    "RaceType":
+    [
+        {
+            "Standard":0,
+            "Near-human":30,
+            "Tainted":60,
+            "Primal":90,
+            "Plane-touched":120
+        }
+    ],
     "Traits":
     [
         {
-            "Positive":30
-        },
-        {
-            "Negative":-15
-        },
-        {
-            "Balanced":15
-        },      
-        {
+            "Positive":30,
+            "Negative":-15,
+            "Balanced":15,
             "Balanced/Mutable":15
-        }  
+        }
     ],
     "Skill":15,
     "Contact":

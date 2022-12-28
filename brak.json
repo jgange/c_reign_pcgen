@@ -2,8 +2,8 @@
     "PlayerName":"Joe",
     "CharacterName":"Brak Ironsoul",
     "BuildType":"Heroic",
-    "Race":"Draikosi",
-    "RacialAbilities":["Mesmerism","Sense Taint"],
+    "Race":"Human",
+    "RacialAbilities":[],
     "Backgrounds":[
             {
                 "Warrior":2
@@ -52,7 +52,7 @@
             "Power":20
         }
     ],
-    "Traits": ["Arrogant", "Brash"],
+    "Traits": ["Arrogant","Brash"],
     "Contacts":[],
     "RareItems":
     [
@@ -65,5 +65,5 @@
     ],
     "Boons":[],
     "Spells":[],
-    "Taint":5
+    "Taint":0
 }

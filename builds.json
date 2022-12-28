@@ -1,35 +1,43 @@
 [
     {
-        "BuildType":"Normal",
-        "Description":"This emcompasses normal humans.",
-        "SkillBaseValue":10,
-        "BuildPoints":120,
-        "NumOfBackgrounds":1,
-        "BackGroundTier":1,
-        "MaxNumStartingSkills":6,
-        "SpecialAbilitiesAvailable":"no",
-        "SpecialAbilityMaxTier":"0"
-    },
-    {
-        "BuildType":"Heroic",
-        "Description":"This is the power tier for most adventurers.",
-        "SkillBaseValue":30,
-        "BuildPoints":250,
-        "NumOfBackgrounds":"3",
-        "BackGroundTier":4,
-        "MaxNumStartingSkills":12,
-        "SpecialAbilitiesAvailable":"yes",
-        "SpecialAbilityMaxTier":2
-    },
-    {
-        "BuildType":"Ascendant",
-        "Description":"This is for players who wish to play avatars of a deity or other powerful primal forces.",
-        "SkillBaseValue":50,
-        "BuildPoints":500,
-        "NumOfBackgrounds":"6",
-        "BackGroundTier":6,
-        "MaxNumStartingSkills":20,
-        "SpecialAbilitiesAvailable":"yes",
-        "SpecialAbilityMaxTier":4
+        "Normal":
+        [
+            {
+                "Description":"This emcompasses normal humans.",
+                "SkillBaseValue":10,
+                "BuildPoints":120,
+                "NumOfBackgrounds":1,
+                "BackGroundTier":1,
+                "MaxNumStartingSkills":6,
+                "SpecialAbilitiesAvailable":"no",
+                "SpecialAbilityMaxTier":"0"
+            }
+        ],
+        "Heroic":
+        [
+            {
+                "Description":"This is the power tier for most adventurers.",
+                "SkillBaseValue":30,
+                "BuildPoints":250,
+                "NumOfBackgrounds":"3",
+                "BackGroundTier":4,
+                "MaxNumStartingSkills":12,
+                "SpecialAbilitiesAvailable":"yes",
+                "SpecialAbilityMaxTier":2
+            }
+        ],
+        "Ascendant":
+        [
+            {
+                "Description":"This is for players who wish to play avatars of a deity or other powerful primal forces.",
+                "SkillBaseValue":50,
+                "BuildPoints":500,
+                "NumOfBackgrounds":"6",
+                "BackGroundTier":6,
+                "MaxNumStartingSkills":20,
+                "SpecialAbilitiesAvailable":"yes",
+                "SpecialAbilityMaxTier":4
+            }
+        ]
     }
 ]

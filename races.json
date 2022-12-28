@@ -1,88 +1,86 @@
 [
-{
-	"RaceName":"Human",
-	"RaceType":"Standard",
-	"AttributeBase":2,
-	"BaseAttributes":[
-		{
-			"Strength" : 2,
-        	"Constitution" : 2,
-			"Dexterity"  : 2,
-        	"Size" : 2,
-        	"Intellect" : 2,
-        	"Power" : 2
-		}
-	],
-	"RacialAbilities" :[],
-	"Skill Bonus points" : 0,
-	"Skills":[],
-    "BuildPointCost"  : 0
-},
-{
-	"RaceName":"Draikosi",
-	"RaceType":"Tainted",
-	"AttributeBase":2,
-	"BaseAttributes":[
-		{
-			"Strength" : 2,
-        	"Constitution" : 2,
-			"Dexterity"  : 2,
-        	"Size" : 2,
-        	"Intellect" : 2,
-        	"Power" : 2
-		}
-	],
-	"RacialAbilities" :
-	[
-		{
-			"Sense Taint":
-			[
-				{
-					"Description":"",
-					"Tier":"1",
-					"Effect":""
-				},
-				{
-
-				}
-			],
-			"Mesmerism":
-			[
-				{
-					"Description":"",
-					"Tier":"1",
-					"Effect":""
-				},
-				{
-
-				}
-			],
-			"Command Thrall":
-			[
-				{
-					"Description":"",
-					"Tier":"2",
-					"Effect":""
-				},
-				{
-
-				}
-			],
-			"Fearsome Aspect":
-			[
-				{
-					"Description":"",
-					"Tier":"2",
-					"Effect":""
-				},
-				{
-
-				}
-			]
-		}
-	],
-	"Skill Bonus points" : 0,
-	"Skills":[],
-    "BuildPointCost"  : 0
-}
+	{
+		"Human":
+		[
+			{
+				"RaceType":"Standard",
+				"AttributeBase":2,
+				"BaseAttributes":
+				[
+					{
+						"Strength" : 2,
+						"Constitution" : 2,
+						"Dexterity"  : 2,
+						"Size" : 2,
+						"Intellect" : 2,
+						"Power" : 2
+					}
+				],
+				"RacialAbilities" :[],
+				"Skill Bonus points" : 0,
+				"Skills":[],
+				"BuildPointCost"  : 0
+			}
+		]	
+	},
+	{
+		"Draikosi":
+		[
+			{
+				"RaceType":"Tainted",
+				"AttributeBase":2,
+				"BaseAttributes":
+				[
+					{
+						"Strength" : 2,
+						"Constitution" : 2,
+						"Dexterity"  : 2,
+						"Size" : 2,
+						"Intellect" : 2,
+						"Power" : 2
+					}
+				],
+				"RacialAbilities" :
+				[
+					{
+						"Sense Taint":
+						[
+							{
+								"Description":"",
+								"Tier":"1",
+								"Effect":""
+							}
+						],
+						"Mesmerism":
+						[
+							{
+								"Description":"",
+								"Tier":"1",
+								"Effect":""
+							}
+						],
+						"Command Thrall":
+						[
+							{
+								"Description":"",
+								"Tier":"2",
+								"Effect":""
+							}
+						],
+						"Fearsome Aspect":
+						[
+							{
+								"Description":"",
+								"Tier":"2",
+								"Effect":""
+							}
+						]
+					}
+				],
+				"Skill Bonus points" : 0,
+				"Skills":[],
+				"BuildPointCost"  : 0
+			}
+		]
+	}
 ]

@@ -4,15 +4,13 @@ $dataStoreLocation   = "C:\Users\jgange\Projects\PowerShell\c_reign_pcgen"
 $raceFile            = "races.json"
 $buildsFile          = "builds.json"
 $traitsFile          = "traits.json"
-$systemRulesFile     = "systemRules.json"
 $buildCostsFile      = "buildPointCost.json"
-$attributeTableFile  = "attributesTable.json"
+$attributeTableFile  = "baseAttributeCost.json"
 $professionTiersFile = "professionTiers.json"
 $boonsFile           = "boons.json"
 $contactsFile        = "contacts.json"
 $spellsFile          = "spells.json"
 $characterBuildFile  = "brak.json"
-
 
 #### METHODS ####
 
@@ -61,6 +59,14 @@ function computeBackgroundCost($characterBuild, $professionTiers)
     }
     return [int] $bp
 }
+
+function computeRaceCost($characterBuild, $raceTable, $buildPointCosts)
+{
+    $race = $characterBuild.Race
+    $type = $raceTable.$race.RaceType
+    return $buildPointCosts.RaceType.$type
+}
+
 function computeSkillsCost($characterBuild, $buildPointCosts)
 {
     [int] $bps = 0
@@ -73,26 +79,22 @@ function computeSkillsCost($characterBuild, $buildPointCosts)
 
 function computeAttributesCost($characterBuild, $raceTable, $attributeTable)
 {
-    [int]$buildCost = 0
-    for($i=0;$i -lt $raceTable.Count; $i++)
-    {
-        if ($raceTable.RaceName[$i] -eq [string]$characterBuild.Race)
+    [int]$bps = 0
+    $race = $characterBuild.Race
+    $attributeBase = $raceTable.$race.AttributeBase
+
+    $attributeList = ($raceTable.$race.BaseAttributes | Get-Member -MemberType NoteProperty).Name
+
+    $attributeList | ForEach-Object {       
+        $attribute = $_
+        $characterAttributeValue = $characterBuild.Attributes.$attribute
+        $racialAttributeBaseValue =  $raceTable.$race.BaseAttributes.$attribute
+        if ($characterAttributeValue -gt $racialAttributeBaseValue)
         {
-            $attributeCosts = $attributeTable.AttributeBase.[string]$raceTable[$i].AttributeBase
-            $attributeList = ($raceTable[$i].BaseAttributes | Get-Member -MemberType NoteProperty).Name
-            $attributeList | ForEach-Object {         
-                if ($characterBuild.Attributes.$_ -gt $raceTable[$i].BaseAttributes.$_)
-                {
-                    #Write-Output "Raised attribute from $($raceTable[$i].BaseAttributes.$_) to $($characterBuild.Attributes.$_)"
-                    $attributeValue = $characterBuild.Attributes.$_
-                    $attributeCosts | ForEach-Object {
-                        if ($_.Tier -eq $attributeValue) { $buildCost += [int]$_.buildPointCost}
-                    }
-                }
-            }
+            $bps += $attributeTable.$attributeBase.$characterAttributeValue
         }
-    }
-    return $buildCost
+    }       
+    return $bps
 }
 
 function computeTraitsCost($characterBuild, $traitTable, $buildPointCosts)
@@ -102,17 +104,12 @@ function computeTraitsCost($characterBuild, $traitTable, $buildPointCosts)
 
     $characterBuild.Traits | ForEach-Object {
         $characterTrait = $_
-        $traitTable | ForEach-Object {
-            if ($characterTrait -eq $_.TraitName)
+        returnProperties $traitTable | ForEach-Object {
+            $trait = $_
+            if ($characterTrait -eq $trait)
             { 
-                for($i=0; $i -lt $buildPointCosts.Traits.Count; $i++)
-                {    
-                    $trait = ($buildPointCosts.Traits[$i] | Get-Member -MemberType NoteProperty).Name
-                    if ($trait -eq $_.TraitType)
-                    {
-                        $bps += [int]$buildPointCosts.Traits[$i].$Trait
-                    }
-                }
+                $t = $traitTable.$trait.TraitType | Out-String -NoNewline
+                $bps += $buildPointCosts.Traits.$t
             }
         }
     }
@@ -239,6 +236,7 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
 
     $Global:buildCosts = [PSCustomObject]@{
         Backgrounds     = computeBackgroundCost  $characterBuild $professionTiers
+        Race            = computeRaceCost        $characterBuild $raceTable        $buildPointCosts
         Skills          = computeSkillsCost      $characterBuild $buildPointCosts
         Attributes      = computeAttributesCost  $characterBuild $raceTable        $attributeTable
         Traits          = computeTraitsCost      $characterBuild $traitTable       $buildPointCosts
@@ -246,7 +244,7 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
         SkillRaises     = computeSkillRaiseCost  $characterBuild
         Spells          = computeSpellCost       $characterBuild $spellsTable
         Contacts        = computeContactsCost    $characterBuild $contactsTable
-        RacialAbilities = computeRacialAbilities $characterBuild $raceTable $buildPointCosts
+        RacialAbilities = computeRacialAbilities $characterBuild $raceTable        $buildPointCosts
         Boons           = computeBoonCost        $characterBuild $boonsTable
         Taint           = computeTaintCost       $characterBuild
     }
@@ -263,7 +261,6 @@ function calculateBuildCost($characterBuild, $professionTiers, $buildPointCosts,
 $raceTable       = populateData ($dataStoreLocation, $raceFile -join "\") 
 $characterBuild  = populateData ($dataStoreLocation, $buildsFile -join "\") 
 $traitTable      = populateData ($dataStoreLocation, $traitsFile -join "\")
-$systemRules     = populateData ($dataStoreLocation, $systemRulesFile -join "\")
 $buildPointCosts = populateData ($dataStoreLocation, $buildCostsFile -join "\")
 $attributeTable  = populateData ($dataStoreLocation, $attributeTableFile -join "\")
 $professionTiers = populateData ($dataStoreLocation, $professionTiersFile -join "\")
@@ -272,18 +269,12 @@ $boonsTable      = populateData ($dataStoreLocation, $boonsFile -join "\")
 $contactsTable   = populateData ($dataStoreLocation, $contactsFile -join "\")
 $spellsTable     = populateData ($dataStoreLocation, $spellsFile -join "\")
 
-$buildInfo = returnRecordSet $characterBuild "BuildType" $buildType
-$raceInfo  = returnRecordSet $raceTable "RaceName" $characterBuild.Race
+computeAttributesCost  $characterBuild $raceTable        $attributeTable
 
-#$traitTable
-#$systemRules
-#$buildPointCosts
-#$attributeTable
-#$characterBuild
-#$professionTiers
+exit 0
 
 $characterBuild.BuildType
-$raceInfo.RaceName
+$characterBuild.Race
 
 [int]$buildPointCost = calculateBuildCost $characterBuild $professionTiers $buildPointCosts $attributeTable
 $buildCosts
