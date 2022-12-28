@@ -269,10 +269,6 @@ $boonsTable      = populateData ($dataStoreLocation, $boonsFile -join "\")
 $contactsTable   = populateData ($dataStoreLocation, $contactsFile -join "\")
 $spellsTable     = populateData ($dataStoreLocation, $spellsFile -join "\")
 
-computeAttributesCost  $characterBuild $raceTable        $attributeTable
-
-exit 0
-
 $characterBuild.BuildType
 $characterBuild.Race
 
