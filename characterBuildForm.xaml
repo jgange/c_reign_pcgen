@@ -3,30 +3,40 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Crimson Reign Character Builder" Height="1024" Width="1280">
        <DockPanel>
-            <Menu DockPanel.Dock="Top">
+            <Menu x:Name="mainMenu" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_Exit" />
+                    <MenuItem x:Name="menuSaveFile" Header="_Save"/>
+                    <MenuItem x:Name="menuExitProgram" Header="_Exit"/>
                     </MenuItem>
-                    <MenuItem Header="_Tools">
-                    <MenuItem Header="_Manage users">
+                    <MenuItem Header="_Second Item">
+                    <MenuItem Header="_Item One">
                     </MenuItem>
-                    <MenuItem Header="_Show groups" IsCheckable="True" IsChecked="True" />
+                    <MenuItem Header="I_tem Two" IsCheckable="True" IsChecked="True" />
                     </MenuItem>
                     </Menu>
             <Grid x:Name="LayoutRoot"  VerticalAlignment="Center" Width="1280" Height="1024">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <StackPanel x:Name="characterMetaDataSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="30,0,0,0" Grid.Row="0">
+                <StackPanel x:Name="characterMetaDataSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="30,90,0,0" Grid.Row="0" Grid.Column="0">
                     <Label x:Name="playerNameLbl" Content="Player Name:" Width="100" HorizontalAlignment="Left"/>
                     <Label x:Name="characterNameLbl" Content="Character Name:" Width="100" HorizontalAlignment="Left"/>
                     <Label x:Name="buildTypeLbl" Content="Build Type:" Width="100" HorizontalAlignment="Left"/>
                     <Label x:Name="buildPointsLbl" Content="Build Points:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="characterRaceLbl" Content="Race:" Width="100" HorizontalAlignment="Left"/>
                 </StackPanel>
             
-                <StackPanel x:Name="characterValueMetaDataSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,0,0,0" Grid.Row="0">
+                <StackPanel x:Name="characterValueMetaDataSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,90,0,0" Grid.Row="0" Grid.Column="0">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type TextBox}">
                             <Setter Property="Margin" Value="0,5,0,0"/>
@@ -35,12 +45,77 @@
                     <TextBox x:Name="playerNameValue" Width="180" Height="20" HorizontalAlignment="Left"/>
                     <TextBox x:Name="characterNameValue" Width="180" Height="20" HorizontalAlignment="Left"/>
                     <ComboBox x:Name="buildSelector" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                    <ComboBoxItem>Normal</ComboBoxItem>
-                    <ComboBoxItem IsSelected="True">Heroic</ComboBoxItem>
-                    <ComboBoxItem>Ascendant</ComboBoxItem>
+                        <ComboBoxItem>Normal</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">Heroic</ComboBoxItem>
+                        <ComboBoxItem>Ascendant</ComboBoxItem>
                     </ComboBox>
                     <TextBox x:Name="buildPoints" Width="180" Height="20" HorizontalAlignment="Left"/>
-                </StackPanel>   
+                    <ComboBox x:Name="raceSelector" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem>Draikosi</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">Human</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
+               <StackPanel x:Name="characterAttributeSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="30,90,0,0" Grid.Row="0" Grid.Column="1">
+                    <Label x:Name="StrengthLbl" Content="Strength:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="ConstitutionLbl" Content="Constitution:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="DexterityLbl" Content="Dexterity:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="SizeLbl" Content="Size:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="IntellectLbl" Content="Intellect:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="PowerLbl" Content="Power:" Width="100" HorizontalAlignment="Left"/>
+                </StackPanel>
+            
+                <StackPanel x:Name="characterAttributeValueSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,90,0,0" Grid.Row="0" Grid.Column="1">
+                    <ComboBox x:Name="StrengthValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem>10</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
+                        <ComboBoxItem>30</ComboBoxItem>
+                        <ComboBoxItem>40</ComboBoxItem>
+                        <ComboBoxItem>50</ComboBoxItem>
+                        <ComboBoxItem>60</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="ConstitutionValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem>10</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
+                        <ComboBoxItem>30</ComboBoxItem>
+                        <ComboBoxItem>40</ComboBoxItem>
+                        <ComboBoxItem>50</ComboBoxItem>
+                        <ComboBoxItem>60</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="DexterityValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem>10</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
+                        <ComboBoxItem>30</ComboBoxItem>
+                        <ComboBoxItem>40</ComboBoxItem>
+                        <ComboBoxItem>50</ComboBoxItem>
+                        <ComboBoxItem>60</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="SizeValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem>10</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
+                        <ComboBoxItem>30</ComboBoxItem>
+                        <ComboBoxItem>40</ComboBoxItem>
+                        <ComboBoxItem>50</ComboBoxItem>
+                        <ComboBoxItem>60</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="IntellectValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem>10</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
+                        <ComboBoxItem>30</ComboBoxItem>
+                        <ComboBoxItem>40</ComboBoxItem>
+                        <ComboBoxItem>50</ComboBoxItem>
+                        <ComboBoxItem>60</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="PowerValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem>10</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
+                        <ComboBoxItem>30</ComboBoxItem>
+                        <ComboBoxItem>40</ComboBoxItem>
+                        <ComboBoxItem>50</ComboBoxItem>
+                        <ComboBoxItem>60</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
             </Grid>
         </DockPanel>
 </Window>
