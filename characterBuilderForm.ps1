@@ -1,6 +1,6 @@
 Add-Type -AssemblyName PresentationFramework
 
-$displayFormFilePath = "C:\Users\joega\Projects\PowerShell\c_reign_pcgen\characterBuildForm.xaml"
+$displayFormFilePath = $PSScriptRoot, "characterBuildForm.xaml" -join "\"
 
 [xml]$xaml = Get-Content $displayFormFilePath
 
@@ -8,5 +8,15 @@ $displayFormFilePath = "C:\Users\joega\Projects\PowerShell\c_reign_pcgen\charact
 
 $Reader = (New-Object System.Xml.XmlNodeReader $xaml)
 $characterBuildFormWindow = [Windows.Markup.XamlReader]::Load($Reader)
+
+$playerName = $characterBuildFormWindow.FindName("playerNameValue")
+$characterName = $characterBuildFormWindow.FindName("characterNameValue")
+$characterBuild = $characterBuildFormWindow.FindName("buildSelector")
+$characterBuildPoints = $characterBuildFormWindow.FindName("buildPoints")
+
+$playerName.Text
+$characterName.Text
+$characterBuild.Text
+$characterBuildPoints.Text
 
 $characterBuildFormWindow.ShowDialog()
