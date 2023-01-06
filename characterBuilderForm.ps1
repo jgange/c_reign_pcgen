@@ -55,6 +55,48 @@ function changeAttributeValue($controlName, $propertyName)
     }
 }
 
+function collectPropertiesIntoRecord()
+{
+    # Grab all the properties from the window and output them into an object
+    $characterBuild = [PSCustomObject]@{
+        PlayerName         = $playerName.Text
+        CharacterName      = $characterName.Text
+        CharacterBuildType = $characterBuild.Text
+        Strength           = $strengthValue.SelectedItem.Content
+        Constitution       = $constitutionValue.SelectedItem.Content
+        Dexterity          = $dexterityValue.SelectedItem.Content
+        Size               = $sizeValue.SelectedItem.Content
+        Intellect          = $intellectValue.SelectedItem.Content
+        Power              = $powerValue.SelectedItem.Content
+    }
+
+    return $characterBuild
+}
+
+function generateFileName($targetFolder)
+{
+    if ($characterName.Text -eq "") 
+        {
+            $fileName = "default.json"
+        }
+        else
+        {
+            $charName = ([string]$characterName.Text) -replace " ",""
+            $fileName = $charName,"json" -join "."
+        }
+
+    $outputFileName = $targetFolder, $fileName -join "\"
+
+    return $outputFileName
+}
+
+function writeUpdatesToFile()
+{
+    # write the character record object out
+    $characterRecord = collectPropertiesIntoRecord
+    $fileName = generateFileName $outputFile
+    $characterRecord | ConvertTo-Json | Out-File -FilePath $fileName
+}
 
 ######## MAIN PROGRAM ##########
 
@@ -100,20 +142,7 @@ $mainMenuFileExit.Add_Click(
 $mainMenuFileSave.Add_Click(
     {
         #Save the data
-        if ($characterName.Text -eq "") 
-        {
-            $fileName = "default.json"
-        }
-        else
-        {
-            $charName = ([string]$characterName.Text) -replace " ",""
-            $fileName = $charName,"json" -join "."
-        }
-
-        $outputFile = $outputFile, $fileName -join "\"
-        $playerName.Text | Out-File -FilePath $outputFile -Append
-        $characterName.Text | Out-File -FilePath $outputFile -Append
-        $characterBuild.Text | Out-File -FilePath $outputFile -Append
+        writeUpdatesToFile
     }
 )
 
