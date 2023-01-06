@@ -7,12 +7,13 @@ $buildTypes = @{
 }
 
 $buildAttribPts = @{
-    "Strength"     = 0
-    "Constitution" = 0
-    "Dexterity"    = 0
-    "Size"         = 0
-    "Intellect"    = 0
-    "Power"        = 0
+    "Strength"       = 0
+    "Constitution"   = 0
+    "Dexterity"      = 0
+    "Size"           = 0
+    "Intellect"      = 0
+    "Power"          = 0
+    "ProfessionTier" = 0
 }
 
 $attribCosts = [ordered]@{
@@ -34,17 +35,20 @@ $attribCosts = [ordered]@{
     }
 }
 
+$backgroundTierCosts = [ordered]@{
+    "Novice"     =  30
+    "Journeyman" =  60
+    "Expert"     =  90
+    "Master"     = 120
+}
+
 ######## FUNCTIONS #############
 
-function changeAttributeValue($controlName, $propertyName)
+function updateTotalBuildCost()
 {
-    $race = $characterRace.SelectedItem.Content
     $characterBuild = $characterBuild.Text
     $totalBuildPoints = $buildTypes.$characterBuild
-    $attrib = $controlName.SelectedItem.Content
-    [int]$buildPointCost = $attribCosts.$race.$attrib
-    $buildAttribPts.$propertyName = $buildPointCost
-    $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power
+    $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power + $buildAttribPts.ProfessionTier
     if ($totalSpent -gt $totalBuildPoints)
     { 
         [System.Windows.MessageBox]::Show('Not enough build points.')
@@ -53,6 +57,23 @@ function changeAttributeValue($controlName, $propertyName)
     {
         $characterBuildPoints.Text = $totalBuildPoints - $totalSpent
     }
+}
+
+function changeAttributeValue($controlName, $propertyName)
+{
+    $race = $characterRace.SelectedItem.Content
+    $attrib = $controlName.SelectedItem.Content
+    [int]$buildPointCost = $attribCosts.$race.$attrib
+    $buildAttribPts.$propertyName = $buildPointCost
+    updateTotalBuildCost
+}
+
+function selectBackgroundTier($backgroundTierCosts)
+{
+    [string]$tier = $tier1backgroundValue.SelectedItem.Content
+    [int]$cost = $backgroundTierCosts.$tier
+    $buildAttribPts.ProfessionTier = $cost
+    updateTotalBuildCost
 }
 
 function collectPropertiesIntoRecord()
@@ -121,6 +142,8 @@ $dexterityValue       = $characterBuildFormWindow.FindName("dexterityValue")
 $sizeValue            = $characterBuildFormWindow.FindName("sizeValue")
 $intellectValue       = $characterBuildFormWindow.FindName("intellectValue")
 $powerValue           = $characterBuildFormWindow.FindName("powerValue")
+$profession1Value     = $characterBuildFormWindow.FindName("background1Value")
+$tier1backgroundValue = $characterBuildFormWindow.FindName("tier1backgroundValue")
 
 $characterBuildPoints.Text = $buildTypes[$characterBuild.Text]
 
@@ -179,6 +202,33 @@ $intellectValue.Add_SelectionChanged(
 $powerValue.Add_SelectionChanged(
     {
         changeAttributeValue $powerValue "Power"
+    }
+)
+
+$profession1Value.Add_SelectionChanged(
+    {
+        $prof = $profession1Value.SelectedItem.Content
+        [System.Windows.MessageBox]::Show($prof)
+        if ($prof -eq 'None')
+        {
+            # refund the points back
+            $buildAttribPts.ProfessionTier = 0
+            updateTotalBuildCost
+        }
+        else
+        {
+            $tier = $tier1backgroundValue.SelectedItem.Content
+            selectBackgroundTier $backgroundTierCosts
+        }
+    }
+)
+
+$tier1backgroundValue.Add_SelectionChanged(
+    {
+        if ($profession1Value.SelectedItem.Content -ne "None")
+        {
+            selectBackgroundTier $backgroundTierCosts
+        }
     }
 )
 

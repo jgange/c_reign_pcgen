@@ -116,6 +116,29 @@
                     </ComboBox>
                 </StackPanel>
 
+                <StackPanel x:Name="BackgroundsSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="30,90,0,0" Grid.Row="0" Grid.Column="2">
+                    <Label x:Name="background1Lbl" Content="Background:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="backgroundTier1Lbl" Content="Experience Tier:" Width="100" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <StackPanel x:Name="BackgroundsValueSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,90,0,0" Grid.Row="0" Grid.Column="2">
+                    <ComboBox x:Name="background1Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+                        <ComboBoxItem>Apothecary</ComboBoxItem>
+                        <ComboBoxItem>Craftsman</ComboBoxItem>
+                        <ComboBoxItem>Merchant</ComboBoxItem>
+                        <ComboBoxItem>Noble</ComboBoxItem>
+                        <ComboBoxItem>Performer</ComboBoxItem>
+                        <ComboBoxItem>Physicker</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="tier1backgroundValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem IsSelected="True">Novice</ComboBoxItem>
+                        <ComboBoxItem>Journeyman</ComboBoxItem>
+                        <ComboBoxItem>Expert</ComboBoxItem>
+                        <ComboBoxItem>Master</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
             </Grid>
         </DockPanel>
 </Window>
