@@ -117,25 +117,6 @@ $mainMenuFileSave.Add_Click(
     }
 )
 
-<#
-$strengthValue.Add_SelectionChanged(
-    {
-        $race = $characterRace.SelectedItem.Content
-        $characterBuild = $characterBuild.Text
-        $totalBuildPoints = $buildTypes.$characterBuild
-        $str = $strengthValue.SelectedItem.Content
-        [int]$buildPointCost = $attribCosts.$race.$str
-        $buildAttribPts.Strength = $buildPointCost
-        $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power
-        if ($totalSpent -gt $totalBuildPoints) { [System.Windows.MessageBox]::Show('Not enough build points.') }
-        else {
-            $characterBuildPoints.Text = $totalBuildPoints - $totalSpent
-        }
-        
-    }
-)
-#>
-
 $strengthValue.Add_SelectionChanged(
     {
         changeAttributeValue $strengthValue "Strength"
