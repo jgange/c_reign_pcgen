@@ -57,16 +57,16 @@
                 </StackPanel>
 
                <StackPanel x:Name="characterAttributeSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="30,90,0,0" Grid.Row="0" Grid.Column="1">
-                    <Label x:Name="StrengthLbl" Content="Strength:" Width="100" HorizontalAlignment="Left"/>
-                    <Label x:Name="ConstitutionLbl" Content="Constitution:" Width="100" HorizontalAlignment="Left"/>
-                    <Label x:Name="DexterityLbl" Content="Dexterity:" Width="100" HorizontalAlignment="Left"/>
-                    <Label x:Name="SizeLbl" Content="Size:" Width="100" HorizontalAlignment="Left"/>
-                    <Label x:Name="IntellectLbl" Content="Intellect:" Width="100" HorizontalAlignment="Left"/>
-                    <Label x:Name="PowerLbl" Content="Power:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="strengthLbl" Content="Strength:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="constitutionLbl" Content="Constitution:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="dexterityLbl" Content="Dexterity:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="sizeLbl" Content="Size:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="intellectLbl" Content="Intellect:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="powerLbl" Content="Power:" Width="100" HorizontalAlignment="Left"/>
                 </StackPanel>
             
                 <StackPanel x:Name="characterAttributeValueSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,90,0,0" Grid.Row="0" Grid.Column="1">
-                    <ComboBox x:Name="StrengthValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                    <ComboBox x:Name="strengthValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem IsSelected="True">20</ComboBoxItem>
                         <ComboBoxItem>30</ComboBoxItem>
@@ -74,7 +74,7 @@
                         <ComboBoxItem>50</ComboBoxItem>
                         <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
-                    <ComboBox x:Name="ConstitutionValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                    <ComboBox x:Name="constitutionValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem IsSelected="True">20</ComboBoxItem>
                         <ComboBoxItem>30</ComboBoxItem>
@@ -82,7 +82,7 @@
                         <ComboBoxItem>50</ComboBoxItem>
                         <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
-                    <ComboBox x:Name="DexterityValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                    <ComboBox x:Name="dexterityValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem IsSelected="True">20</ComboBoxItem>
                         <ComboBoxItem>30</ComboBoxItem>
@@ -90,7 +90,7 @@
                         <ComboBoxItem>50</ComboBoxItem>
                         <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
-                    <ComboBox x:Name="SizeValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                    <ComboBox x:Name="sizeValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem IsSelected="True">20</ComboBoxItem>
                         <ComboBoxItem>30</ComboBoxItem>
@@ -98,7 +98,7 @@
                         <ComboBoxItem>50</ComboBoxItem>
                         <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
-                    <ComboBox x:Name="IntellectValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                    <ComboBox x:Name="intellectValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem IsSelected="True">20</ComboBoxItem>
                         <ComboBoxItem>30</ComboBoxItem>
@@ -106,7 +106,7 @@
                         <ComboBoxItem>50</ComboBoxItem>
                         <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
-                    <ComboBox x:Name="PowerValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                    <ComboBox x:Name="powerValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem IsSelected="True">20</ComboBoxItem>
                         <ComboBoxItem>30</ComboBoxItem>

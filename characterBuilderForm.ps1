@@ -1,9 +1,18 @@
 Add-Type -AssemblyName PresentationFramework
 
 $buildTypes = @{
-    "Normal"    ="120"
-    "Heroic"    ="240"
-    "Ascendant" ="360"
+    "Normal"    = 120
+    "Heroic"    = 240
+    "Ascendant" = 360
+}
+
+$buildAttribPts = @{
+    "Strength"     = 0
+    "Constitution" = 0
+    "Dexterity"    = 0
+    "Size"         = 0
+    "Intellect"    = 0
+    "Power"        = 0
 }
 
 $attribCosts = [ordered]@{
@@ -25,8 +34,31 @@ $attribCosts = [ordered]@{
     }
 }
 
-$outputFile = $PSScriptRoot
+######## FUNCTIONS #############
 
+function changeAttributeValue($controlName, $propertyName)
+{
+    $race = $characterRace.SelectedItem.Content
+    $characterBuild = $characterBuild.Text
+    $totalBuildPoints = $buildTypes.$characterBuild
+    $attrib = $controlName.SelectedItem.Content
+    [int]$buildPointCost = $attribCosts.$race.$attrib
+    $buildAttribPts.$propertyName = $buildPointCost
+    $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power
+    if ($totalSpent -gt $totalBuildPoints)
+    { 
+        [System.Windows.MessageBox]::Show('Not enough build points.')
+    }
+    else
+    {
+        $characterBuildPoints.Text = $totalBuildPoints - $totalSpent
+    }
+}
+
+
+######## MAIN PROGRAM ##########
+
+$outputFile = $PSScriptRoot
 $displayFormFilePath = $PSScriptRoot, "characterBuildForm.xaml" -join "\"
 
 [xml]$xaml = Get-Content $displayFormFilePath
@@ -34,13 +66,19 @@ $displayFormFilePath = $PSScriptRoot, "characterBuildForm.xaml" -join "\"
 $Reader = (New-Object System.Xml.XmlNodeReader $xaml)
 $characterBuildFormWindow = [Windows.Markup.XamlReader]::Load($Reader)
 
-$playerName = $characterBuildFormWindow.FindName("playerNameValue")
-$characterName = $characterBuildFormWindow.FindName("characterNameValue")
-$characterBuild = $characterBuildFormWindow.FindName("buildSelector")
+$playerName           = $characterBuildFormWindow.FindName("playerNameValue")
+$characterName        = $characterBuildFormWindow.FindName("characterNameValue")
+$characterBuild       = $characterBuildFormWindow.FindName("buildSelector")
 $characterBuildPoints = $characterBuildFormWindow.FindName("buildPoints")
-$mainMenu =$characterBuildFormWindow.FindName("mainMenu")
-$mainMenuFileExit = $characterBuildFormWindow.FindName("menuExitProgram")
-$mainMenuFileSave = $characterBuildFormWindow.FindName("menuSaveFile")
+$characterRace        = $characterBuildFormWindow.FindName("raceSelector")
+$mainMenuFileExit     = $characterBuildFormWindow.FindName("menuExitProgram")
+$mainMenuFileSave     = $characterBuildFormWindow.FindName("menuSaveFile")
+$strengthValue        = $characterBuildFormWindow.FindName("strengthValue")
+$constitutionValue    = $characterBuildFormWindow.FindName("constitutionValue")
+$dexterityValue       = $characterBuildFormWindow.FindName("dexterityValue")
+$sizeValue            = $characterBuildFormWindow.FindName("sizeValue")
+$intellectValue       = $characterBuildFormWindow.FindName("intellectValue")
+$powerValue           = $characterBuildFormWindow.FindName("powerValue")
 
 $characterBuildPoints.Text = $buildTypes[$characterBuild.Text]
 
@@ -79,4 +117,59 @@ $mainMenuFileSave.Add_Click(
     }
 )
 
-$characterBuildFormWindow.ShowDialog()
+<#
+$strengthValue.Add_SelectionChanged(
+    {
+        $race = $characterRace.SelectedItem.Content
+        $characterBuild = $characterBuild.Text
+        $totalBuildPoints = $buildTypes.$characterBuild
+        $str = $strengthValue.SelectedItem.Content
+        [int]$buildPointCost = $attribCosts.$race.$str
+        $buildAttribPts.Strength = $buildPointCost
+        $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power
+        if ($totalSpent -gt $totalBuildPoints) { [System.Windows.MessageBox]::Show('Not enough build points.') }
+        else {
+            $characterBuildPoints.Text = $totalBuildPoints - $totalSpent
+        }
+        
+    }
+)
+#>
+
+$strengthValue.Add_SelectionChanged(
+    {
+        changeAttributeValue $strengthValue "Strength"
+    }
+)
+
+$constitutionValue.Add_SelectionChanged(
+    {
+        changeAttributeValue $constitutionValue "Constitution"
+    }
+)
+
+$dexterityValue.Add_SelectionChanged(
+    {
+        changeAttributeValue $dexterityValue "Dexterity"
+    }
+)
+
+$sizeValue.Add_SelectionChanged(
+    {
+        changeAttributeValue $sizeValue "Size"
+    }
+)
+
+$intellectValue.Add_SelectionChanged(
+    {
+        changeAttributeValue $intellectValue "Intellect"
+    }
+)
+
+$powerValue.Add_SelectionChanged(
+    {
+        changeAttributeValue $powerValue "Power"
+    }
+)
+
+$characterBuildFormWindow.ShowDialog() | Out-Null
