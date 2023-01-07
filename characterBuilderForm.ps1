@@ -208,7 +208,6 @@ $powerValue.Add_SelectionChanged(
 $profession1Value.Add_SelectionChanged(
     {
         $prof = $profession1Value.SelectedItem.Content
-        [System.Windows.MessageBox]::Show($prof)
         if ($prof -eq 'None')
         {
             # refund the points back
