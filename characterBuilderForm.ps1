@@ -1,19 +1,23 @@
 Add-Type -AssemblyName PresentationFramework
 
+# Probably need a single list of all the items which have costs associated along with a UI type and label name
+
 $buildTypes = @{
     "Normal"    = 120
     "Heroic"    = 240
     "Ascendant" = 360
 }
 
-$buildAttribPts = @{
-    "Strength"       = 0
-    "Constitution"   = 0
-    "Dexterity"      = 0
-    "Size"           = 0
-    "Intellect"      = 0
-    "Power"          = 0
-    "ProfessionTier" = 0
+# Skills would have to be added or should everything added dynamically?
+$buildAttribPts = [ordered]@{
+    "Strength"         = 0
+    "Constitution"     = 0
+    "Dexterity"        = 0
+    "Size"             = 0
+    "Intellect"        = 0
+    "Power"            = 0
+    "ProfessionTier1"  = 0
+    "ProfessionTier2"  = 0
 }
 
 $attribCosts = [ordered]@{
@@ -48,7 +52,7 @@ function updateTotalBuildCost()
 {
     $characterBuild = $characterBuild.Text
     $totalBuildPoints = $buildTypes.$characterBuild
-    $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power + $buildAttribPts.ProfessionTier
+    $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power + $buildAttribPts.ProfessionTier1 + $buildAttribPts.ProfessionTier2 
     if ($totalSpent -gt $totalBuildPoints)
     { 
         [System.Windows.MessageBox]::Show('Not enough build points.')
@@ -68,11 +72,10 @@ function changeAttributeValue($controlName, $propertyName)
     updateTotalBuildCost
 }
 
-function selectBackgroundTier($backgroundTierCosts)
+function selectBackgroundTier($backgroundTierCosts, $tier, $property)
 {
-    [string]$tier = $tier1backgroundValue.SelectedItem.Content
     [int]$cost = $backgroundTierCosts.$tier
-    $buildAttribPts.ProfessionTier = $cost
+    $buildAttribPts.$property = $cost
     updateTotalBuildCost
 }
 
@@ -144,6 +147,8 @@ $intellectValue       = $characterBuildFormWindow.FindName("intellectValue")
 $powerValue           = $characterBuildFormWindow.FindName("powerValue")
 $profession1Value     = $characterBuildFormWindow.FindName("background1Value")
 $tier1backgroundValue = $characterBuildFormWindow.FindName("tier1backgroundValue")
+$profession2Value     = $characterBuildFormWindow.FindName("background2Value")
+$tier2backgroundValue = $characterBuildFormWindow.FindName("tier2backgroundValue")
 
 $characterBuildPoints.Text = $buildTypes[$characterBuild.Text]
 
@@ -211,22 +216,48 @@ $profession1Value.Add_SelectionChanged(
         if ($prof -eq 'None')
         {
             # refund the points back
-            $buildAttribPts.ProfessionTier = 0
+            $buildAttribPts.ProfessionTier1 = 0
             updateTotalBuildCost
         }
         else
         {
-            $tier = $tier1backgroundValue.SelectedItem.Content
-            selectBackgroundTier $backgroundTierCosts
+            selectBackgroundTier $backgroundTierCosts $tier1backgroundValue.SelectedItem.Content ProfessionTier1
         }
     }
 )
 
 $tier1backgroundValue.Add_SelectionChanged(
     {
-        if ($profession1Value.SelectedItem.Content -ne "None")
+        if ($profession1Value.SelectedItem.Content -ne 'None')
         {
-            selectBackgroundTier $backgroundTierCosts
+            selectBackgroundTier $backgroundTierCosts $tier1backgroundValue.SelectedItem.Content ProfessionTier1
+        }
+    }
+)
+
+$profession2Value.Add_SelectionChanged(
+    {
+        $prof = $profession2Value.SelectedItem.Content
+
+        if ($prof -eq 'None')
+        {
+            # refund the points back
+            # [System.Windows.MessageBox]::Show('Reset to None.')
+            $buildAttribPts.ProfessionTier2 = 0
+            updateTotalBuildCost
+        }
+        else
+        {
+            selectBackgroundTier $backgroundTierCosts $tier2backgroundValue.SelectedItem.Content ProfessionTier2
+        }
+    }
+)
+
+$tier2backgroundValue.Add_SelectionChanged(
+    {
+        if ($profession2Value.SelectedItem.Content -ne 'None')
+        {
+            selectBackgroundTier $backgroundTierCosts $tier2backgroundValue.SelectedItem.Content ProfessionTier2
         }
     }
 )

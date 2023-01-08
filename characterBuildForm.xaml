@@ -56,7 +56,7 @@
                     </ComboBox>
                 </StackPanel>
 
-               <StackPanel x:Name="characterAttributeSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="30,90,0,0" Grid.Row="0" Grid.Column="1">
+               <StackPanel x:Name="characterAttributeSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="40,90,0,0" Grid.Row="0" Grid.Column="1">
                     <Label x:Name="strengthLbl" Content="Strength:" Width="100" HorizontalAlignment="Left"/>
                     <Label x:Name="constitutionLbl" Content="Constitution:" Width="100" HorizontalAlignment="Left"/>
                     <Label x:Name="dexterityLbl" Content="Dexterity:" Width="100" HorizontalAlignment="Left"/>
@@ -65,7 +65,7 @@
                     <Label x:Name="powerLbl" Content="Power:" Width="100" HorizontalAlignment="Left"/>
                 </StackPanel>
             
-                <StackPanel x:Name="characterAttributeValueSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,90,0,0" Grid.Row="0" Grid.Column="1">
+                <StackPanel x:Name="characterAttributeValueSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="130,90,0,0" Grid.Row="0" Grid.Column="1">
                     <ComboBox x:Name="strengthValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem IsSelected="True">20</ComboBoxItem>
@@ -154,7 +154,7 @@
                         <ComboBoxItem>Performer</ComboBoxItem>
                         <ComboBoxItem>Physicker</ComboBoxItem>
                     </ComboBox>
-                    <ComboBox x:Name="tier1background2Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                    <ComboBox x:Name="tier2backgroundValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
                         <ComboBoxItem IsSelected="True">Novice</ComboBoxItem>
                         <ComboBoxItem>Journeyman</ComboBoxItem>
                         <ComboBoxItem>Expert</ComboBoxItem>
