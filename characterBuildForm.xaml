@@ -25,7 +25,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel x:Name="characterMetaDataSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="30,90,0,0" Grid.Row="0" Grid.Column="0">

@@ -92,6 +92,10 @@ function collectPropertiesIntoRecord()
         Size               = $sizeValue.SelectedItem.Content
         Intellect          = $intellectValue.SelectedItem.Content
         Power              = $powerValue.SelectedItem.Content
+        Profession1Name    = $profession1Value.SelectedItem.Content
+        Profession1Tier    = $tier1backgroundValue.SelectedItem.Content
+        Profession2Name    = $profession2Value.SelectedItem.Content
+        Profession2Tier    = $tier2backgroundValue.SelectedItem.Content
     }
 
     return $characterBuild
