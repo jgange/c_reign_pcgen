@@ -1,6 +1,6 @@
 #### INITIALIZATION ####
 
-$dataStoreLocation   = "C:\Users\jgange\Projects\PowerShell\c_reign_pcgen"
+$dataStoreLocation   = "C:\Users\joega\Projects\PowerShell\c_reign_pcgen"
 $raceFile            = "races.json"
 $buildsFile          = "builds.json"
 $traitsFile          = "traits.json"
@@ -108,7 +108,7 @@ function computeTraitsCost($characterBuild, $traitTable, $buildPointCosts)
             $trait = $_
             if ($characterTrait -eq $trait)
             { 
-                $t = $traitTable.$trait.TraitType | Out-String -NoNewline
+                $t = $traitTable.$trait.TraitType | Out-String
                 $bps += $buildPointCosts.Traits.$t
             }
         }

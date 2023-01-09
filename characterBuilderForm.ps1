@@ -18,6 +18,9 @@ $buildAttribPts = [ordered]@{
     "Power"            = 0
     "ProfessionTier1"  = 0
     "ProfessionTier2"  = 0
+    "Talent1Value"     = 0
+    "Talent2Value"     = 0
+    "Talent3Value"     = 0
 }
 
 $attribCosts = [ordered]@{
@@ -46,13 +49,30 @@ $backgroundTierCosts = [ordered]@{
     "Master"     = 120
 }
 
+$talents = [ordered]@{
+    None          = "Unselected"
+    Affinity      = "Positive"
+    Alert         = "Positive"
+    Arrogant      = "Negative"
+    Bland         = "Balanced"
+    Brash         = "Balanced"
+    Captivating   = "Positive"
+}
+
+$talentBuildCost = [ordered]@{
+    "Unselected" =   0
+    "Positive"   =  30
+    "Balanced"   =  15
+    "Negative"   = -15
+}
+
 ######## FUNCTIONS #############
 
 function updateTotalBuildCost()
 {
     $characterBuild = $characterBuild.Text
     $totalBuildPoints = $buildTypes.$characterBuild
-    $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power + $buildAttribPts.ProfessionTier1 + $buildAttribPts.ProfessionTier2 
+    $totalSpent = $buildAttribPts.Strength + $buildAttribPts.Constitution + $buildAttribPts.Dexterity + $buildAttribPts.Size + $buildAttribPts.Intellect + $buildAttribPts.Power + $buildAttribPts.ProfessionTier1 + $buildAttribPts.ProfessionTier2 + $buildAttribPts.Trait1Value + $buildAttribPts.Trait2Value + $buildAttribPts.Trait3Value
     if ($totalSpent -gt $totalBuildPoints)
     { 
         [System.Windows.MessageBox]::Show('Not enough build points.')
@@ -79,6 +99,36 @@ function selectBackgroundTier($backgroundTierCosts, $tier, $property)
     updateTotalBuildCost
 }
 
+function checkforDuplicateTraits()
+{
+    $trait1 = $trait1Value.SelectedItem.Content
+    $trait2 = $traitt2Value.SelectedItem.Content
+    $trait3 = $traitt3Value.SelectedItem.Content
+
+    [System.Windows.MessageBox]::Show("Checking for duplicate traits.")
+
+    switch($trait1)
+    {
+        $trait2 { return $true }
+        $trait3 { return $true }
+    }
+}
+
+function selectTrait([string]$property, [string]$selection, [string]$oldValue)
+{
+    if (checkforDuplicateTraits) {
+        [System.Windows.MessageBox]::Show("Cannot select duplicate traits.")
+        $selection = $oldValue
+    }
+    else {
+        <# Action when all if and elseif conditions are false #>
+    $type = $talents.$selection
+    $cost = $talentBuildCost.$type
+    $buildAttribPts.$property = $cost
+    updateTotalBuildCost
+    }
+}
+
 function collectPropertiesIntoRecord()
 {
     # Grab all the properties from the window and output them into an object
@@ -96,6 +146,9 @@ function collectPropertiesIntoRecord()
         Profession1Tier    = $tier1backgroundValue.SelectedItem.Content
         Profession2Name    = $profession2Value.SelectedItem.Content
         Profession2Tier    = $tier2backgroundValue.SelectedItem.Content
+        Talent1            = $talent1Value.SelectedItem.Constitution
+        Talent2            = $talent2Value.SelectedItem.Constitution
+        Talent3            = $talent3Value.SelectedItem.Constitution
     }
 
     return $characterBuild
@@ -153,6 +206,9 @@ $profession1Value     = $characterBuildFormWindow.FindName("background1Value")
 $tier1backgroundValue = $characterBuildFormWindow.FindName("tier1backgroundValue")
 $profession2Value     = $characterBuildFormWindow.FindName("background2Value")
 $tier2backgroundValue = $characterBuildFormWindow.FindName("tier2backgroundValue")
+$trait1Value         = $characterBuildFormWindow.FindName("Trait1Value")
+$traitt2Value         = $characterBuildFormWindow.FindName("Trait2Value")
+$traitt3Value         = $characterBuildFormWindow.FindName("Trait3Value")
 
 $characterBuildPoints.Text = $buildTypes[$characterBuild.Text]
 
@@ -263,6 +319,25 @@ $tier2backgroundValue.Add_SelectionChanged(
         {
             selectBackgroundTier $backgroundTierCosts $tier2backgroundValue.SelectedItem.Content ProfessionTier2
         }
+    }
+)
+
+$trait1Value.Add_SelectionChanged(
+    {
+        #[System.Windows.MessageBox]::Show($trait1Value.Text)   
+        selectTrait "Talent1Value" $trait1Value.SelectedItem.Content $trait1Value.Text
+    }
+)
+
+$talent2Value.Add_SelectionChanged(
+    {
+
+    }
+)
+
+$talent3Value.Add_SelectionChanged(
+    {
+
     }
 )
 

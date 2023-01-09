@@ -161,6 +161,42 @@
                     </ComboBox>
                 </StackPanel>
 
+                <StackPanel x:Name="TraitLblsSpl" HorizontalAlignment="Left" Height="204" Width="100" Margin="60,30,0,0" Grid.Row="1" Grid.Column="0">
+                    <Label x:Name="Trait1Lbl" Content="Trait:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="Trait2Lbl" Content="Trait:" Width="100" HorizontalAlignment="Left"/>
+                    <Label x:Name="Trait3Lbl" Content="Trait:" Width="100" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <StackPanel x:Name="TraitsSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,30,0,0" Grid.Row="1" Grid.Column="0">
+                    <ComboBox x:Name="Trait1Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+                        <ComboBoxItem>Affinity</ComboBoxItem>
+                        <ComboBoxItem>Alert</ComboBoxItem>
+                        <ComboBoxItem>Arrogant</ComboBoxItem>
+                        <ComboBoxItem>Bland</ComboBoxItem>
+                        <ComboBoxItem>Brash</ComboBoxItem>
+                        <ComboBoxItem>Captivating</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="Trait2Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+                        <ComboBoxItem>Affinity</ComboBoxItem>
+                        <ComboBoxItem>Alert</ComboBoxItem>
+                        <ComboBoxItem>Arrogant</ComboBoxItem>
+                        <ComboBoxItem>Bland</ComboBoxItem>
+                        <ComboBoxItem>Brash</ComboBoxItem>
+                        <ComboBoxItem>Captivating</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox x:Name="Trait3Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+                        <ComboBoxItem>Affinity</ComboBoxItem>
+                        <ComboBoxItem>Alert</ComboBoxItem>
+                        <ComboBoxItem>Arrogant</ComboBoxItem>
+                        <ComboBoxItem>Bland</ComboBoxItem>
+                        <ComboBoxItem>Brash</ComboBoxItem>
+                        <ComboBoxItem>Captivating</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
             </Grid>
         </DockPanel>
 </Window>
