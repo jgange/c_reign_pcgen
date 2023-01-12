@@ -66,52 +66,16 @@
             
                 <StackPanel x:Name="characterAttributeValueSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="130,90,0,0" Grid.Row="0" Grid.Column="1">
                     <ComboBox x:Name="strengthValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem>10</ComboBoxItem>
-                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
-                        <ComboBoxItem>30</ComboBoxItem>
-                        <ComboBoxItem>40</ComboBoxItem>
-                        <ComboBoxItem>50</ComboBoxItem>
-                        <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="constitutionValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem>10</ComboBoxItem>
-                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
-                        <ComboBoxItem>30</ComboBoxItem>
-                        <ComboBoxItem>40</ComboBoxItem>
-                        <ComboBoxItem>50</ComboBoxItem>
-                        <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="dexterityValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem>10</ComboBoxItem>
-                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
-                        <ComboBoxItem>30</ComboBoxItem>
-                        <ComboBoxItem>40</ComboBoxItem>
-                        <ComboBoxItem>50</ComboBoxItem>
-                        <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="sizeValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem>10</ComboBoxItem>
-                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
-                        <ComboBoxItem>30</ComboBoxItem>
-                        <ComboBoxItem>40</ComboBoxItem>
-                        <ComboBoxItem>50</ComboBoxItem>
-                        <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="intellectValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem>10</ComboBoxItem>
-                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
-                        <ComboBoxItem>30</ComboBoxItem>
-                        <ComboBoxItem>40</ComboBoxItem>
-                        <ComboBoxItem>50</ComboBoxItem>
-                        <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="powerValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem>10</ComboBoxItem>
-                        <ComboBoxItem IsSelected="True">20</ComboBoxItem>
-                        <ComboBoxItem>30</ComboBoxItem>
-                        <ComboBoxItem>40</ComboBoxItem>
-                        <ComboBoxItem>50</ComboBoxItem>
-                        <ComboBoxItem>60</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 
@@ -122,19 +86,8 @@
 
                 <StackPanel x:Name="BackgroundsValueSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,90,0,0" Grid.Row="0" Grid.Column="2">
                     <ComboBox x:Name="background1Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
-                        <ComboBoxItem>Apothecary</ComboBoxItem>
-                        <ComboBoxItem>Craftsman</ComboBoxItem>
-                        <ComboBoxItem>Merchant</ComboBoxItem>
-                        <ComboBoxItem>Noble</ComboBoxItem>
-                        <ComboBoxItem>Performer</ComboBoxItem>
-                        <ComboBoxItem>Physicker</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="tier1backgroundValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem IsSelected="True">Novice</ComboBoxItem>
-                        <ComboBoxItem>Journeyman</ComboBoxItem>
-                        <ComboBoxItem>Expert</ComboBoxItem>
-                        <ComboBoxItem>Master</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 
@@ -145,19 +98,8 @@
 
                 <StackPanel x:Name="BackgroundsValue2Spl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,150,0,0" Grid.Row="0" Grid.Column="2">
                     <ComboBox x:Name="background2Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
-                        <ComboBoxItem>Apothecary</ComboBoxItem>
-                        <ComboBoxItem>Craftsman</ComboBoxItem>
-                        <ComboBoxItem>Merchant</ComboBoxItem>
-                        <ComboBoxItem>Noble</ComboBoxItem>
-                        <ComboBoxItem>Performer</ComboBoxItem>
-                        <ComboBoxItem>Physicker</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="tier2backgroundValue" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem IsSelected="True">Novice</ComboBoxItem>
-                        <ComboBoxItem>Journeyman</ComboBoxItem>
-                        <ComboBoxItem>Expert</ComboBoxItem>
-                        <ComboBoxItem>Master</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 
@@ -169,31 +111,10 @@
 
                 <StackPanel x:Name="TraitsSpl" HorizontalAlignment="Left" Height="204" Width="200" Margin="140,30,0,0" Grid.Row="1" Grid.Column="0">
                     <ComboBox x:Name="Trait1Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
-                        <ComboBoxItem>Affinity</ComboBoxItem>
-                        <ComboBoxItem>Alert</ComboBoxItem>
-                        <ComboBoxItem>Arrogant</ComboBoxItem>
-                        <ComboBoxItem>Bland</ComboBoxItem>
-                        <ComboBoxItem>Brash</ComboBoxItem>
-                        <ComboBoxItem>Captivating</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="Trait2Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
-                        <ComboBoxItem>Affinity</ComboBoxItem>
-                        <ComboBoxItem>Alert</ComboBoxItem>
-                        <ComboBoxItem>Arrogant</ComboBoxItem>
-                        <ComboBoxItem>Bland</ComboBoxItem>
-                        <ComboBoxItem>Brash</ComboBoxItem>
-                        <ComboBoxItem>Captivating</ComboBoxItem>
                     </ComboBox>
                     <ComboBox x:Name="Trait3Value" Width="180" Height="20" HorizontalAlignment="Left" Margin="0,5,0,0">
-                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
-                        <ComboBoxItem>Affinity</ComboBoxItem>
-                        <ComboBoxItem>Alert</ComboBoxItem>
-                        <ComboBoxItem>Arrogant</ComboBoxItem>
-                        <ComboBoxItem>Bland</ComboBoxItem>
-                        <ComboBoxItem>Brash</ComboBoxItem>
-                        <ComboBoxItem>Captivating</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 

@@ -1,6 +1,19 @@
 Add-Type -AssemblyName PresentationFramework
 
 # Probably need a single list of all the items which have costs associated along with a UI type and label name
+# $window.ComboService.ItemsSource
+<#
+    Behavior for background
+    Tier drop down should be greyed out till a value is selected
+
+    If Race is changed, stats dropdown could change based on the base tier for attributes - it should display the base levels (e.g. 2 for human)
+
+    If a value is selected for the 1st Tier, add a second or add a button to add another background
+
+    Backgrounds and traits need an add button to add an additional, as well as a delete button if one is added
+
+    Small button to the right of the column
+#>
 
 $buildTypes = @{
     "Normal"    = 120
@@ -49,8 +62,7 @@ $backgroundTierCosts = [ordered]@{
     "Master"     = 120
 }
 
-$talents = [ordered]@{
-    None          = "Unselected"
+$traits = [ordered]@{
     Affinity      = "Positive"
     Alert         = "Positive"
     Arrogant      = "Negative"
@@ -59,7 +71,7 @@ $talents = [ordered]@{
     Captivating   = "Positive"
 }
 
-$talentBuildCost = [ordered]@{
+$traitBuildCost = [ordered]@{
     "Unselected" =   0
     "Positive"   =  30
     "Balanced"   =  15
@@ -105,12 +117,17 @@ function checkforDuplicateTraits()
     $trait2 = $traitt2Value.SelectedItem.Content
     $trait3 = $traitt3Value.SelectedItem.Content
 
-    [System.Windows.MessageBox]::Show("Checking for duplicate traits.")
+    $traitvalues = "Trait1 = " + $trait1 + " Trait2 = " + $trait2 + " Trait3 = " + $trait3
 
-    switch($trait1)
+    [System.Windows.MessageBox]::Show($traitvalues)
+
+    if ($trait1)
     {
-        $trait2 { return $true }
-        $trait3 { return $true }
+        switch($trait1)
+        {
+            $trait2 { return $true }
+            $trait3 { return $true }
+        }
     }
 }
 
@@ -122,8 +139,8 @@ function selectTrait([string]$property, [string]$selection, [string]$oldValue)
     }
     else {
         <# Action when all if and elseif conditions are false #>
-    $type = $talents.$selection
-    $cost = $talentBuildCost.$type
+    $type = $traits.$selection
+    $cost = $traitBuildCost.$type
     $buildAttribPts.$property = $cost
     updateTotalBuildCost
     }
@@ -146,9 +163,9 @@ function collectPropertiesIntoRecord()
         Profession1Tier    = $tier1backgroundValue.SelectedItem.Content
         Profession2Name    = $profession2Value.SelectedItem.Content
         Profession2Tier    = $tier2backgroundValue.SelectedItem.Content
-        Talent1            = $talent1Value.SelectedItem.Constitution
-        Talent2            = $talent2Value.SelectedItem.Constitution
-        Talent3            = $talent3Value.SelectedItem.Constitution
+        Trait1            = $trait1Value.SelectedItem.Constitution
+        Trait2            = $trait2Value.SelectedItem.Constitution
+        Trait3            = $trait3Value.SelectedItem.Constitution
     }
 
     return $characterBuild
@@ -207,10 +224,17 @@ $tier1backgroundValue = $characterBuildFormWindow.FindName("tier1backgroundValue
 $profession2Value     = $characterBuildFormWindow.FindName("background2Value")
 $tier2backgroundValue = $characterBuildFormWindow.FindName("tier2backgroundValue")
 $trait1Value         = $characterBuildFormWindow.FindName("Trait1Value")
-$traitt2Value         = $characterBuildFormWindow.FindName("Trait2Value")
-$traitt3Value         = $characterBuildFormWindow.FindName("Trait3Value")
+$trait2Value         = $characterBuildFormWindow.FindName("Trait2Value")
+$trait3Value         = $characterBuildFormWindow.FindName("Trait3Value")
 
 $characterBuildPoints.Text = $buildTypes[$characterBuild.Text]
+
+$trait1Value.ItemsSource = $traits.Keys
+$trait1Value.SelectedIndex = 0
+$trait2Value.ItemsSource = $traits.Keys
+$trait2Value.SelectedIndex = 0
+$trait3Value.ItemsSource = $traits.Keys
+$trait3Value.SelectedIndex = 0
 
 $characterBuild.Add_SelectionChanged(
     {
@@ -329,13 +353,13 @@ $trait1Value.Add_SelectionChanged(
     }
 )
 
-$talent2Value.Add_SelectionChanged(
+$trait2Value.Add_SelectionChanged(
     {
 
     }
 )
 
-$talent3Value.Add_SelectionChanged(
+$trait3Value.Add_SelectionChanged(
     {
 
     }
