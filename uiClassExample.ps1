@@ -7,13 +7,51 @@ $RawXAML = @"
         xmlns:local="clr-namespace:WpfApplication3"
         mc:Ignorable="d"
         Title="MainWindow" Width="1024" Height="768" ResizeMode="NoResize">
-        <Grid>
-        <Label x:Name="FirstLbl" Content="Label One" Width="100" HorizontalAlignment="Left"/>
-        <Label x:Name="SecondLbl" Content="Label Two" Width="100" HorizontalAlignment="Left"/>
+        <Grid x:Name="LayoutRoot" VerticalAlignment="Center" Width="1280" Height="1024">
         </Grid>
 </Window>
 "@ 
  
+$addButtonPropertySet = @{
+    "Type"="Button"
+    "Name"="AddTrait"
+    "Content"="+"
+    "Height"=30
+    "Width"=30
+    "Margin"="10,10,10,10"
+}
+
+$removeButtonPropertySet = @{
+    "Type"="Button"
+    "Name"="RemoveTrait"
+    "Content"="-"
+    "Height"=30
+    "Width"=30
+    "Margin"="10,10,10,10"
+}
+
+$traitTextBoxPropertySet = @{
+    "Type"="TextBox"
+    "Name"="TraitValue"
+    "Height"=30
+    "Width"=150
+    "Margin"="10,10,10,10"
+}
+
+### Functions ########
+
+function createUIControl([hashtable] $propertySet)
+{
+    $UIcontrol = New-Object $("System.Windows.Controls." + $propertySet.Type)
+    $propertySet.Remove("Type")
+    $propertySet.Keys | ForEach-Object { $UIcontrol.$_ = $propertySet.$_ }
+
+    return $UIcontrol
+}
+
+
+### Main Program #####
+
 [void][System.Reflection.Assembly]::LoadWithPartialName('PresentationFramework')
 [xml]$XAML = $RawXAML -replace 'mc:Ignorable="d"','' -replace "x:N",'N'  -replace '^<Win.*', '<Window'
 
@@ -30,12 +68,51 @@ ForEach-Object {
     Set-Variable -Name "WPF$($_.Name)" -Value $Form.FindName($_.Name) -Scope global
 }
 
-class multiControl
-{
-    [System.Windows.Controls.ContentControl[]]$childControls
-    [System.Collections.Specialized.OrderedDictionary]$propertyList
-    [System.Windows.Controls.ContentControl]$parentControl
+# Main
 
+class MultiControl
+{
+    $addEntryControl
+    $dataValuesControl
+    $removeEntryControl
+    
+    [int] $position
+
+    MultiControl($addControl, $removeControl, $dataControl)
+    {
+        $this.addEntryControl = $addControl
+        $this.dataValuesControl = $dataControl
+        $this.removeEntryControl = $removeControl
+        $this.position = 0
+    }
+
+    [void] AddMultiControl($parent)
+    {
+        # Adds a new multicontrol
+        # this should 
+        $parent.AddChild($this.addEntryControl)
+        $parent.AddChild($this.dataControl)
+    }
+
+    [void] RemoveMultiControl()
+    {
+        # Removes a multicontrol
+    }
+
+    [void] AlignMultiControl([System.Windows.Controls.ContentControl]$mc1, [System.Windows.Controls.ContentControl]$mc2, [System.Windows.Controls.ContentControl]$mc3)
+    {
+        # Gets a list of controls and vertically aligns them
+    }
 
 }
 
+$traitRemoveBtn = createUIControl $removeButtonPropertySet
+$traitAddBtn = createUIControl $addButtonPropertySet
+$traitTextBox = createUIControl $traitTextBoxPropertySet
+
+[MultiControl]$m1 = [MultiControl]::new($traitAddBtn, $traitRemoveBtn, $traitTextBox)
+$m1.addEntryControl.Name
+$m1.removeEntryControl.Name
+$m1.dataValuesControl.Name
+
+$m1.AddMultiControl($WPFLayoutRoot)
