@@ -49,7 +49,6 @@ function createUIControl([hashtable] $propertySet)
     return $UIcontrol
 }
 
-
 ### Main Program #####
 
 [void][System.Reflection.Assembly]::LoadWithPartialName('PresentationFramework')
@@ -76,22 +75,18 @@ class MultiControl
     $dataValuesControl
     $removeEntryControl
     
-    [int] $position
-
     MultiControl($addControl, $removeControl, $dataControl)
-    {
+    {      
         $this.addEntryControl = $addControl
         $this.dataValuesControl = $dataControl
         $this.removeEntryControl = $removeControl
-        $this.position = 0
     }
 
-    [void] AddMultiControl($parent)
+    [void] AddMultiControl([System.Windows.Controls.Panel] $parent)
     {
-        # Adds a new multicontrol
-        # this should 
         $parent.AddChild($this.addEntryControl)
-        $parent.AddChild($this.dataControl)
+        $parent.AddChild($this.dataValuesControl)
+        $parent.AddChild($this.removeEntryControl)
     }
 
     [void] RemoveMultiControl()
@@ -99,20 +94,26 @@ class MultiControl
         # Removes a multicontrol
     }
 
-    [void] AlignMultiControl([System.Windows.Controls.ContentControl]$mc1, [System.Windows.Controls.ContentControl]$mc2, [System.Windows.Controls.ContentControl]$mc3)
-    {
-        # Gets a list of controls and vertically aligns them
-    }
-
 }
 
 $traitRemoveBtn = createUIControl $removeButtonPropertySet
-$traitAddBtn = createUIControl $addButtonPropertySet
-$traitTextBox = createUIControl $traitTextBoxPropertySet
+$traitAddBtn    = createUIControl $addButtonPropertySet
+$traitTextBox   = createUIControl $traitTextBoxPropertySet
+
+$row1 = new-object system.windows.controls.rowdefinition
+$row1.height = "Auto"
+$row2 = new-object system.windows.controls.rowdefinition
+$row2.height = "Auto"
+$col1 = new-object system.windows.controls.columndefinition
+$col1.width = "Auto"
+$col2 = new-object system.windows.controls.columndefinition
+$col2.width = "Auto"
+
+$WPFLayoutRoot.RowDefinitions.add($row1)
+$WPFLayoutRoot.RowDefinitions.add($row2)
+$WPFLayoutRoot.ColumnDefinitions.add($col1)
+$WPFLayoutRoot.ColumnDefinitions.add($col2)
 
 [MultiControl]$m1 = [MultiControl]::new($traitAddBtn, $traitRemoveBtn, $traitTextBox)
-$m1.addEntryControl.Name
-$m1.removeEntryControl.Name
-$m1.dataValuesControl.Name
 
 $m1.AddMultiControl($WPFLayoutRoot)
