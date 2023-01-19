@@ -1,3 +1,47 @@
+<#
+Want to be able to pass in a set of properties for the object to create the control
+
+these controls get aggregated into a multicontrol
+
+are the properties for the multicontrol the property set for each control?
+
+I need to know which control was clicked so I can properly execute UI and backend processes
+
+Example #1 I clicked on the Add control in Row 2 of my trait section
+Example #2 I clicked on the Remove control in Row 1 of my backgrounds section
+
+Example #1 has to be handled in my Add_Click method for the button clicked
+That Add_Click method is has to know about the other controls and also what other procedures to call
+
+If I create a multicontrol and the AddControl method creates a new set of controls, I need to also
+include the Add_SelectionChanged on the text element which knows what function to call to update the build points properly
+
+Could include a Case statement inside the SelectionChanged method which figures out which function to call depending on the contents
+
+multicontrol
+
+Combobox    Traits			    -> 0 or more
+Comboxbox   Backgrounds		    -> 1 to 3
+Comboxbox   Additional Skills	-> 0 or more
+Combobox    Racial Abilities	-> 1 or more if race has them
+Combobox    Spells			    -> 0 or more only if Awakened (or other spell casting trait)
+Comboxbox   Equipment		    -> Starting
+
+Skills from Background are separate even though they are skills (elements should be marked read only)
+
+Create a generate multicontrol then inherit then specific method
+So, base class is a generic multicontrol
+Then sub-class for each specific type where each type has a method associated for build points on the data entry element
+This would also allow me to customize behaviors or properties for each type and not have to store a type on it
+Very few properties would also have to be set but a default could be set on the base class
+
+the properties are simply a pointer to the actual control so I can address it with objectname.UIControlname or something
+
+The only properties are the actual controls included - the sub-properties to create the UIcontrol are passed into the constructor but not saved as part of the class object
+
+Each sub-class has a specific set of rules associated around # of allowed elements
+#>
+
 $RawXAML = @"
 <Window x:Class="WpfApplication3.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -30,8 +74,8 @@ $removeButtonPropertySet = @{
     "Margin"="10,10,10,10"
 }
 
-$traitTextBoxPropertySet = @{
-    "Type"="TextBox"
+$traitComboBoxPropertySet = @{
+    "Type"="ComboBox"
     "Name"="TraitValue"
     "Height"=30
     "Width"=150
@@ -51,23 +95,20 @@ function createUIControl([hashtable] $propertySet)
 
 ### Main Program #####
 
-[void][System.Reflection.Assembly]::LoadWithPartialName('PresentationFramework')
-[xml]$XAML = $RawXAML -replace 'mc:Ignorable="d"','' -replace "x:N",'N'  -replace '^<Win.*', '<Window'
+# Create a Window
+$Form = New-Object Windows.Window
+$Form.Height = "670"
+$Form.Width = "700"
+$Form.Title = "PowerShell WPF Window"
+$Form.WindowStartupLocation="CenterScreen"
 
-#Read XAML 
-$XAMLReader= New-Object System.Xml.XmlNodeReader $XAML
-try{
-    $Form=[Windows.Markup.XamlReader]::Load($XAMLReader)
-} catch {
-    Throw "Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .net is installed."
-}
+$Grid =  New-Object Windows.Controls.Grid
+$Row = New-Object Windows.Controls.RowDefinition
+$Row.Height = "*"
+$Grid.RowDefinitions.Add($Row)
 
-$XAML.SelectNodes("//*[@Name]") |
-ForEach-Object {
-    Set-Variable -Name "WPF$($_.Name)" -Value $Form.FindName($_.Name) -Scope global
-}
-
-# Main
+$Col = New-Object Windows.Controls.ColumnDefinition
+$Grid.ColumnDefinitions.Add($Col)
 
 class MultiControl
 {
@@ -81,39 +122,56 @@ class MultiControl
         $this.dataValuesControl = $dataControl
         $this.removeEntryControl = $removeControl
     }
+}
 
-    [void] AddMultiControl([System.Windows.Controls.Panel] $parent)
+class MultiControlSet
+{
+    # This class manages the entire set of multicontrols
+
+    $controlSet = [System.Collections.ArrayList]@()
+
+    MultiControlSet($multiControl, $parent)
     {
-        $parent.AddChild($this.addEntryControl)
-        $parent.AddChild($this.dataValuesControl)
-        $parent.AddChild($this.removeEntryControl)
+        $this.controlSet.Add($multiControl)
+        $this.InitializeGrid($parent)
+
+        $parent.AddChild($multiControl.addEntryControl)
+        $parent.AddChild($multiControl.dataValuesControl)
+        $parent.AddChild($multiControl.removeEntryControl)
+
+        [System.Windows.Controls.Grid]::SetColumn($multiControl.addEntryControl,0)
+        [System.Windows.Controls.Grid]::SetColumn($multiControl.dataValuesControl,1)
+
+        [System.Windows.Controls.Grid]::SetRow($multiControl.addEntryControl,0)
+        [System.Windows.Controls.Grid]::SetRow($multiControl.dataValuesControl,0)
     }
 
-    [void] RemoveMultiControl()
+    InitializeGrid($parent)
     {
-        # Removes a multicontrol
+        $row = new-object system.windows.controls.rowdefinition
+        $row.height = "Auto"
+        $parent.RowDefinitions.add($row)
+        
+        for($i=0;$i -lt 3; $i++)
+        {
+            $col = new-object system.windows.controls.columndefinition
+            $col.width = "Auto"
+            $parent.ColumnDefinitions.add($col)
+        }   
     }
-
 }
 
 $traitRemoveBtn = createUIControl $removeButtonPropertySet
 $traitAddBtn    = createUIControl $addButtonPropertySet
-$traitTextBox   = createUIControl $traitTextBoxPropertySet
+$traitComboBox  = createUIControl $traitComboBoxPropertySet
 
-$row1 = new-object system.windows.controls.rowdefinition
-$row1.height = "Auto"
-$row2 = new-object system.windows.controls.rowdefinition
-$row2.height = "Auto"
-$col1 = new-object system.windows.controls.columndefinition
-$col1.width = "Auto"
-$col2 = new-object system.windows.controls.columndefinition
-$col2.width = "Auto"
+# set up the starting state of the grid: 3 col x 1 row
 
-$WPFLayoutRoot.RowDefinitions.add($row1)
-$WPFLayoutRoot.RowDefinitions.add($row2)
-$WPFLayoutRoot.ColumnDefinitions.add($col1)
-$WPFLayoutRoot.ColumnDefinitions.add($col2)
+[MultiControl]$m1 = [MultiControl]::new($traitAddBtn, $traitRemoveBtn, $traitComboBox)
+$m1
+[MultiControlSet]$mc = [MultiControlSet]::new($m1, $WPFLayoutRoot)
+$mc
 
-[MultiControl]$m1 = [MultiControl]::new($traitAddBtn, $traitRemoveBtn, $traitTextBox)
+$WPFLayoutRoot.ShowGridLines = $true
 
-$m1.AddMultiControl($WPFLayoutRoot)
+$Form.ShowDialog() | Out-Null
