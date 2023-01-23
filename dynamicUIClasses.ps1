@@ -55,8 +55,9 @@ function createUIElement([hashtable] $propertySet)
     return $UIcontrol
 }
 
-function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeButtonPropertySet, [hashtable]$traitComboBoxPropertySet)
+function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeButtonPropertySet, [hashtable]$traitComboBoxPropertySet, $parentControl)
 {
+
     # see if I can make a copy of an existing control instead creating a new object
     $removeButton = createUIElement $removeButtonPropertySet
     $addButton    = createUIElement $addButtonPropertySet
@@ -69,7 +70,7 @@ function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeBut
 
     $row = New-Object Windows.Controls.RowDefinition
     $row.Height = 40 
-    $grid.RowDefinitions.Add($row)
+    $parentControl.RowDefinitions.Add($row)
 
     $multiControl.AddTrait.SetValue([Windows.Controls.Grid]::ColumnProperty,0)
     $multiControl.SelectTrait.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
@@ -90,13 +91,13 @@ function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeBut
         $controlSet[$traitRowCount-1].AddTrait.Visibility = "Hidden"
     }
 
-    $grid.AddChild($multiControl.AddTrait)
-    $grid.AddChild($multiControl.RemoveTrait)
-    $grid.AddChild($multiControl.SelectTrait)
+    $parentControl.AddChild($multiControl.AddTrait)
+    $parentControl.AddChild($multiControl.RemoveTrait)
+    $parentControl.AddChild($multiControl.SelectTrait)
 
     $controlSet[$traitRowCount].AddTrait.Add_Click(
         {
-            addMultiControl $addButtonPropertySet $removeButtonPropertySet $traitComboBoxPropertySet
+            addMultiControl $addButtonPropertySet $removeButtonPropertySet $traitComboBoxPropertySet $parentControl
         }
     )
 
@@ -106,6 +107,9 @@ function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeBut
 
 function removeMultiControl()
 {
+    # remove the controls from the parent control first
+    # remove the controlset from the array list
+    # update the visibility of the buttons
 
 }
 
@@ -113,6 +117,7 @@ function removeMultiControl()
 
 $window = createUIElement $windowPropertySet
 $grid = New-Object Windows.Controls.Grid
+$grid.Name = "TraitGrid"
 
 $traitRowCount = 0
 $controlSet = [System.Collections.ArrayList]@()
@@ -122,6 +127,6 @@ InitializeGrid $window $grid
 $window.Content = $grid
 
 # Call this once for the first row
-addMultiControl $addButtonPropertySet $removeButtonPropertySet $traitComboBoxPropertySet
+addMultiControl $addButtonPropertySet $removeButtonPropertySet $traitComboBoxPropertySet $grid
 
 $window.ShowDialog() | Out-Null
