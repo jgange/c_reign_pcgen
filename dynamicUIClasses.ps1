@@ -59,6 +59,11 @@ function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeBut
 {
 
     # see if I can make a copy of an existing control instead creating a new object
+    
+    if ($null -eq $parentControl -and $traitRowCount -gt 0)
+    {
+        $parentControl = $controlSet[0].RemoveTrait.Parent         # get the parent from the first UI control
+    }
     $removeButton = createUIElement $removeButtonPropertySet
     $addButton    = createUIElement $addButtonPropertySet
     $comboBox     = createUIElement $traitComboBoxPropertySet
@@ -105,11 +110,15 @@ function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeBut
 
 }
 
-function removeMultiControl()
+function removeMultiControl($parentControl)
 {
     # remove the controls from the parent control first
     # remove the controlset from the array list
     # update the visibility of the buttons
+
+    $parentControl.Remove($multiControl.AddTrait)
+
+
 
 }
 
