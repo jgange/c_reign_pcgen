@@ -1,5 +1,7 @@
 Add-Type -AssemblyName PresentationFramework
 
+#[System.Windows.MessageBox]::Show($trait1Value.Text)
+
 $windowPropertySet = @{
     "Type"  = "Windows.Window"
     "Height" = "768"
@@ -55,7 +57,18 @@ function createUIElement([hashtable] $propertySet)
     return $UIcontrol
 }
 
-function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeButtonPropertySet, [hashtable]$traitComboBoxPropertySet, $parentControl)
+function createMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeButtonPropertySet, [hashtable]$traitComboBoxPropertySet, $parentControl)
+{
+    $removeButton = createUIElement $removeButtonPropertySet
+    $addButton    = createUIElement $addButtonPropertySet
+    $comboBox     = createUIElement $traitComboBoxPropertySet
+
+    [hashtable] $multiControl = [ordered]@{}
+    $multiControl.Add("UIElement",$addButton)
+    
+}
+
+function addMultiControl([hashtable]$traitComboBoxPropertySet, $parentControl)
 {
 
     # see if I can make a copy of an existing control instead creating a new object
@@ -106,19 +119,40 @@ function addMultiControl([hashtable]$addButtonPropertySet, [hashtable]$removeBut
         }
     )
 
+    $controlSet[$traitRowCount].RemoveTrait.Add_Click(
+        {
+            removeMultiControl
+
+        }
+    )
+
+    $controlSet[$traitRowCount].SelectTrait.Add_SelectionChanged(
+        {
+            # call update build point count here
+        }
+    )
+
     $global:traitRowCount++
 
 }
 
-function removeMultiControl($parentControl)
+function removeMultiControl()
 {
     # remove the controls from the parent control first
     # remove the controlset from the array list
     # update the visibility of the buttons
 
-    $parentControl.Remove($multiControl.AddTrait)
+    $parentControl = $controlSet[0].RemoveTrait.Parent
 
+    $msg = "Removing " + $controlSet[$traitRowCount-1].AddTrait.Name + " " + $controlSet[$traitRowCount-1].SelectTrait.Name + " " + $controlSet[$traitRowCount-1].RemoveTrait.Name + " row = $traitRowCount"
+    [System.Windows.MessageBox]::Show($msg)
 
+    #$parentControl.Children.Remove($controlSet[$traitRowCount-1].AddTrait)
+    $controlSet[$traitRowCount-2].AddTrait.Visibility = "Visible"
+    #$controlSet[$traitRowCount-1].AddTrait.SetValue([Windows.Controls.Grid]::RowProperty,$traitRowCount-1)
+    $parentControl.Children.Remove($controlSet[$traitRowCount-1].AddTrait)
+    $parentControl.Children.Remove($controlSet[$traitRowCount-1].RemoveTrait)
+    $parentControl.Children.Remove($controlSet[$traitRowCount-1].SelectTrait)
 
 }
 
