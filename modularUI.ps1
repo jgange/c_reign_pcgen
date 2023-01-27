@@ -80,7 +80,7 @@ function buildGrids($elementList)
     }
 }
 
-function createLayout($elementList)
+function createControlSet($elementList)
 {
     $elementList | ForEach-Object {
         $elementName = $_
@@ -95,6 +95,48 @@ function createLayout($elementList)
         }
         $multiControls.Add($elementName,$control)
     }
+}
+
+function placeControls($elementList)
+{
+    $elementList | ForEach-Object {
+
+        $element = $_
+    
+        $gridInstance = ($masterGrid.Children | Where-Object { $_.Name -eq $element })
+    
+        InitializeGrid $window $gridInstance
+    
+        $gridInstance.AddChild($multiControls.$element.addItem)
+        $gridInstance.AddChild($multiControls.$element.removeItem)
+        $gridInstance.AddChild($multiControls.$element.selectItem)
+    
+        $multiControls.$element.addItem.SetValue([Windows.Controls.Grid]::ColumnProperty,0)
+        $multiControls.$element.selectItem.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
+        $multiControls.$element.removeItem.SetValue([Windows.Controls.Grid]::ColumnProperty,2)
+    
+        $multiControls.$element.selectItem.ItemsSource = $traitList
+    
+        $multiControls.$element.addItem.Add_Click(
+            {
+                addCombobox
+            }
+        )
+    
+        $multiControls.$element.removeItem.Add_Click(
+            {
+                removeCombobox
+            }
+        )
+    
+        $multiControls.$element.selectItem.Add_SelectionChanged(
+            {
+                updateBuildPoints
+            }
+        )
+    
+    }
+    
 }
 
 function addCombobox()
@@ -131,45 +173,8 @@ $masterGrid = New-Object Windows.Controls.Grid
 $window.Content = $masterGrid
 $multiControls = @{}
 
-buildGrids $elementList
-createLayout $elementList
-
-$elementList | ForEach-Object {
-
-    $element = $_
-
-    $gridInstance = ($masterGrid.Children | Where-Object { $_.Name -eq $element })
-
-    InitializeGrid $window $gridInstance
-
-    $gridInstance.AddChild($multiControls.$element.addItem)
-    $gridInstance.AddChild($multiControls.$element.removeItem)
-    $gridInstance.AddChild($multiControls.$element.selectItem)
-
-    $multiControls.$element.addItem.SetValue([Windows.Controls.Grid]::ColumnProperty,0)
-    $multiControls.$element.selectItem.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
-    $multiControls.$element.removeItem.SetValue([Windows.Controls.Grid]::ColumnProperty,2)
-
-    $multiControls.$element.selectItem.ItemsSource = $traitList
-
-    $multiControls.$element.addItem.Add_Click(
-        {
-            addCombobox
-        }
-    )
-
-    $multiControls.$element.removeItem.Add_Click(
-        {
-            removeCombobox
-        }
-    )
-
-    $multiControls.$element.selectItem.Add_SelectionChanged(
-        {
-            updateBuildPoints
-        }
-    )
-
-}
+buildGrids       $elementList
+createControlSet $elementList
+placeControls    $elementList
 
 $window.ShowDialog() | Out-Null
