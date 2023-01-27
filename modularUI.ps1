@@ -71,21 +71,28 @@ function addCombobox()
 function buildGrids($elementList)
 {
     # Iterate through the list of required grids, create the objects and add them to the master grid
+    $columnCount = 0 
+
     $elementList | ForEach-Object {
         $grid = @{
             Name      = $_
             UIElement = New-Object Windows.Controls.Grid
         }
+
         $grid.UIElement.Name = $_
+        $column = New-Object Windows.Controls.ColumnDefinition
+        $masterGrid.ColumnDefinitions.Add($column)
+        $grid.UIElement.SetValue([Windows.Controls.Grid]::ColumnProperty,$columnCount)
         $masterGrid.Children.Add($grid.UIElement)
+        $columnCount++
     }
 }
 ### Main Program ###
 
 $window = createUIElement $windowPropertySet
-$multiControls = @{}
 $masterGrid = New-Object Windows.Controls.Grid
 $window.Content = $masterGrid
+$multiControls = @{}
 
 buildGrids $elementList
 
@@ -100,48 +107,51 @@ $elementList | ForEach-Object {
         removeItem      = createUIElement $removeButtonPropertySet
         selectItem      = createUIElement $ComboBoxPropertySet
     }
-
     $multiControls.Add($elementName,$control)
 }
 
-exit 0
+$elementList | ForEach-Object {
 
-$traitGrid = ($grids | Where-Object { $_.Name -eq "Traits" }).UIElement
+    $element = $_
 
-InitializeGrid $window $traitGrid
+    $gridInstance = ($masterGrid.Children | Where-Object { $_.Name -eq $element })
 
-$traitGrid.AddChild($traitUIElements.addItem)
-$traitGrid.AddChild($traitUIElements.removeItem)
-$traitGrid.AddChild($traitUIElements.selectItem)
+    InitializeGrid $window $gridInstance
 
-$traitUIElements.addItem.SetValue([Windows.Controls.Grid]::ColumnProperty,0)
-$traitUIElements.selectItem.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
-$traitUIElements.removeItem.SetValue([Windows.Controls.Grid]::ColumnProperty,2)
+    $gridInstance.AddChild($multiControls.$element.addItem)
+    $gridInstance.AddChild($multiControls.$element.removeItem)
+    $gridInstance.AddChild($multiControls.$element.selectItem)
 
-$traitUIElements.selectItem.ItemsSource = $traitList
+    $multiControls.$element.addItem.SetValue([Windows.Controls.Grid]::ColumnProperty,0)
+    $multiControls.$element.selectItem.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
+    $multiControls.$element.removeItem.SetValue([Windows.Controls.Grid]::ColumnProperty,2)
 
-$traitUIElements.addItem.Add_Click(
-    {
-        addCombobox
-        # Add a row to the grid
-        # Move both buttons down to the new row
-        # Create a new combobox
-        # Set the coordinates for the combobox
-        # Add new combobox to the grid
-        # Add the selection_changed handler
-    }
-)
+    $multiControls.$element.selectItem.ItemsSource = $traitList
 
-$traitUIElements.removeItem.Add_Click(
-    {
-        [System.Windows.MessageBox]::Show("Remove button clicked")
-    }
-)
+    $multiControls.$element.addItem.Add_Click(
+        {
+            addCombobox
+            # Add a row to the grid
+            # Move both buttons down to the new row
+            # Create a new combobox
+            # Set the coordinates for the combobox
+            # Add new combobox to the grid
+            # Add the selection_changed handler
+        }
+    )
 
-$traitUIElements.selectItem.Add_SelectionChanged(
-    {
-        [System.Windows.MessageBox]::Show("Selection made")
-    }
-)
+    $multiControls.$element.removeItem.Add_Click(
+        {
+            [System.Windows.MessageBox]::Show("Remove button clicked")
+        }
+    )
+
+    $multiControls.$element.selectItem.Add_SelectionChanged(
+        {
+            [System.Windows.MessageBox]::Show("Selection made")
+        }
+    )
+
+}
 
 $window.ShowDialog() | Out-Null
