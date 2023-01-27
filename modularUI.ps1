@@ -37,7 +37,6 @@ $dataSet = @{
     "Traits" = @("Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
     "Backgrounds" = @("Apothecary","Craftsman","Merchant")
 }
-# $traitList = @("Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
 $textHeight = 30
 
 ### Function Definitions ###
@@ -156,6 +155,7 @@ function addCombobox()
     $row = New-Object Windows.Controls.RowDefinition
     $row.Height = $textHeight
     $this.Parent.RowDefinitions.Add($row)
+    
 
 }
 
