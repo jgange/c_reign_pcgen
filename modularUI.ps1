@@ -34,6 +34,7 @@ $ComboBoxPropertySet = @{
 
 $elementList  = @("Traits","Backgrounds") 
 $traitList = @("Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
+$textHeight = 30
 
 ### Function Definitions ###
 function createUIElement([hashtable] $propertySet)
@@ -50,22 +51,13 @@ function createUIElement([hashtable] $propertySet)
 function InitializeGrid([System.Windows.Window] $window, [System.Windows.Controls.Grid] $grid)
 {   
     $row = New-Object Windows.Controls.RowDefinition
-    $row.Height = 40 
+    $row.Height = $textHeight
     $grid.RowDefinitions.Add($row)
 
     1..3 | ForEach-Object {
         $column = New-Object Windows.Controls.ColumnDefinition
         $grid.ColumnDefinitions.Add($column)
     }
-}
-
-function addCombobox()
-{
-     [System.Windows.MessageBox]::Show($this)
-     $row = New-Object Windows.Controls.RowDefinition
-     $row.Height = 40 
-     $this.Parent.RowDefinitions.Add($row)
-
 }
 
 function buildGrids($elementList)
@@ -87,6 +79,51 @@ function buildGrids($elementList)
         $columnCount++
     }
 }
+
+function createLayout($elementList)
+{
+    $elementList | ForEach-Object {
+        $elementName = $_
+    
+        $control = @{
+            rowCount        = 0
+            parentControl   = ($masterGrid.Children | Where-Object { $_.Name -eq $elementName }).UIElement
+            controlSet      = [System.Collections.ArrayList]@()
+            addItem         = createUIElement $addButtonPropertySet
+            removeItem      = createUIElement $removeButtonPropertySet
+            selectItem      = createUIElement $ComboBoxPropertySet
+        }
+        $multiControls.Add($elementName,$control)
+    }
+}
+
+function addCombobox()
+{
+    # Add a row to the grid
+    # Move both buttons down to the new row
+    # Create a new combobox
+    # Set the coordinates for the combobox
+    # Add new combobox to the grid
+    # Add the selection_changed handler
+    
+    [System.Windows.MessageBox]::Show($this)
+    $row = New-Object Windows.Controls.RowDefinition
+    $row.Height = $textHeight
+    $this.Parent.RowDefinitions.Add($row)
+
+}
+
+function removeCombobox()
+{
+    [System.Windows.MessageBox]::Show($this)
+}
+
+function updateBuildPoints()
+{
+    [System.Windows.MessageBox]::Show($this)
+}
+
+
 ### Main Program ###
 
 $window = createUIElement $windowPropertySet
@@ -95,20 +132,7 @@ $window.Content = $masterGrid
 $multiControls = @{}
 
 buildGrids $elementList
-
-$elementList | ForEach-Object {
-    $elementName = $_
-
-    $control = @{
-        rowCount        = 0
-        parentControl   = ($masterGrid.Children | Where-Object { $_.Name -eq $elementName }).UIElement
-        controlSet      = [System.Collections.ArrayList]@()
-        addItem         = createUIElement $addButtonPropertySet
-        removeItem      = createUIElement $removeButtonPropertySet
-        selectItem      = createUIElement $ComboBoxPropertySet
-    }
-    $multiControls.Add($elementName,$control)
-}
+createLayout $elementList
 
 $elementList | ForEach-Object {
 
@@ -131,24 +155,18 @@ $elementList | ForEach-Object {
     $multiControls.$element.addItem.Add_Click(
         {
             addCombobox
-            # Add a row to the grid
-            # Move both buttons down to the new row
-            # Create a new combobox
-            # Set the coordinates for the combobox
-            # Add new combobox to the grid
-            # Add the selection_changed handler
         }
     )
 
     $multiControls.$element.removeItem.Add_Click(
         {
-            [System.Windows.MessageBox]::Show("Remove button clicked")
+            removeCombobox
         }
     )
 
     $multiControls.$element.selectItem.Add_SelectionChanged(
         {
-            [System.Windows.MessageBox]::Show("Selection made")
+            updateBuildPoints
         }
     )
 
