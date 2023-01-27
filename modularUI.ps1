@@ -32,8 +32,12 @@ $ComboBoxPropertySet = @{
     "Width"=150
 }
 
-$elementList  = @("Traits","Backgrounds") 
-$traitList = @("Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
+$elementList  = @("Traits","Backgrounds")
+$dataSet = @{
+    "Traits" = @("Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
+    "Backgrounds" = @("Apothecary","Craftsman","Merchant")
+}
+# $traitList = @("Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
 $textHeight = 30
 
 ### Function Definitions ###
@@ -115,7 +119,7 @@ function placeControls($elementList)
         $multiControls.$element.selectItem.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
         $multiControls.$element.removeItem.SetValue([Windows.Controls.Grid]::ColumnProperty,2)
     
-        $multiControls.$element.selectItem.ItemsSource = $traitList
+        $multiControls.$element.selectItem.ItemsSource = $dataSet.$element
     
         $multiControls.$element.addItem.Add_Click(
             {
