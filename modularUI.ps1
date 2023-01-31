@@ -98,7 +98,7 @@ function createControlSet($elementList)
             removeItem      = createUIElement $removeButtonPropertySet
             selectItem      = createUIElement $ComboBoxPropertySet
         }
-        $multiControls.Add($elementName,$control)
+        $multiControls.Add($elementName,$control) | Out-Null
     }
 }
 
@@ -107,9 +107,7 @@ function placeControls($elementList)
     $elementList | ForEach-Object {
 
         $element = $_
-    
         $gridInstance = ($masterGrid.Children | Where-Object { $_.Name -eq $element })
-    
         InitializeGrid $window $gridInstance
     
         $gridInstance.AddChild($multiControls.$element.addItem)
@@ -122,42 +120,33 @@ function placeControls($elementList)
     
         $multiControls.$element.selectItem.ItemsSource = $dataSet.$element
     
-        $multiControls.$element.addItem.Add_Click(
-            {
-                addCombobox
-            }
-        )
-    
-        $multiControls.$element.removeItem.Add_Click(
-            {
-                removeCombobox
-            }
-        )
-    
-        $multiControls.$element.selectItem.Add_SelectionChanged(
-            {
-                updateBuildPoints
-            }
-        )
-    
+        $multiControls.$element.addItem.Add_Click({ addCombobox $ComboBoxPropertySet })
+        $multiControls.$element.removeItem.Add_Click({ removeCombobox })
+        $multiControls.$element.selectItem.Add_SelectionChanged({ updateBuildPoints })   
     }
     
 }
 
-function addCombobox()
+function addCombobox($ComboBoxPropertySet)
 {
-    # Add a row to the grid
     # Move both buttons down to the new row
     # Create a new combobox
     # Set the coordinates for the combobox
     # Add new combobox to the grid
     # Add the selection_changed handler
     
-    [System.Windows.MessageBox]::Show($this)
+    $elementName = $this.Parent.Name
+    $grid = $this.Parent
+
     $row = New-Object Windows.Controls.RowDefinition
     $row.Height = $textHeight
-    $this.Parent.RowDefinitions.Add($row)
-    
+    $grid.RowDefinitions.Add($row)
+
+    $multiControls.$elementName.rowCount++
+    $rowNumber = $multiControls.$elementName.rowCount
+    $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+    $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+    #[System.Windows.MessageBox]::Show($elementName)
 
 }
 
