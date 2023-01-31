@@ -155,7 +155,14 @@ function addCombobox($ComboBoxPropertySet)
 
 function removeCombobox()
 {
-    [System.Windows.MessageBox]::Show($this)
+    $elementName = $this.Parent.Name
+    $grid = $this.Parent
+    [int] $rowNumber = ($multiControls.$elementName.rowCount) - 1
+    $currentComboBox = $multiControls.$elementName.controlSet[$rowNumber] 
+
+    [System.Windows.MessageBox]::Show($currentComboBox.SelectedValue)
+    #$grid.Children.Remove($currentComboBox)
+
 }
 
 function updateBuildPoints()
