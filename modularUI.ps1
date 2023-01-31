@@ -16,6 +16,7 @@ $addButtonPropertySet = @{
     "Content"="+"
     "Height"=30
     "Width"=30
+    "Margin"="0,0,-120,0"
 }
 
 $removeButtonPropertySet = @{
@@ -24,6 +25,7 @@ $removeButtonPropertySet = @{
     "Content"="-"
     "Height"=30
     "Width"=30
+    "Margin"="-120,0,0,0"
 }
 
 $ComboBoxPropertySet = @{
