@@ -128,13 +128,7 @@ function placeControls($elementList)
 }
 
 function addCombobox($ComboBoxPropertySet)
-{
-    # Move both buttons down to the new row
-    # Create a new combobox
-    # Set the coordinates for the combobox
-    # Add new combobox to the grid
-    # Add the selection_changed handler
-    
+{   
     $elementName = $this.Parent.Name
     $grid = $this.Parent
 
@@ -146,8 +140,17 @@ function addCombobox($ComboBoxPropertySet)
     $rowNumber = $multiControls.$elementName.rowCount
     $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
     $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
-    #[System.Windows.MessageBox]::Show($elementName)
 
+    $newComboBox = createUIElement $ComboBoxPropertySet
+    $newComboBox.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+    $newComboBox.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
+    $newComboBox.ItemsSource = $dataSet.$elementName
+    $newComboBox.Add_SelectionChanged({ updateBuildPoints })
+
+    $multiControls.$elementName.controlSet.Add($newComboBox)
+    $grid.AddChild($newComboBox)
+
+    #[System.Windows.MessageBox]::Show($elementName)
 }
 
 function removeCombobox()
