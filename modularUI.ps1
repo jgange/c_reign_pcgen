@@ -39,6 +39,11 @@ $dataSet = @{
     "Traits" = @("Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
     "Backgrounds" = @("Apothecary","Craftsman","Merchant")
 }
+$selected = @{
+	"Traits" = [System.Collections.ArrayList]@()
+	"Spells" = [System.Collections.ArrayList]@()
+}
+
 $textHeight = 30
 
 ### Function Definitions ###
@@ -184,7 +189,9 @@ function removeCombobox()
 function updateBuildPoints()
 {
     $elementName = $this.Parent.Name
-    [System.Windows.MessageBox]::Show($multiControls.$elementName.rowCount)
+    $selectedItem = $this.selectedValue
+    #[System.Windows.MessageBox]::Show($multiControls.$elementName.rowCount)
+    [System.Windows.MessageBox]::Show($selectedItem)
 }
 
 
