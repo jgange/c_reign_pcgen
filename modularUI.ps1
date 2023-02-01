@@ -135,22 +135,24 @@ function addCombobox($ComboBoxPropertySet)
 {   
     # Add logic to prevent selecting the same item twice in the comboboxes
     # Probably need another list which is managed with the multicontrol or something
+    # only happens after something is selected - check that logic
 
     $elementName = $this.Parent.Name
     $grid = $this.Parent
-
     $row = New-Object Windows.Controls.RowDefinition
     $row.Height = $textHeight
     $grid.RowDefinitions.Add($row)
 
+    #$rowNumber = $multiControls.$elementName.rowCount
+
+    #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
     $multiControls.$elementName.rowCount++
-    $rowNumber = $multiControls.$elementName.rowCount
-    $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
-    $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+    $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
+    $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
     $multiControls.$elementName.removeItem.Visibility = "visible"
 
     $newComboBox = createUIElement $ComboBoxPropertySet
-    $newComboBox.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+    $newComboBox.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
     $newComboBox.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
     $newComboBox.ItemsSource = $dataSet.$elementName
     $newComboBox.Add_SelectionChanged({ updateBuildPoints })
@@ -158,31 +160,31 @@ function addCombobox($ComboBoxPropertySet)
     $multiControls.$elementName.controlSet.Add($newComboBox)
     $grid.AddChild($newComboBox)
 
-    #[System.Windows.MessageBox]::Show($elementName)
+    #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
 }
 
 function removeCombobox()
 {
-    # add logic if row count = 0 when the button is pressed
-
     $elementName = $this.Parent.Name
     $grid = $this.Parent
+
+    #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
+
     $multiControls.$elementName.rowCount--
-    
-    [int] $rowNumber = $multiControls.$elementName.rowCount
-    $currentComboBox = $multiControls.$elementName.controlSet[$rowNumber] 
-
-    # [System.Windows.MessageBox]::Show($currentComboBox.SelectedValue)
+    $currentComboBox = $multiControls.$elementName.controlSet[$multiControls.$elementName.rowCount]
+    #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
     $grid.Children.Remove($currentComboBox)
+    if ($multiControls.$elementName.rowCount -eq 0) { $multiControls.$elementName.removeItem.Visibility="hidden" }
 
-    $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
-    $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+    $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
+    $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
 
 }
 
 function updateBuildPoints()
 {
-    [System.Windows.MessageBox]::Show($this)
+    $elementName = $this.Parent.Name
+    [System.Windows.MessageBox]::Show($multiControls.$elementName.rowCount)
 }
 
 
