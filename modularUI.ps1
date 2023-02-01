@@ -104,11 +104,15 @@ function createControlSet($elementList)
 
 function placeControls($elementList)
 {
+    # The remove button should start as Hidden and change to visible on the first add button click
+
     $elementList | ForEach-Object {
 
         $element = $_
         $gridInstance = ($masterGrid.Children | Where-Object { $_.Name -eq $element })
         InitializeGrid $window $gridInstance
+
+        $multiControls.$element.removeItem.Visibility = "Hidden"
     
         $gridInstance.AddChild($multiControls.$element.addItem)
         $gridInstance.AddChild($multiControls.$element.removeItem)
@@ -129,6 +133,9 @@ function placeControls($elementList)
 
 function addCombobox($ComboBoxPropertySet)
 {   
+    # Add logic to prevent selecting the same item twice in the comboboxes
+    # Probably need another list which is managed with the multicontrol or something
+
     $elementName = $this.Parent.Name
     $grid = $this.Parent
 
@@ -140,6 +147,7 @@ function addCombobox($ComboBoxPropertySet)
     $rowNumber = $multiControls.$elementName.rowCount
     $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
     $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+    $multiControls.$elementName.removeItem.Visibility = "visible"
 
     $newComboBox = createUIElement $ComboBoxPropertySet
     $newComboBox.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
@@ -155,13 +163,20 @@ function addCombobox($ComboBoxPropertySet)
 
 function removeCombobox()
 {
+    # add logic if row count = 0 when the button is pressed
+
     $elementName = $this.Parent.Name
     $grid = $this.Parent
-    [int] $rowNumber = ($multiControls.$elementName.rowCount) - 1
+    $multiControls.$elementName.rowCount--
+    
+    [int] $rowNumber = $multiControls.$elementName.rowCount
     $currentComboBox = $multiControls.$elementName.controlSet[$rowNumber] 
 
-    [System.Windows.MessageBox]::Show($currentComboBox.SelectedValue)
-    #$grid.Children.Remove($currentComboBox)
+    # [System.Windows.MessageBox]::Show($currentComboBox.SelectedValue)
+    $grid.Children.Remove($currentComboBox)
+
+    $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+    $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
 
 }
 
