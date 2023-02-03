@@ -36,12 +36,12 @@ $ComboBoxPropertySet = @{
 
 $elementList  = @("Traits","Backgrounds")
 $dataSet = @{
-    "Traits" = @("Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
-    "Backgrounds" = @("Apothecary","Craftsman","Merchant")
+    "Traits"      = [System.Collections.ArrayList]@("","Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
+    "Backgrounds" = [System.Collections.ArrayList]@("","Apothecary","Craftsman","Merchant")
 }
-$selected = @{
+$choices = @{
 	"Traits" = [System.Collections.ArrayList]@()
-	"Spells" = [System.Collections.ArrayList]@()
+	"Backgrounds" = [System.Collections.ArrayList]@()
 }
 
 $textHeight = 30
@@ -117,7 +117,8 @@ function placeControls($elementList)
         $gridInstance = ($masterGrid.Children | Where-Object { $_.Name -eq $element })
         InitializeGrid $window $gridInstance
 
-        $multiControls.$element.removeItem.Visibility = "Hidden"
+        $multiControls.$element.removeItem.Visibility = "Hidden"                # Can't remove until a row has been added
+        $multiControls.$element.AddItem.Visibility = "Hidden"                   # Can't add until a selection is made
     
         $gridInstance.AddChild($multiControls.$element.addItem)
         $gridInstance.AddChild($multiControls.$element.removeItem)
@@ -131,16 +132,17 @@ function placeControls($elementList)
     
         $multiControls.$element.addItem.Add_Click({ addCombobox $ComboBoxPropertySet })
         $multiControls.$element.removeItem.Add_Click({ removeCombobox })
-        $multiControls.$element.selectItem.Add_SelectionChanged({ updateBuildPoints })   
+        $multiControls.$element.selectItem.Add_SelectionChanged({ updateControl })   
     }
     
 }
 
 function addCombobox($ComboBoxPropertySet)
 {   
-    # Add logic to prevent selecting the same item twice in the comboboxes
-    # Probably need another list which is managed with the multicontrol or something
-    # only happens after something is selected - check that logic
+    # Shouldn't be able to select another item until a selection has been made
+    # Add button should be hidden until is changed
+    # buttons should probably have tooltips to explain their behavior
+    # if the value is blank or empty, doesn't count as a selection
 
     $elementName = $this.Parent.Name
     $grid = $this.Parent
@@ -148,50 +150,77 @@ function addCombobox($ComboBoxPropertySet)
     $row.Height = $textHeight
     $grid.RowDefinitions.Add($row)
 
-    #$rowNumber = $multiControls.$elementName.rowCount
-
-    #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
     $multiControls.$elementName.rowCount++
     $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
     $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
     $multiControls.$elementName.removeItem.Visibility = "visible"
+    $multiControls.$elementName.addItem.Visibility = "hidden"
 
     $newComboBox = createUIElement $ComboBoxPropertySet
     $newComboBox.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
     $newComboBox.SetValue([Windows.Controls.Grid]::ColumnProperty,1)
     $newComboBox.ItemsSource = $dataSet.$elementName
-    $newComboBox.Add_SelectionChanged({ updateBuildPoints })
+    $newComboBox.Add_SelectionChanged({ updateControl })
 
     $multiControls.$elementName.controlSet.Add($newComboBox)
     $grid.AddChild($newComboBox)
 
-    #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
 }
 
 function removeCombobox()
 {
     $elementName = $this.Parent.Name
     $grid = $this.Parent
+    $selectedItem = $this.selectedValue
 
     #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
+    # I think this is related to delays in removing the UI element - try introducing a short delay
 
     $multiControls.$elementName.rowCount--
     $currentComboBox = $multiControls.$elementName.controlSet[$multiControls.$elementName.rowCount]
-    #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
+    [System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.controlSet.Count)
     $grid.Children.Remove($currentComboBox)
-    if ($multiControls.$elementName.rowCount -eq 0) { $multiControls.$elementName.removeItem.Visibility="hidden" }
+    if ($multiControls.$elementName.rowCount -eq 0) 
+    {
+        $multiControls.$elementName.removeItem.Visibility="hidden"
+    }
+
+    $multiControls.$elementName.AddItem.Visibility = "visible"
 
     $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
     $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
 
+    $choices.$elementName.Remove($selectedItem)
+    $dataSet.$elementName.Add($selectedItem)
+
 }
 
-function updateBuildPoints()
+
+function updateControl()
 {
+     # the rule should, if the user selects a blank or a new combobox is generated, the add button should be hidden
+
     $elementName = $this.Parent.Name
     $selectedItem = $this.selectedValue
-    #[System.Windows.MessageBox]::Show($multiControls.$elementName.rowCount)
-    [System.Windows.MessageBox]::Show($selectedItem)
+    if ($selectedItem -eq "")
+    {
+        $multiControls.$elementName.addItem.Visibility = "hidden"
+    }
+    else {
+        #[System.Windows.MessageBox]::Show($multiControls.$elementName.rowCount)
+        #[System.Windows.MessageBox]::Show($selectedItem)
+        $choices.$elementName.Add($selectedItem)
+        $dataSet.$elementName.Remove($selectedItem)
+        $multiControls.$elementName.addItem.Visibility = "visible"
+    }
+    
+    #updateBuildPoints
+}
+function updateBuildPoints()
+{
+    # actually does the calculations
+    
+
 }
 
 
@@ -205,5 +234,12 @@ $multiControls = @{}
 buildGrids       $elementList
 createControlSet $elementList
 placeControls    $elementList
+
+$Window.Add_Closing(
+    {
+        Write-Host "Closing Window"
+        $choices | Out-File "./choices.txt" -Force
+    }
+)
 
 $window.ShowDialog() | Out-Null

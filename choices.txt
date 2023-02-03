@@ -1,0 +1,6 @@
+
+Name                           Value
+----                           -----
+Traits                         {Alert, Balanced, Brash}
+Backgrounds                    {Apothecary, Merchant, Craftsman}
+
