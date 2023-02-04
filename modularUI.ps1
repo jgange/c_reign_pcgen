@@ -139,10 +139,7 @@ function placeControls($elementList)
 
 function addCombobox($ComboBoxPropertySet)
 {   
-    # Shouldn't be able to select another item until a selection has been made
-    # Add button should be hidden until is changed
     # buttons should probably have tooltips to explain their behavior
-    # if the value is blank or empty, doesn't count as a selection
 
     $elementName = $this.Parent.Name
     $grid = $this.Parent
@@ -219,18 +216,16 @@ function updateControl()
         }
     }
     else {
-        #[System.Windows.MessageBox]::Show($multiControls.$elementName.rowCount)
-        #[System.Windows.MessageBox]::Show($selectedItem)
         $choices.$elementName.Add($selectedItem)
         $dataSet.$elementName.Remove($selectedItem)
         $multiControls.$elementName.addItem.Visibility = "visible"
     }  
-    #updateBuildPoints
+    updateBuildPoints $elementName $selectedItem
 }
-function updateBuildPoints()
+function updateBuildPoints([string] $elementName, [string] $selectedItem)
 {
     # actually does the calculations
-    
+    [System.Windows.MessageBox]::Show("Selected " + $selectedItem + " for " + $elementName)
 
 }
 
