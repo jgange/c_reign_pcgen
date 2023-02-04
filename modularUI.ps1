@@ -36,13 +36,24 @@ $ComboBoxPropertySet = @{
 
 $elementList  = @("Traits","Backgrounds")
 $dataSet = @{
-    "Traits"      = [System.Collections.ArrayList]@("","Affinity","Alert","Arrogant","Balanced","Brash","Captivating")
+    "Traits"      = [System.Collections.ArrayList]@("","Affinity","Alert","Arrogant","Brash","Captivating")
     "Backgrounds" = [System.Collections.ArrayList]@("","Apothecary","Craftsman","Merchant")
 }
 $choices = @{
 	"Traits" = [System.Collections.ArrayList]@()
 	"Backgrounds" = [System.Collections.ArrayList]@()
 }
+$pointCosts = @{
+    "Affinity"=30
+    "Alert"=30
+    "Arrogant"=-15
+    "Brash"=15
+    "Captivating"=30
+    "Apothecary"=10
+    "Craftsman"=10
+    "Merchant"=10
+}
+
 
 $textHeight = 30
 
@@ -225,7 +236,8 @@ function updateControl()
 function updateBuildPoints([string] $elementName, [string] $selectedItem)
 {
     # actually does the calculations
-    [System.Windows.MessageBox]::Show("Selected " + $selectedItem + " for " + $elementName)
+    $buildPointCost = $pointCosts.$selectedItem
+    [System.Windows.MessageBox]::Show("Selected " + $selectedItem + " for " + $elementName + " which costs " + $buildPointCost)
 
 }
 
