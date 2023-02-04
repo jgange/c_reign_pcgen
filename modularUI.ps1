@@ -171,15 +171,24 @@ function removeCombobox()
 {
     $elementName = $this.Parent.Name
     $grid = $this.Parent
-    $selectedItem = $this.selectedValue
+    $rc = $multiControls.$elementName.rowCount - 1
+    #$selectedItem = $this.selectedValue  # This is wrong, it will pick up the button not the associated combobox value
+    # I need the value of the controlset on the current row and get the selected value from there
 
     #[System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.rowCount)
     # I think this is related to delays in removing the UI element - try introducing a short delay
+    $selectedItem = $multiControls.$elementName.controlSet[$rc].selectedValue
+
+    [System.Windows.MessageBox]::Show($selectedItem)
+    $choices.$elementName.Remove($selectedItem)
+    $dataSet.$elementName.Add($selectedItem)
 
     $multiControls.$elementName.rowCount--
     $currentComboBox = $multiControls.$elementName.controlSet[$multiControls.$elementName.rowCount]
     [System.Windows.MessageBox]::Show($elementName + " " + $multiControls.$elementName.controlSet.Count)
+    
     $grid.Children.Remove($currentComboBox)
+
     if ($multiControls.$elementName.rowCount -eq 0) 
     {
         $multiControls.$elementName.removeItem.Visibility="hidden"
@@ -190,21 +199,24 @@ function removeCombobox()
     $multiControls.$elementName.addItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
     $multiControls.$elementName.removeItem.SetValue([Windows.Controls.Grid]::RowProperty,$multiControls.$elementName.rowCount)
 
-    $choices.$elementName.Remove($selectedItem)
-    $dataSet.$elementName.Add($selectedItem)
+    $multiControls.$elementName.controlSet.Remove($currentComboBox)
 
 }
 
 
 function updateControl()
 {
-     # the rule should, if the user selects a blank or a new combobox is generated, the add button should be hidden
-
+    # if the user selects a blank or a new combobox is generated, the add button should be hidden
     $elementName = $this.Parent.Name
     $selectedItem = $this.selectedValue
     if ($selectedItem -eq "")
     {
         $multiControls.$elementName.addItem.Visibility = "hidden"
+        # if they have deleted all the items and select blank for the last item, remove the last item
+        if ($multiControls.$elementName.rowCount -eq 0) { 
+            $lastItem = $choices.$elementName[0]
+            $choices.$elementName.Remove($lastItem)
+        }
     }
     else {
         #[System.Windows.MessageBox]::Show($multiControls.$elementName.rowCount)
@@ -212,8 +224,7 @@ function updateControl()
         $choices.$elementName.Add($selectedItem)
         $dataSet.$elementName.Remove($selectedItem)
         $multiControls.$elementName.addItem.Visibility = "visible"
-    }
-    
+    }  
     #updateBuildPoints
 }
 function updateBuildPoints()
