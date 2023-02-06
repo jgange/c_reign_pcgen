@@ -34,21 +34,7 @@ $ComboBoxPropertySet = @{
     "Width"=150
 }
 
-$labelPropertySet = @{
-    "Type"="System.Windows.Controls.Label"
-    "Height"=30
-    "Width"=150
-}
-
-$textBoxPropertySet = @{
-    "Type"="System.Windows.Controls.TextBox"
-    "Height"=30
-    "Width"=150
-}
-
-
-$elementList  = @("metaData","Attributes","Backgrounds","Traits")
-$maxColumns = 3
+$elementList  = @("Traits","Backgrounds")
 $dataSet = @{
     "Traits"      = [System.Collections.ArrayList]@("","Affinity","Alert","Arrogant","Brash","Captivating")
     "Backgrounds" = [System.Collections.ArrayList]@("","Apothecary","Craftsman","Merchant")
@@ -95,32 +81,23 @@ function InitializeGrid([System.Windows.Window] $window, [System.Windows.Control
     }
 }
 
-function buildGrids($elementList, [int]$maxColumns)
+function buildGrids($elementList)
 {
     # Iterate through the list of required grids, create the objects and add them to the master grid
-    [int]$colNumber   = 0
-    [int]$rowNumber   = 0
-    [int]$count       = 0
-    [int]$numElements = $elementList.Count 
+    $columnCount = 0 
 
     $elementList | ForEach-Object {
-
-        $rowNumber = $count / $maxColumns
-        $colNumber = $count % $maxColumns
-
         $grid = @{
             Name      = $_
             UIElement = New-Object Windows.Controls.Grid
-
         }
 
         $grid.UIElement.Name = $_
         $column = New-Object Windows.Controls.ColumnDefinition
         $masterGrid.ColumnDefinitions.Add($column)
-        $grid.UIElement.SetValue([Windows.Controls.Grid]::ColumnProperty,$colNumber)
-        $grid.UIElement.SetValue([Windows.Controls.Grid]::RowProperty,$rowNumber)
+        $grid.UIElement.SetValue([Windows.Controls.Grid]::ColumnProperty,$columnCount)
         $masterGrid.Children.Add($grid.UIElement)
-        $count++
+        $columnCount++
     }
 }
 
