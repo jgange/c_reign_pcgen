@@ -5,9 +5,8 @@ $window.Title = "TestGrid"
 
 $masterGrid = New-Object Windows.Controls.Grid
 
-$elementList = @("metaData","Attributes","Backgrounds","Traits","Spells","Skills","Racial Abilities","Starting gear","Rare Items")
+$elementList = @("metaData","Attributes","Backgrounds","Traits","Spells","Skills","Racial Abilities","Starting gear","Rare Items","Boons")
 
-[int]$elements = $elementList.Count
 [int]$maxCols = 3
 
 [int]$counter = 0
@@ -47,5 +46,7 @@ $elementList | ForEach-Object {
     $grid.SetValue([Windows.Controls.Grid]::ColumnProperty,$colPos)
     $masterGrid.AddChild($grid)
 }
+
+$window.AddChild($masterGrid)
 
 $window.ShowDialog()
