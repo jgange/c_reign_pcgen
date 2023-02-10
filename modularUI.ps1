@@ -35,6 +35,8 @@ $ComboBoxPropertySet = @{
 }
 
 $elementList  = @("Traits","Backgrounds")
+#$elementList = @("metaData","Attributes","Backgrounds","Traits","Spells","Skills","RacialAbilities","StartingGear","RareItems","Boons")
+
 $dataSet = @{
     "Traits"      = [System.Collections.ArrayList]@("","Affinity","Alert","Arrogant","Brash","Captivating")
     "Backgrounds" = [System.Collections.ArrayList]@("","Apothecary","Craftsman","Merchant")
@@ -54,8 +56,8 @@ $pointCosts = @{
     "Merchant"=10
 }
 
-
-$textHeight = 30
+[int] $maxCols = 3                   ## This determines how many visual areas span the screen
+[int] $textHeight = 30
 
 ### Function Definitions ###
 function createUIElement([hashtable] $propertySet)
@@ -81,23 +83,48 @@ function InitializeGrid([System.Windows.Window] $window, [System.Windows.Control
     }
 }
 
+function returnLocation($UIElement)
+{
+    $rowNum = $UIElement.GetValue([Windows.Controls.Grid]::RowProperty)
+    $colNum = $UIElement.GetValue([Windows.Controls.Grid]::ColumnProperty)
+    [System.Windows.MessageBox]::Show($UIElement.Name + " is associated with " + $UIElement.Parent.Name + " at position " + " row="+ $rowNum + ", column= " + $colNum)   
+}
+
 function buildGrids($elementList)
 {
     # Iterate through the list of required grids, create the objects and add them to the master grid
-    $columnCount = 0 
+    [int]$counter = 0
+    [int]$rowNum  = 0
+    [int]$colNum  = 0
 
     $elementList | ForEach-Object {
-        $grid = @{
-            Name      = $_
-            UIElement = New-Object Windows.Controls.Grid
+        [int]$rowNum = [math]::Floor($counter / $maxCols)
+        [int]$colNum = $counter % $maxCols
+        if ($counter % 3 -eq 0)
+        {
+            $column = New-Object Windows.Controls.ColumnDefinition
+            $row = New-Object Windows.Controls.RowDefinition
+            $masterGrid.RowDefinitions.Add($row)
+            $masterGrid.ColumnDefinitions.Add($column)
         }
 
-        $grid.UIElement.Name = $_
-        $column = New-Object Windows.Controls.ColumnDefinition
-        $masterGrid.ColumnDefinitions.Add($column)
-        $grid.UIElement.SetValue([Windows.Controls.Grid]::ColumnProperty,$columnCount)
-        $masterGrid.Children.Add($grid.UIElement)
-        $columnCount++
+        $grid = @{
+            UIElement = New-Object Windows.Controls.Grid
+            Position   = @{Row=$rowNum;Col=$colNum}
+        }
+
+        $grids.Add($_,$grid) | Out-Null
+        $counter++
+    }
+    
+    $elementList | ForEach-Object {
+        $rowPos = $grids.$_.Position.Row
+        $colPos = $grids.$_.Position.Col
+        $grid = $grids.$_.UIElement
+        $grid.Name = $_
+        $grid.SetValue([Windows.Controls.Grid]::RowProperty,$rowPos)
+        $grid.SetValue([Windows.Controls.Grid]::ColumnProperty,$colPos)
+        $masterGrid.AddChild($grid)
     }
 }
 
@@ -108,7 +135,8 @@ function createControlSet($elementList)
     
         $control = @{
             rowCount        = 0
-            parentControl   = ($masterGrid.Children | Where-Object { $_.Name -eq $elementName }).UIElement
+            #parentControl   = ($masterGrid.Children | Where-Object { $_.Name -eq $elementName }).UIElement
+            parentControl   = ($masterGrid.Children | Where-Object { $_.Name -eq $elementName })
             controlSet      = [System.Collections.ArrayList]@()
             addItem         = createUIElement $addButtonPropertySet
             removeItem      = createUIElement $removeButtonPropertySet
@@ -211,7 +239,6 @@ function removeCombobox()
 
 }
 
-
 function updateControl()
 {
     # if the user selects a blank or a new combobox is generated, the add button should be hidden
@@ -244,10 +271,11 @@ function updateBuildPoints([string] $elementName, [string] $selectedItem)
 
 ### Main Program ###
 
-$window = createUIElement $windowPropertySet
-$masterGrid = New-Object Windows.Controls.Grid
-$window.Content = $masterGrid
-$multiControls = @{}
+$window          = createUIElement $windowPropertySet
+$masterGrid      = New-Object Windows.Controls.Grid
+$window.Content  = $masterGrid
+$multiControls   = @{}
+$grids           = @{}
 
 buildGrids       $elementList
 createControlSet $elementList
@@ -257,6 +285,12 @@ $Window.Add_Closing(
     {
         Write-Host "Closing Window"
         $choices | Out-File "./choices.txt" -Force
+        $grids.Keys | ForEach-Object {
+            $rowNum = $grids.$_.UIElement.GetValue([Windows.Controls.Grid]::RowProperty)
+            $colNum = $grids.$_.UIElement.GetValue([Windows.Controls.Grid]::ColumnProperty)
+            $record = $_ + "," + $colNum + "," + $rowNum
+            $record | Out-File "./layout.txt" -Append
+        }
     }
 )
 
