@@ -1,0 +1,20 @@
+{
+    "Traits":[
+        {
+            "UIElement":"expandableComboBox",
+            "offsets":{
+                "row":0,
+                "column":2
+            }
+        }
+    ],
+    "Backgrounds":[
+        {
+           "UIElement":"doubleExpandableComboBox",
+            "offsets":{
+                "row":0,
+                "column":2
+            }
+        }
+    ]
+}
