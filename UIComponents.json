@@ -27,8 +27,8 @@
             "Type":"Button",
             "Offset":
             {
-                "row":"0",
-                "column":"0"
+                "row":0,
+                "column":0
                 }
             },
         {
@@ -36,8 +36,8 @@
             "Type":"ComboBox",
             "Offset":
             {
-                "row":"0",
-                "column":"1"
+                "row":0,
+                "column":1
                 }
         },
         {
@@ -45,9 +45,82 @@
             "Type":"Button",
             "Offset":
             {
-                "row":"0",
-                "column":"2"
+                "row":0,
+                "column":2
             }
+        }
+    ],
+    "doubleExpandableComboBox":[
+        {
+            "Name":"addItem",
+            "Type":"Button",
+            "Offset":{
+               "row":0,
+                "column":0
+                }
+                },
+            {
+                "Name":"primarySelectItem",
+                "Type":"ComboBox",
+                "Offset" : {
+                    "row":0,
+                    "column":1
+                    }
+            },
+            {
+                "Name":"relatedSelectItem",
+                "Type":"ComboBox",
+                "Offset" : {
+                    "row":0,
+                    "column":2
+                    }
+            },
+            {
+                "Name":"removeItem",
+                "Type":"Button",
+                "Offset" : {
+                    "row":0,
+                    "column":2
+                }
+            }
+    ],
+    "expandableList":[
+        {
+            "Name":"addItem",
+            "Type":"Button",
+            "Offset":
+                {
+                    "row":0,
+                    "column":0
+                }
+        },
+        {
+            "Name":"itemLabel",
+            "Type":"Label",
+            "Offset":[
+                {
+                "Row":0,
+                "Column":1
+                }
+            ]
+        },
+        {
+            "Name":"selectItem",
+            "Type":"ListBox",
+            "Offset":
+                {
+                    "row":0,
+                    "column":2
+                }
+        },
+        {
+            "Name":"removeItem",
+            "Type":"Button",
+            "Offset":
+                {
+                    "row":0,
+                    "column":3
+                }
         }
     ]
 }
