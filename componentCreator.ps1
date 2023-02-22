@@ -29,14 +29,14 @@ function createUIElement([hashtable] $propertySet)
     return $UIcontrol
 }
 
-function buildGrids($elementCount)
+function buildGrids($elementList)
 {
     # Iterate through the list of required grids, create the objects and add them to the master grid
     [int]$counter = 0
     [int]$rowNum  = 0
     [int]$colNum  = 0
 
-    1..$elementCount | ForEach-Object {
+    $elementList | ForEach-Object {
         [int]$rowNum = [math]::Floor($counter / $maxCols)
         [int]$colNum = $counter % $maxCols
         if ($counter % 3 -eq 0)
@@ -78,11 +78,13 @@ function getGridDimensions($grid)
     return @{"Row"=$rMax; "Column"=$cMax}
 }
 
-function placeControlOnGrid([int] $row, [int] $column, $control, $parent)
+function placeControlOnGrid($control, [int] $row, [int] $column, $parent)
 {
-    if ()
-    $control.SetValue([Windows.Controls.Grid]::RowProperty,$row)
-    $control.SetValue([Windows.Controls.Grid]::ColumnProperty,$column)
+    if (1 -eq 1) # place holder to check if the coordinates are valid
+    {
+        $control.SetValue([Windows.Controls.Grid]::RowProperty,$row)
+        $control.SetValue([Windows.Controls.Grid]::ColumnProperty,$column)
+    }
 }
 
 ### MAIN PROGRAM ####
@@ -91,16 +93,19 @@ function placeControlOnGrid([int] $row, [int] $column, $control, $parent)
 # $screenlayout | Format-List
 
 $window = createUIElement $windowPropertySet
-$grid = New-Object Windows.Controls.Grid
-$grid.Name = "masterGrid"
+$masterGrid = New-Object Windows.Controls.Grid
+$masterGrid.Name = "masterGrid"
+$grids           = @{}
+$gridNames = ($screenLayout | Get-Member -Type NoteProperty).Name
 
-$numElements = $screenLayout.Count
+$gridNames
 
-$screenLayout | ForEach-Object {
-    $gridName = ($screenLayout | Get-Member -Type NoteProperty).Name
-    $gridName
-}
+buildGrids $gridNames
 
-$numGrids = $gridName.Count
+getGridDimensions $masterGrid
+
+placeControlOnGrid 
+
+exit 0
 
 $window.ShowDialog() | Out-Null

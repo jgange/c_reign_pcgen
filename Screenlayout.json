@@ -1,10 +1,19 @@
 {
-    "Traits":[
+    "CharacterProperties":[
         {
-            "UIElement":"expandableComboBox",
+            "UIElement":"labeledList",
             "offsets":{
                 "row":0,
-                "column":2
+                "column":0
+            }
+        }
+    ],
+    "Attributes":[
+        {
+           "UIElement":"labeledList",
+            "offsets":{
+                "row":0,
+                "column":1
             }
         }
     ],
@@ -14,6 +23,15 @@
             "offsets":{
                 "row":0,
                 "column":2
+            }
+        }
+    ],
+    "Traits":[
+        {
+            "UIElement":"expandableComboBox",
+            "offsets":{
+                "row":0,
+                "column":3
             }
         }
     ]
