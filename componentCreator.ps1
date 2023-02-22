@@ -78,13 +78,20 @@ function getGridDimensions($grid)
     return @{"Row"=$rMax; "Column"=$cMax}
 }
 
+function getElementLocation($control)
+{
+    return @{"Row"=$control.GetValue([Windows.Controls.Grid]::RowProperty);"Column"=$control.GetValue([Windows.Controls.Grid]::RowProperty)}
+}
+
 function placeControlOnGrid($control, [int] $row, [int] $column, $parent)
 {
+    # Get the coordinates from the layout object
     if (1 -eq 1) # place holder to check if the coordinates are valid
     {
         $control.SetValue([Windows.Controls.Grid]::RowProperty,$row)
         $control.SetValue([Windows.Controls.Grid]::ColumnProperty,$column)
     }
+    getElementLocation $control
 }
 
 ### MAIN PROGRAM ####
@@ -98,13 +105,16 @@ $masterGrid.Name = "masterGrid"
 $grids           = @{}
 $gridNames = ($screenLayout | Get-Member -Type NoteProperty).Name
 
-$gridNames
+#$gridNames
 
 buildGrids $gridNames
 
-getGridDimensions $masterGrid
+#getGridDimensions $masterGrid
 
-placeControlOnGrid 
+$screenLayout | Get-Member -Type NoteProperty | ForEach-Object  {
+    placeControlOnGrid $grids.$gridName.UIElement $grids.$gridName.Position.Row $grids.$gridName.Position.Column $masterGrid
+
+}
 
 exit 0
 
