@@ -30,8 +30,8 @@
         {
             "UIElement":"expandableComboBox",
             "offsets":{
-                "row":0,
-                "column":3
+                "row":1,
+                "column":2
             }
         }
     ]

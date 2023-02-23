@@ -3,11 +3,6 @@ Add-Type -AssemblyName PresentationFramework
 $componentFile = "./UIComponents.json"
 $screenlayoutFile = "./Screenlayout.json"
 
-$maxCols = 3
-
-$elements = Get-Content -Path $componentFile | ConvertFrom-Json
-$screenLayout = Get-Content -Path $screenlayoutFile | ConvertFrom-Json
-
 $windowPropertySet = @{
     "Type"  = "Windows.Window"
     "Height" = "768"
@@ -29,40 +24,28 @@ function createUIElement([hashtable] $propertySet)
     return $UIcontrol
 }
 
-function buildGrids($elementList)
+function setUpMasterGrid($elementList)
 {
-    # Iterate through the list of required grids, create the objects and add them to the master grid
-    [int]$counter = 0
-    [int]$rowNum  = 0
-    [int]$colNum  = 0
+    [int]$numRows = [math]::Floor($elementList.Count / $maxCols)
+    [int]$numCols = $elementList.Count -gt $maxCols ? $maxCols : $elementList.Count
 
-    $elementList | ForEach-Object {
-        [int]$rowNum = [math]::Floor($counter / $maxCols)
-        [int]$colNum = $counter % $maxCols
-        if ($counter % 3 -eq 0)
-        {
-            $column = New-Object Windows.Controls.ColumnDefinition
-            $row = New-Object Windows.Controls.RowDefinition
-            $masterGrid.RowDefinitions.Add($row)
-            $masterGrid.ColumnDefinitions.Add($column)
-        }
-
-        $grid = @{
-            UIElement = New-Object Windows.Controls.Grid
-            Position   = @{Row=$rowNum;Col=$colNum}
-        }
-
-        $grids.Add($_,$grid) | Out-Null
-        $counter++
+    1..$numRows | ForEach-Object {
+        $row = New-Object Windows.Controls.RowDefinition
+        $masterGrid.RowDefinitions.Add($row)
     }
-    
+
+    1..$numCols | ForEach-Object {
+        $column = New-Object Windows.Controls.ColumnDefinition
+        $masterGrid.ColumnDefinitions.Add($column)
+    }
+
+}
+
+function createSubGrids($elementList)
+{
     $elementList | ForEach-Object {
-        $rowPos = $grids.$_.Position.Row
-        $colPos = $grids.$_.Position.Col
-        $grid = $grids.$_.UIElement
+        $grid = New-Object Windows.Controls.Grid
         $grid.Name = $_
-        $grid.SetValue([Windows.Controls.Grid]::RowProperty,$rowPos)
-        $grid.SetValue([Windows.Controls.Grid]::ColumnProperty,$colPos)
         $masterGrid.AddChild($grid)
     }
 }
@@ -75,46 +58,58 @@ function getGridDimensions($grid)
         if($_.GetValue([Windows.Controls.Grid]::RowProperty) -gt $rMax) { $rMax = $_.GetValue([Windows.Controls.Grid]::RowProperty) }
         if($_.GetValue([Windows.Controls.Grid]::ColumnProperty) -gt $cMax) { $cMax = $_.GetValue([Windows.Controls.Grid]::ColumnProperty) }
     }
-    return @{"Row"=$rMax; "Column"=$cMax}
+
+    return @{
+        "Row"=$rMax
+        "Column"=$cMax
+    }
 }
 
 function getElementLocation($control)
 {
-    return @{"Row"=$control.GetValue([Windows.Controls.Grid]::RowProperty);"Column"=$control.GetValue([Windows.Controls.Grid]::RowProperty)}
+    return @{
+        "Row"=$control.GetValue([Windows.Controls.Grid]::RowProperty)
+        "Column"=$control.GetValue([Windows.Controls.Grid]::ColumnProperty)
+    }
 }
 
-function placeControlOnGrid($control, [int] $row, [int] $column, $parent)
+function placeControl($control, [int] $row, [int] $column, $parent)
 {
-    # Get the coordinates from the layout object
-    if (1 -eq 1) # place holder to check if the coordinates are valid
+    if ($column -gt $maxCols)
+    {
+        Write-Output "Bad row or column position."
+        exit 1
+    }
+    else
     {
         $control.SetValue([Windows.Controls.Grid]::RowProperty,$row)
         $control.SetValue([Windows.Controls.Grid]::ColumnProperty,$column)
     }
-    getElementLocation $control
 }
 
 ### MAIN PROGRAM ####
 
-# $elements | Format-List
-# $screenlayout | Format-List
+$elements = Get-Content -Path $componentFile | ConvertFrom-Json
+$screenLayout = Get-Content -Path $screenlayoutFile | ConvertFrom-Json
 
 $window = createUIElement $windowPropertySet
 $masterGrid = New-Object Windows.Controls.Grid
 $masterGrid.Name = "masterGrid"
-$grids           = @{}
+# $grids           = @{}
+$maxCols = 3
+
 $gridNames = ($screenLayout | Get-Member -Type NoteProperty).Name
 
-#$gridNames
+setUpMasterGrid $gridNames
+createSubGrids $gridNames
 
-buildGrids $gridNames
-
-#getGridDimensions $masterGrid
-
-$screenLayout | Get-Member -Type NoteProperty | ForEach-Object  {
-    placeControlOnGrid $grids.$gridName.UIElement $grids.$gridName.Position.Row $grids.$gridName.Position.Column $masterGrid
-
+$gridNames | ForEach-Object {
+    $gridName = $_
+    $grid = $masterGrid.Children | Where-Object {$_.Name -eq $gridName}
+    placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
 }
+
+getGridDimensions $masterGrid
 
 exit 0
 
