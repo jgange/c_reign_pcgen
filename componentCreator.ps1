@@ -29,12 +29,14 @@ function setUpMasterGrid($elementList)
     [int]$numRows = [math]::Floor($elementList.Count / $maxCols)
     [int]$numCols = $elementList.Count -gt $maxCols ? $maxCols : $elementList.Count
 
-    1..$numRows | ForEach-Object {
+    for ($i=0; $i -le $numRows; $i++)
+    {
         $row = New-Object Windows.Controls.RowDefinition
         $masterGrid.RowDefinitions.Add($row)
     }
 
-    1..$numCols | ForEach-Object {
+    for ($i=0; $i -le $numCols; $i++)
+    {
         $column = New-Object Windows.Controls.ColumnDefinition
         $masterGrid.ColumnDefinitions.Add($column)
     }
@@ -89,13 +91,13 @@ function placeControl($control, [int] $row, [int] $column, $parent)
 
 ### MAIN PROGRAM ####
 
+# $grids           = @{}
 $elements = Get-Content -Path $componentFile | ConvertFrom-Json
 $screenLayout = Get-Content -Path $screenlayoutFile | ConvertFrom-Json
 
 $window = createUIElement $windowPropertySet
 $masterGrid = New-Object Windows.Controls.Grid
 $masterGrid.Name = "masterGrid"
-# $grids           = @{}
 $maxCols = 3
 
 $gridNames = ($screenLayout | Get-Member -Type NoteProperty).Name
@@ -109,7 +111,10 @@ $gridNames | ForEach-Object {
     placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
 }
 
-getGridDimensions $masterGrid
+# need to place the ui controls next
+# iterate through the screen layout, get the UI Element type
+# iterate through the element type and identify how to many rows and columns to create
+# then place the element on the grid
 
 exit 0
 
