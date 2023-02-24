@@ -4,31 +4,28 @@ Add-Type -AssemblyName PresentationFramework
 
 function createUIElement($propertySet)
 {
-    $UIcontrol = New-Object $($propertySet.Type)
-    $UItype = $propertySet."Type"
-    $propertySet.PSObject.properties.remove('"Type"')
+    $p = "Type"
+    $UItype = $propertySet.$p
+    $UIcontrol = New-Object $($propertySet.$p)
+    $propertySet.PSObject.properties.remove($p)
+
+    #$propertySet | Get-Member -MemberType NoteProperty
+
     ($propertySet | Get-Member -MemberType NoteProperty).Name | ForEach-Object {
         $property = $_
         #$_
         #$propertySet.$property
         $UIcontrol.$_ = $propertySet.$property
     }
-    $propertySet."Type" = $UItype
-    #$UIcontrol
 
-    #$UIcontrol = New-Object $($propertySet.Type)
-    #$objectType = $propertySet.Type
-    #$propertySet.Remove("Type")
-    #$propertySet | Get-Member -MemberType NoteProperty | ForEach-Object { $UIcontrol.$_ = $propertySet.$_ }
-    #$propertySet.Add("Type",$objectType)
-
+    $propertySet | Add-Member -NotePropertyName $p -NotePropertyValue $UItype
     return $UIcontrol
 }
 
-function setUpMasterGrid($elementList)
+function setUpMasterGrid($numElements)
 {
     [int]$numRows = [math]::Floor($elementList.Count / $maxCols)
-    [int]$numCols = $elementList.Count -gt $maxCols ? $maxCols : $elementList.Count
+    [int]$numCols = $numElements -gt $maxCols ? $maxCols : $numElements
 
     for ($i=0; $i -le $numRows; $i++)
     {
@@ -44,9 +41,9 @@ function setUpMasterGrid($elementList)
 
 }
 
-function createSubGrids($elementList)
+function createSubGrids($gridList)
 {
-    $elementList | ForEach-Object {
+    $gridList | ForEach-Object {
         $grid = New-Object Windows.Controls.Grid
         $grid.Name = $_
         $masterGrid.AddChild($grid)
@@ -66,6 +63,11 @@ function getGridDimensions($grid)
         "Row"=$rMax
         "Column"=$cMax
     }
+}
+
+function getGridByName($name)
+{
+    return ($masterGrid.Children | Where-Object {$_.Name -eq $name})
 }
 
 function getElementLocation($control)
@@ -90,6 +92,12 @@ function placeControl($control, [int] $row, [int] $column, $parent)
     }
 }
 
+function resizeGrid()
+{
+    # This function resizes an existing grid to prepare it for placing controls
+    # need to determine how many rows and columns to create and place on the grid
+
+}
 ### MAIN PROGRAM ####
 
 $uiComponentsFile = "./UIComponents.json"
@@ -101,11 +109,7 @@ $uiComponents = Get-Content -Path $uiComponentsFile | ConvertFrom-Json
 $uiElements = Get-Content -Path $uiElementsFile | ConvertFrom-Json
 $screenLayout = Get-Content -Path $screenlayoutFile | ConvertFrom-Json
 
-#$form = createUIElement $uiComponents.window
-
-createUIElement $uiComponents.window
-
-exit 0
+$form = createUIElement $uiComponents.window
 
 $masterGrid = New-Object Windows.Controls.Grid
 $masterGrid.Name = "masterGrid"
@@ -113,19 +117,13 @@ $maxCols = 3
 
 $gridNames = ($screenLayout | Get-Member -Type NoteProperty).Name
 
-setUpMasterGrid $gridNames
+setUpMasterGrid $gridNames.Count
 createSubGrids $gridNames
 
 $gridNames | ForEach-Object {
     $gridName = $_
-    $grid = $masterGrid.Children | Where-Object {$_.Name -eq $gridName}
+    $grid = getGridByName $gridName
     placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
-}
-
-$gridNames | ForEach-Object {
-    $control = $screenLayout.$_.UIElement
-    $_
-    $elements.$control.Name
 }
 
 # need to place the ui controls next
@@ -133,8 +131,25 @@ $gridNames | ForEach-Object {
 # iterate through the element type and identify how to many rows and columns to create
 # then place the element on the grid
 
+$grouping = "Attributes"
+$controlGroup = $screenLayout.$grouping.UIElement
+$control = $uiElements.$controlGroup
+
+$control | ForEach-Object {
+    $propertySet = $uiComponents.$($_.Name)
+    #createUIElement $propertySet
+}
+
+$grid = getGridByName $grouping
+
 $form.AddChild($masterGrid)
 
 exit 0
+
+# loop through the ui elements to get the details of what to build
+$gridNames | ForEach-Object {
+    $control  = $screenLayout.$_.UIElement
+    $position = $UIelements.$control.Offset
+}
 
 $form.ShowDialog() | Out-Null

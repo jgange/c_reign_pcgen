@@ -9,7 +9,7 @@
     "item":{
         "Type":"System.Windows.Controls.TextBox",
         "Name":"item",
-        "Content":"",
+        "Text":"",
         "Height":30
     },
     "itemLabel":{
