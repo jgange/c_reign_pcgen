@@ -1,25 +1,26 @@
 Add-Type -AssemblyName PresentationFramework
 
-$componentFile = "./UIComponents.json"
-$screenlayoutFile = "./Screenlayout.json"
-
-$windowPropertySet = @{
-    "Type"  = "Windows.Window"
-    "Height" = "768"
-    "Width" = "1024"
-    "Title" = "Crimson Reign Character Builder"
-    "WindowStartupLocation" ="CenterScreen"    
-}
-
 ### FUNCTION DEFINITIONS ####
 
-function createUIElement([hashtable] $propertySet)
+function createUIElement($propertySet)
 {
     $UIcontrol = New-Object $($propertySet.Type)
-    $objectType = $propertySet.Type
-    $propertySet.Remove("Type")
-    $propertySet.Keys | ForEach-Object { $UIcontrol.$_ = $propertySet.$_ }
-    $propertySet.Add("Type",$objectType)
+    $UItype = $propertySet."Type"
+    $propertySet.PSObject.properties.remove('"Type"')
+    ($propertySet | Get-Member -MemberType NoteProperty).Name | ForEach-Object {
+        $property = $_
+        #$_
+        #$propertySet.$property
+        $UIcontrol.$_ = $propertySet.$property
+    }
+    $propertySet."Type" = $UItype
+    #$UIcontrol
+
+    #$UIcontrol = New-Object $($propertySet.Type)
+    #$objectType = $propertySet.Type
+    #$propertySet.Remove("Type")
+    #$propertySet | Get-Member -MemberType NoteProperty | ForEach-Object { $UIcontrol.$_ = $propertySet.$_ }
+    #$propertySet.Add("Type",$objectType)
 
     return $UIcontrol
 }
@@ -91,11 +92,21 @@ function placeControl($control, [int] $row, [int] $column, $parent)
 
 ### MAIN PROGRAM ####
 
+$uiComponentsFile = "./UIComponents.json"
+$uiElementsFile = "./UIElements.json"
+$screenlayoutFile = "./Screenlayout.json"
+
 # $grids           = @{}
-$elements = Get-Content -Path $componentFile | ConvertFrom-Json
+$uiComponents = Get-Content -Path $uiComponentsFile | ConvertFrom-Json
+$uiElements = Get-Content -Path $uiElementsFile | ConvertFrom-Json
 $screenLayout = Get-Content -Path $screenlayoutFile | ConvertFrom-Json
 
-$window = createUIElement $windowPropertySet
+#$form = createUIElement $uiComponents.window
+
+createUIElement $uiComponents.window
+
+exit 0
+
 $masterGrid = New-Object Windows.Controls.Grid
 $masterGrid.Name = "masterGrid"
 $maxCols = 3
@@ -111,11 +122,19 @@ $gridNames | ForEach-Object {
     placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
 }
 
+$gridNames | ForEach-Object {
+    $control = $screenLayout.$_.UIElement
+    $_
+    $elements.$control.Name
+}
+
 # need to place the ui controls next
 # iterate through the screen layout, get the UI Element type
 # iterate through the element type and identify how to many rows and columns to create
 # then place the element on the grid
 
+$form.AddChild($masterGrid)
+
 exit 0
 
-$window.ShowDialog() | Out-Null
+$form.ShowDialog() | Out-Null
