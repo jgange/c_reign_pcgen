@@ -19,12 +19,8 @@ function createUIElement($propertySet)
     $UIcontrol = New-Object $($propertySet.$p)
     $propertySet.PSObject.properties.remove($p)
 
-    #$propertySet | Get-Member -MemberType NoteProperty
-
     ($propertySet | Get-Member -MemberType NoteProperty).Name | ForEach-Object {
         $property = $_
-        #$_
-        #$propertySet.$property
         $UIcontrol.$_ = $propertySet.$property
     }
 
@@ -99,7 +95,7 @@ function getElementLocation($control)
 }
 
 function placeControl($control, [int] $row, [int] $column, $parent)
-{
+{   
     if ($column -gt $maxCols)
     {
         Write-Output "Bad row or column position."
@@ -110,6 +106,7 @@ function placeControl($control, [int] $row, [int] $column, $parent)
         $control.SetValue([Windows.Controls.Grid]::RowProperty,$row)
         $control.SetValue([Windows.Controls.Grid]::ColumnProperty,$column)
     }
+    if ( ($control.GetType()).Name -ne 'Grid') { $parent.AddChild($control) }            # Add the control if it is not a grid, as this is handled during grid setup
 }
 
 
@@ -167,12 +164,6 @@ $gridNames | ForEach-Object {
     placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
 }
 
-# need to place the ui controls next
-# iterate through the screen layout, get the UI Element type
-# iterate through the element type and identify how to many rows and columns to create
-# create the element based on the associated property set
-# place the element on the grid
-
 $grouping = "Attributes"
 $controlGroup = $screenLayout.$grouping.UIElement
 $control = $uiElements.$controlGroup
@@ -185,13 +176,12 @@ resizeGrid $gridSize $targetGrid
 $control.Name | ForEach-Object {
     $controlName = $_
     $propertySet = $uiComponents.$controlName
-    $component = createUIElement $propertySet
+    $propertySet | Add-Member -NotePropertyName Name -NotePropertyValue ($grouping, $controlGroup, $controlName -join "_")
+    $component = createUIElement $propertySet $controlGroup $grouping
     $coords = ($control | Where-Object { $_.Name -eq $controlName }).Offset
     placeControl $component $coords.Row $coords.Column $targetGrid
 }
 
 $form.AddChild($masterGrid)
-
-exit 0
 
 $form.ShowDialog() | Out-Null
