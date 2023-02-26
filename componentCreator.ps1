@@ -1,5 +1,16 @@
 Add-Type -AssemblyName PresentationFramework
 
+$uiComponentsFile = "./UIComponents.json"
+$uiElementsFile = "./UIElements.json"
+$screenlayoutFile = "./Screenlayout.json"
+
+$uiComponents = Get-Content -Path $uiComponentsFile | ConvertFrom-Json
+$uiElements = Get-Content -Path $uiElementsFile | ConvertFrom-Json
+$screenLayout = Get-Content -Path $screenlayoutFile | ConvertFrom-Json
+
+$masterGrid.Name = "masterGrid"
+$maxCols = 3
+
 ### FUNCTION DEFINITIONS ####
 
 function createUIElement($propertySet)
@@ -106,8 +117,8 @@ function determineMaxGridSize($coordinates)
     }
 
     return @{
-        "Row"=$maxR
-        "Column"=$maxC
+        "Rows"=$maxR
+        "Columns"=$maxC
     }
 
 }
@@ -122,34 +133,26 @@ function computeGridSize($p)
 function resizeGrid([hashtable] $position, $grid)
 {
 
-    for ($i=0; $i -le $position.Rows; $i++)
+    if ($position.Rows)
     {
-        $row = New-Object Windows.Controls.RowDefinition
-        $grid.RowDefinitions.Add($row)
+        1..$position.Rows | ForEach-Object {
+            $row = New-Object Windows.Controls.RowDefinition
+            $grid.RowDefinitions.Add($row)
+            }
     }
 
-    for ($i=0; $i -le $position.Columns; $i++)
+    if($position.Columns)
     {
-        $column = New-Object Windows.Controls.ColumnDefinition
-        $grid.ColumnDefinitions.Add($column)
+        1..$position.Columns | ForEach-Object {
+            $column = New-Object Windows.Controls.ColumnDefinition
+            $grid.ColumnDefinitions.Add($column)
+        }
     }
 }
 ### MAIN PROGRAM ####
 
-$uiComponentsFile = "./UIComponents.json"
-$uiElementsFile = "./UIElements.json"
-$screenlayoutFile = "./Screenlayout.json"
-
-# $grids           = @{}
-$uiComponents = Get-Content -Path $uiComponentsFile | ConvertFrom-Json
-$uiElements = Get-Content -Path $uiElementsFile | ConvertFrom-Json
-$screenLayout = Get-Content -Path $screenlayoutFile | ConvertFrom-Json
-
 $form = createUIElement $uiComponents.window
-
 $masterGrid = New-Object Windows.Controls.Grid
-$masterGrid.Name = "masterGrid"
-$maxCols = 3
 
 $gridNames = ($screenLayout | Get-Member -Type NoteProperty).Name
 
@@ -171,9 +174,15 @@ $grouping = "Attributes"
 $controlGroup = $screenLayout.$grouping.UIElement
 $control = $uiElements.$controlGroup
 
-determineMaxGridSize $uiElements.$($screenLayout.$grouping.UIElement).Offset
+$gridSize = determineMaxGridSize $uiElements.$($screenLayout.$grouping.UIElement).Offset # Determine how large the grid needs to be fit the controls
+$targetGrid = getGridByName $grouping                                                    # Get the name of the target grid based on the data element name
 
-# $grid = getGridByName $grouping
+$gridSize
+$targetGrid
+
+#resizeGrid $gridSize $targetGrid
+#getGridDimensions $targetGrid
+
 
 $form.AddChild($masterGrid)
 
