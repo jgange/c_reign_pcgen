@@ -93,11 +93,23 @@ function placeControl($control, [int] $row, [int] $column, $parent)
 }
 
 
-function determineMaxGridSize([int]$r, [int]$c)
+function determineMaxGridSize($coordinates)
 {
     # receive a list of row, column coordinates
     # return a hashtable with the largest value in a Row = , Col = , format
-    Write-Output "Row =$r, Column =$c"
+    $maxR = 0
+    $maxC = 0
+
+    $coordinates | ForEach-Object {
+        if ($($_.Row) -gt $maxR) { $maxR = $($.Row)}
+        if ($($_.Column) -gt $maxC) { $maxC = $($_.Column)}
+    }
+
+    return @{
+        "Row"=$maxR
+        "Column"=$maxC
+    }
+
 }
 
 function computeGridSize($p)
@@ -159,12 +171,7 @@ $grouping = "Attributes"
 $controlGroup = $screenLayout.$grouping.UIElement
 $control = $uiElements.$controlGroup
 
-$control | ForEach-Object {
-    #$propertySet = $uiComponents.$($_.Name)
-    #$propertySet
-    determineMaxGridSize $_.Offset.Row $_.Offset.Column
-    #createUIElement $propertySet
-}
+determineMaxGridSize $uiElements.$($screenLayout.$grouping.UIElement).Offset
 
 # $grid = getGridByName $grouping
 
