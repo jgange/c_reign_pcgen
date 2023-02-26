@@ -92,11 +92,35 @@ function placeControl($control, [int] $row, [int] $column, $parent)
     }
 }
 
-function resizeGrid()
-{
-    # This function resizes an existing grid to prepare it for placing controls
-    # need to determine how many rows and columns to create and place on the grid
 
+function determineMaxGridSize([int]$r, [int]$c)
+{
+    # receive a list of row, column coordinates
+    # return a hashtable with the largest value in a Row = , Col = , format
+    Write-Output "Row =$r, Column =$c"
+}
+
+function computeGridSize($p)
+{
+    # Should get a list of object coordinates and a grid reference
+    # iterate through the list of objects to determine the max value and save those values
+    # construct the required row and column objects and add them to the grid
+}
+
+function resizeGrid([hashtable] $position, $grid)
+{
+
+    for ($i=0; $i -le $position.Rows; $i++)
+    {
+        $row = New-Object Windows.Controls.RowDefinition
+        $grid.RowDefinitions.Add($row)
+    }
+
+    for ($i=0; $i -le $position.Columns; $i++)
+    {
+        $column = New-Object Windows.Controls.ColumnDefinition
+        $grid.ColumnDefinitions.Add($column)
+    }
 }
 ### MAIN PROGRAM ####
 
@@ -136,11 +160,13 @@ $controlGroup = $screenLayout.$grouping.UIElement
 $control = $uiElements.$controlGroup
 
 $control | ForEach-Object {
-    $propertySet = $uiComponents.$($_.Name)
+    #$propertySet = $uiComponents.$($_.Name)
+    #$propertySet
+    determineMaxGridSize $_.Offset.Row $_.Offset.Column
     #createUIElement $propertySet
 }
 
-$grid = getGridByName $grouping
+# $grid = getGridByName $grouping
 
 $form.AddChild($masterGrid)
 
