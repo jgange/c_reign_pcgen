@@ -133,13 +133,6 @@ function determineMaxGridSize($coordinates)
 
 }
 
-function computeGridSize($p)
-{
-    # Should get a list of object coordinates and a grid reference
-    # iterate through the list of objects to determine the max value and save those values
-    # construct the required row and column objects and add them to the grid
-}
-
 function resizeGrid([hashtable] $position, $grid)
 {
 
@@ -178,7 +171,8 @@ $gridNames | ForEach-Object {
 # need to place the ui controls next
 # iterate through the screen layout, get the UI Element type
 # iterate through the element type and identify how to many rows and columns to create
-# then place the element on the grid
+# create the element based on the associated property set
+# place the element on the grid
 
 $grouping = "Attributes"
 $controlGroup = $screenLayout.$grouping.UIElement
@@ -188,7 +182,16 @@ $gridSize = determineMaxGridSize $uiElements.$($screenLayout.$grouping.UIElement
 $targetGrid = getGridByName $grouping                                                    # Get the name of the target grid based on the data element name
 
 resizeGrid $gridSize $targetGrid
-getGridDimensions $targetGrid
+#getGridDimensions $targetGrid
+
+$control.Name | ForEach-Object {
+    $controlName = $_
+    $propertySet = $uiComponents.$controlName
+    $propertySet
+    $coords = ($control | Where-Object { $_.Name -eq $controlName }).Offset
+    $coords.Row
+    $coord.Column
+}
 
 $form.AddChild($masterGrid)
 
