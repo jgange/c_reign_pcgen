@@ -63,11 +63,21 @@ function createSubGrids($gridList)
 
 function getGridDimensions($grid)
 {
+    # Add case when object has no children
     $rMax = 0
     $cMax = 0
-    $grid.Children | ForEach-Object {
-        if($_.GetValue([Windows.Controls.Grid]::RowProperty) -gt $rMax) { $rMax = $_.GetValue([Windows.Controls.Grid]::RowProperty) }
-        if($_.GetValue([Windows.Controls.Grid]::ColumnProperty) -gt $cMax) { $cMax = $_.GetValue([Windows.Controls.Grid]::ColumnProperty) }
+
+    if ($grid.Children)
+    {
+        $grid.Children | ForEach-Object {
+            if($_.GetValue([Windows.Controls.Grid]::RowProperty) -gt $rMax) { $rMax = $_.GetValue([Windows.Controls.Grid]::RowProperty) }
+            if($_.GetValue([Windows.Controls.Grid]::ColumnProperty) -gt $cMax) { $cMax = $_.GetValue([Windows.Controls.Grid]::ColumnProperty) }
+        }
+    }
+    else
+    {
+        $rMax = $grid.GetValue([Windows.Controls.Grid]::RowProperty)
+        $cMax = $grid.GetValue([Windows.Controls.Grid]::ColumnProperty)
     }
 
     return @{
@@ -177,12 +187,8 @@ $control = $uiElements.$controlGroup
 $gridSize = determineMaxGridSize $uiElements.$($screenLayout.$grouping.UIElement).Offset # Determine how large the grid needs to be fit the controls
 $targetGrid = getGridByName $grouping                                                    # Get the name of the target grid based on the data element name
 
-$gridSize
-$targetGrid
-
-#resizeGrid $gridSize $targetGrid
-#getGridDimensions $targetGrid
-
+resizeGrid $gridSize $targetGrid
+getGridDimensions $targetGrid
 
 $form.AddChild($masterGrid)
 
