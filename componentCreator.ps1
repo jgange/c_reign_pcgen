@@ -8,7 +8,6 @@ $uiComponents = Get-Content -Path $uiComponentsFile | ConvertFrom-Json
 $uiElements = Get-Content -Path $uiElementsFile | ConvertFrom-Json
 $screenLayout = Get-Content -Path $screenlayoutFile | ConvertFrom-Json
 
-$masterGrid.Name = "masterGrid"
 $maxCols = 3
 
 ### FUNCTION DEFINITIONS ####
@@ -155,7 +154,7 @@ function resizeGrid([hashtable] $position, $grid)
 ### MAIN PROGRAM ####
 
 $form = createUIElement $uiComponents.window
-$masterGrid = New-Object Windows.Controls.Grid
+$masterGrid = createUIElement $uiComponents.masterGrid
 
 $gridNames = ($screenLayout | Get-Member -Type NoteProperty).Name
 
@@ -182,25 +181,17 @@ $gridSize = determineMaxGridSize $uiElements.$($screenLayout.$grouping.UIElement
 $targetGrid = getGridByName $grouping                                                    # Get the name of the target grid based on the data element name
 
 resizeGrid $gridSize $targetGrid
-#getGridDimensions $targetGrid
 
 $control.Name | ForEach-Object {
     $controlName = $_
     $propertySet = $uiComponents.$controlName
-    $propertySet
+    $component = createUIElement $propertySet
     $coords = ($control | Where-Object { $_.Name -eq $controlName }).Offset
-    $coords.Row
-    $coord.Column
+    placeControl $component $coords.Row $coords.Column $targetGrid
 }
 
 $form.AddChild($masterGrid)
 
 exit 0
-
-# loop through the ui elements to get the details of what to build
-$gridNames | ForEach-Object {
-    $control  = $screenLayout.$_.UIElement
-    $position = $UIelements.$control.Offset
-}
 
 $form.ShowDialog() | Out-Null

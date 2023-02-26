@@ -6,6 +6,10 @@
         "Title":"Crimson Reign Character Builder",
         "WindowStartupLocation":"CenterScreen"
     },
+    "masterGrid":{
+        "Type":"Windows.Controls.Grid",
+        "Name":"masterGrid"
+    },
     "item":{
         "Type":"System.Windows.Controls.TextBox",
         "Name":"item",
