@@ -164,7 +164,7 @@ $gridNames | ForEach-Object {
     placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
 }
 
-$grouping = "Attributes"
+$grouping = "Backgrounds"
 $controlGroup = $screenLayout.$grouping.UIElement
 $control = $uiElements.$controlGroup
 
