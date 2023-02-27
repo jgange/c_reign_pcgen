@@ -33,18 +33,21 @@ function setUpMasterGrid($numElements)
     [int]$numRows = [math]::Floor($elementList.Count / $maxCols)
     [int]$numCols = $numElements -gt $maxCols ? $maxCols : $numElements
 
-    for ($i=0; $i -le $numRows; $i++)
+    if ($numRows)
     {
-        $row = New-Object Windows.Controls.RowDefinition
-        $masterGrid.RowDefinitions.Add($row)
+        1..$numRows | ForEach-Object {
+            $row = New-Object Windows.Controls.RowDefinition
+            $masterGrid.RowDefinitions.Add($row)
+        }
     }
 
-    for ($i=0; $i -le $numCols; $i++)
+    if ($numCols)
     {
-        $column = New-Object Windows.Controls.ColumnDefinition
-        $masterGrid.ColumnDefinitions.Add($column)
+        1..$numCols | ForEach-Object {
+            $column = New-Object Windows.Controls.ColumnDefinition
+            $masterGrid.ColumnDefinitions.Add($column)
+        }
     }
-
 }
 
 function createSubGrids($gridList)
@@ -52,32 +55,18 @@ function createSubGrids($gridList)
     $gridList | ForEach-Object {
         $grid = New-Object Windows.Controls.Grid
         $grid.Name = $_
+        $grid.HorizontalAlignment = "center"
+        $grid.VerticalAlignment = "top"
+        $grid.ShowGridLines = "True"
         $masterGrid.AddChild($grid)
     }
 }
 
 function getGridDimensions($grid)
 {
-    # Add case when object has no children
-    $rMax = 0
-    $cMax = 0
-
-    if ($grid.Children)
-    {
-        $grid.Children | ForEach-Object {
-            if($_.GetValue([Windows.Controls.Grid]::RowProperty) -gt $rMax) { $rMax = $_.GetValue([Windows.Controls.Grid]::RowProperty) }
-            if($_.GetValue([Windows.Controls.Grid]::ColumnProperty) -gt $cMax) { $cMax = $_.GetValue([Windows.Controls.Grid]::ColumnProperty) }
-        }
-    }
-    else
-    {
-        $rMax = $grid.GetValue([Windows.Controls.Grid]::RowProperty)
-        $cMax = $grid.GetValue([Windows.Controls.Grid]::ColumnProperty)
-    }
-
     return @{
-        "Row"=$rMax
-        "Column"=$cMax
+        "Row"=$($grid.RowDefinitions.Count)
+        "Column"=$($grid.ColumnDefinitions.Count)
     }
 }
 
@@ -96,16 +85,10 @@ function getElementLocation($control)
 
 function placeControl($control, [int] $row, [int] $column, $parent)
 {   
-    if ($column -gt $maxCols)
-    {
-        Write-Output "Bad row or column position."
-        exit 1
-    }
-    else
-    {
-        $control.SetValue([Windows.Controls.Grid]::RowProperty,$row)
-        $control.SetValue([Windows.Controls.Grid]::ColumnProperty,$column)
-    }
+    # Write-Output "Placing control $($control.Name) of type $(($control.GetType()).Name) at Row $row, Column $column on Grid $($parent.Name)"
+    $control.SetValue([Windows.Controls.Grid]::RowProperty,$row)
+    $control.SetValue([Windows.Controls.Grid]::ColumnProperty,$column)
+
     if ( ($control.GetType()).Name -ne 'Grid') { $parent.AddChild($control) }            # Add the control if it is not a grid, as this is handled during grid setup
 }
 
@@ -164,7 +147,7 @@ $gridNames | ForEach-Object {
     placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
 }
 
-$grouping = "Backgrounds"
+$grouping = "Attributes"
 $controlGroup = $screenLayout.$grouping.UIElement
 $control = $uiElements.$controlGroup
 

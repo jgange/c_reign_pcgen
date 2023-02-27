@@ -4,7 +4,6 @@
         "Height":"768",
         "Width":"1024",
         "Title":"Crimson Reign Character Builder",
-        "WindowStartupLocation":"CenterScreen",
         "Name":"MainWindow"
     },
     "masterGrid":{
@@ -13,12 +12,15 @@
     },
     "item":{
         "Type":"System.Windows.Controls.TextBox",
-        "Text":"",
+        "Text":"PLACEHOLDER",
+        "Width":120,
         "Height":30
     },
     "itemLabel":{
         "Type":"System.Windows.Controls.Label",
-        "Content":"",
+        "Content":"PLACEHOLDER",
+        "Opacity":100,
+        "Width":120,
         "Height":30
     },
     "addItem":{
@@ -26,23 +28,23 @@
         "Content":"+",
         "Height":30,
         "Width":30,
-        "Margin":"0,0,-120,0"
+        "Margin":"0,0,0,0"
     },
     "removeItem":{
         "Type":"System.Windows.Controls.Button",
         "Content":"-",
         "Height":30,
         "Width":30,
-        "Margin":"-120,0,0,0"
+        "Margin":"0,0,0,0"
     },
     "selectItem":{
         "Type":"System.Windows.Controls.ComboBox",
         "Height":30,
-        "Width":150
+        "Width":100
     },
     "relatedSelectItem":{
         "Type":"System.Windows.Controls.ComboBox",
         "Height":30,
-        "Width":150
+        "Width":100
     }
 }
