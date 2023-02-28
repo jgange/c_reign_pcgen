@@ -156,6 +156,9 @@ $targetGrid = getGridByName $grouping                                           
 
 resizeGrid $gridSize $targetGrid
 
+$column = New-Object Windows.Controls.ColumnDefinition
+$targetGrid.ColumnDefinitions.Add($column)
+
 $control.Name | ForEach-Object {
     $controlName = $_
     $propertySet = $uiComponents.$controlName
