@@ -57,7 +57,7 @@ function createSubGrids($gridList)
         $grid.Name = $_
         $grid.HorizontalAlignment = "center"
         $grid.VerticalAlignment = "top"
-        $grid.ShowGridLines = "True"
+        #$grid.ShowGridLines = "True"
         $masterGrid.AddChild($grid)
     }
 }
@@ -147,7 +147,7 @@ $gridNames | ForEach-Object {
     placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
 }
 
-$grouping = "Attributes"
+$grouping = "Traits"
 $controlGroup = $screenLayout.$grouping.UIElement
 $control = $uiElements.$controlGroup
 
