@@ -147,25 +147,28 @@ $gridNames | ForEach-Object {
     placeControl $grid $screenlayout.$gridName.offsets.Row $screenlayout.$gridName.offsets.Column $masterGrid
 }
 
-$grouping = "Traits"
-$controlGroup = $screenLayout.$grouping.UIElement
-$control = $uiElements.$controlGroup
+$gridNames | ForEach-Object {
 
-$gridSize = determineMaxGridSize $uiElements.$($screenLayout.$grouping.UIElement).Offset # Determine how large the grid needs to be fit the controls
-$targetGrid = getGridByName $grouping                                                    # Get the name of the target grid based on the data element name
+    $grouping = $_
+    $controlGroup = $screenLayout.$grouping.UIElement
+    $control = $uiElements.$controlGroup
 
-resizeGrid $gridSize $targetGrid
+    $gridSize = determineMaxGridSize $uiElements.$($screenLayout.$grouping.UIElement).Offset # Determine how large the grid needs to be fit the controls
+    $targetGrid = getGridByName $grouping                                                    # Get the name of the target grid based on the data element name
 
-$column = New-Object Windows.Controls.ColumnDefinition
-$targetGrid.ColumnDefinitions.Add($column)
+    resizeGrid $gridSize $targetGrid
 
-$control.Name | ForEach-Object {
-    $controlName = $_
-    $propertySet = $uiComponents.$controlName
-    $propertySet | Add-Member -NotePropertyName Name -NotePropertyValue ($grouping, $controlGroup, $controlName -join "_")
-    $component = createUIElement $propertySet $controlGroup $grouping
-    $coords = ($control | Where-Object { $_.Name -eq $controlName }).Offset
-    placeControl $component $coords.Row $coords.Column $targetGrid
+    $column = New-Object Windows.Controls.ColumnDefinition
+    $targetGrid.ColumnDefinitions.Add($column)
+
+    $control.Name | ForEach-Object {
+        $controlName = $_
+        $propertySet = $uiComponents.$controlName
+        $propertySet | Add-Member -NotePropertyName Name -NotePropertyValue ($grouping, $controlGroup, $controlName -join "_")
+        $component = createUIElement $propertySet $controlGroup $grouping
+        $coords = ($control | Where-Object { $_.Name -eq $controlName }).Offset
+        placeControl $component $coords.Row $coords.Column $targetGrid
+    }
 }
 
 $form.AddChild($masterGrid)
