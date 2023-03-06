@@ -149,6 +149,7 @@ $gridNames | ForEach-Object {
 
 $gridNames | ForEach-Object {
 
+    $_
     $grouping = $_
     $controlGroup = $screenLayout.$grouping.UIElement
     $control = $uiElements.$controlGroup
@@ -161,12 +162,15 @@ $gridNames | ForEach-Object {
     $column = New-Object Windows.Controls.ColumnDefinition
     $targetGrid.ColumnDefinitions.Add($column)
 
-    $control.Name | ForEach-Object {
-        $controlName = $_
-        $propertySet = $uiComponents.$controlName
-        $propertySet | Add-Member -NotePropertyName Name -NotePropertyValue ($grouping, $controlGroup, $controlName -join "_")
+    $control.Element | ForEach-Object {
+        $controlElement = $_
+        $propertySet = $uiComponents.$controlElement
+        $_
+        ($grouping, $controlGroup, $controlElement -join "_")
+        $propertySet | Add-Member -NotePropertyName Name -NotePropertyValue ($grouping, $controlGroup, $controlElement -join "_")
+        $propertySet
         $component = createUIElement $propertySet $controlGroup $grouping
-        $coords = ($control | Where-Object { $_.Name -eq $controlName }).Offset
+        $coords = ($control | Where-Object { $_.Element -eq $controlElement }).Offset
         placeControl $component $coords.Row $coords.Column $targetGrid
     }
 }

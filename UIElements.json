@@ -1,7 +1,7 @@
 {
     "labeledList":[
         {
-            "Name":"itemLabel",
+            "Element":"itemLabel",
             "Type":"Label",
             "Offset":{
                 "Row":0,
@@ -9,7 +9,7 @@
             }
         },
         {
-            "Name":"item",
+            "Element":"item",
             "Type":"TextBox",
             "Offset":{
                 "Row":0,
@@ -19,7 +19,7 @@
     ],
     "expandableComboBox":[
         {
-            "Name":"addItem",
+            "Element":"addItem",
             "Type":"Button",
             "Offset":
             {
@@ -28,7 +28,7 @@
                 }
             },
         {
-            "Name":"selectItem",
+            "Element":"selectItem",
             "Type":"ComboBox",
             "Offset":
             {
@@ -37,7 +37,7 @@
                 }
         },
         {
-            "Name":"removeItem",
+            "Element":"removeItem",
             "Type":"Button",
             "Offset":
             {
@@ -48,7 +48,7 @@
     ],
     "doubleExpandableComboBox":[
         {
-            "Name":"addItem",
+            "Element":"addItem",
             "Type":"Button",
             "Offset":{
                "row":0,
@@ -56,7 +56,7 @@
                 }
                 },
             {
-                "Name":"selectItem",
+                "Element":"selectItem",
                 "Type":"ComboBox",
                 "Offset" : {
                     "row":0,
@@ -64,7 +64,7 @@
                     }
             },
             {
-                "Name":"relatedSelectItem",
+                "Element":"relatedSelectItem",
                 "Type":"ComboBox",
                 "Offset" : {
                     "row":0,
@@ -72,7 +72,7 @@
                     }
             },
             {
-                "Name":"removeItem",
+                "Element":"removeItem",
                 "Type":"Button",
                 "Offset" : {
                     "row":0,
@@ -82,7 +82,7 @@
     ],
     "expandableList":[
         {
-            "Name":"addItem",
+            "Element":"addItem",
             "Type":"Button",
             "Offset":
                 {
@@ -91,7 +91,7 @@
                 }
         },
         {
-            "Name":"itemLabel",
+            "Element":"itemLabel",
             "Type":"Label",
             "Offset":{
                 "Row":0,
@@ -99,7 +99,7 @@
                 }
         },
         {
-            "Name":"selectItem",
+            "Element":"selectItem",
             "Type":"ListBox",
             "Offset":
                 {
@@ -108,7 +108,7 @@
                 }
         },
         {
-            "Name":"removeItem",
+            "Element":"removeItem",
             "Type":"Button",
             "Offset":
                 {
